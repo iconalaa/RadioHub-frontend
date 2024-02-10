@@ -3,6 +3,7 @@
 Medical image sharing has become crucial in healthcare for enhanced diagnosis and disease management. This practice facilitates collaboration among healthcare professionals, leading to improved patient care and accurate diagnosis. Secure and efficient platforms enable remote and real-time access to medical information, revolutionizing professional collaboration and ultimately improving health outcomes for patients.
 
 ## Our Solution
+This project aims to develop an advanced medical image sharing platform with instant access and integrated chat system, enabling remote collaboration among healthcare professionals. By transcending geographical barriers, it facilitates instant communication and improves diagnostic accuracy, ultimately enhancing patient care.
 
 ## Getting Started
 ```python
