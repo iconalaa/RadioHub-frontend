@@ -8,7 +8,6 @@ This project aims to develop an advanced medical image sharing platform with ins
 ## Getting Started
 ```python
 git clone https://github.com/iconalaa/Repo_3A56_Invictus_Pi3.git
-
 cd Repo_3A56_Invictus_Pi3
 ```
 ```python
