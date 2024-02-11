@@ -1,0 +1,42 @@
+{% extends 'front.html.twig' %} 
+{% block title %}RadioHub | Log in{% endblock
+ %}
+{% block body %}
+<center>
+  <h1 class="display-5 mt-5">🌟 Welcome Back 🌟</h1>
+</center>
+<form class="w-50 mx-auto my-5" action="{{ path('app_login') }}" method="post">
+  <div class="mb-3">
+    <label for="username">Email:</label>
+    <input
+      class="form-control py-2 px-3"
+      type="text"
+      id="username"
+      name="_username"
+      value="{{ last_username }}"
+      placeholder="exp@gmail.com"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="password">Password:</label>
+    <input
+      class="form-control py-2 px-3"
+      type="password"
+      id="password"
+      name="_password"
+      placeholder="password"
+    />
+  </div>
+
+  {# If you want to control the URL the user is redirected to on success
+  <input type="hidden" name="_target_path" value="/account" /> #} {% if error %}
+
+  <div class="alert alert-danger">
+    {{ error.messageKey|trans(error.messageData, 'security') }}
+  </div>
+  {% endif %}
+  <center>
+    <button class="btn btn-primary w-25" type="submit">login</button>
+  </center>
+</form>
+{% endblock %}

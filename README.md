@@ -1,2 +1,2 @@
 # RadioHub
-![Alt text](public/front/img/logo-row.png)
+![](public/front/img/logo-row.png)

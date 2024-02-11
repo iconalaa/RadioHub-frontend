@@ -1,0 +1,39 @@
+{% extends 'front.html.twig' %} {% block title %}RadioHub | Sign up{% endblock
+%} {% block body %}
+<center>
+  <h1 class="display-5 mt-5">
+    Welcome to Radio<span
+      style="
+        background-color: #007bff;
+        color: white;
+        padding: 0 10px;
+        border-radius: 8px;
+      "
+      >Hub</span
+    >
+  </h1>
+</center>
+{{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-5'}} )}}
+<div class="d-flex flex-column w-50 mx-auto gap-3">
+  <div class="d-flex gap-3">
+    {{ form_widget(form.name,{'attr':{'class':'form-control px-3 py-2'}}) }}
+    {{ form_widget(form.lastname,{'attr':{'class':'form-control px-3 py-2'}}) }}
+  </div>
+  <div class="d-flex gap-3">
+    {{ form_widget(form.email,{'attr':{'class':'form-control px-3 py-2'}}) }}
+    {{ form_widget(form.plainPassword,{'attr':{'class':'form-control px-3 py-2'
+
+    }}) }}
+  </div>
+  <div class="d-flex gap-3">
+    {{ form_widget(form.gender,{'attr':{'class':''}}) }}
+    {{ form_widget(form.date_birth,{'attr':{'class':'d-flex gap-1 justify-content-center'
+
+    }}) }}
+  </div>
+
+  {{ form_widget(form.submit,{'attr':{'class':'btn btn-primary w-25 mx-auto'}})
+  }}
+</div>
+{{ form_end(form) }}
+{% endblock %}

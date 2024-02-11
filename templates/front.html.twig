@@ -27,6 +27,8 @@
       }}"
       rel="stylesheet"
     />
+
+    <link rel="stylesheet" href="{{ asset('front/css/styles.min.css') }}" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('front/css/bootstrap.min.css') }}" />
     <!-- Nice Select CSS -->
@@ -85,7 +87,7 @@
               <div class="col-lg-3 col-md-3 col-12">
                 <!-- Start Logo -->
                 <div class="logo">
-                  <a href="index.html"
+                  <a href="{{ path('app_home')}}"
                     ><img src="front/img/logo-row.png" alt="logo"
                   /></a>
                 </div>
@@ -98,6 +100,7 @@
                 <!-- Main Menu -->
                 <div class="main-menu">
                   <nav class="navigation">
+                    {% block links%}
                     <ul class="nav menu">
                       <li class="active">
                         <a href="#"
@@ -127,13 +130,17 @@
                       </li>
                       <li><a href="contact.html">Contact Us</a></li>
                     </ul>
+                    {% endblock %}
                   </nav>
                 </div>
                 <!--/ End Main Menu -->
               </div>
               <div class="col-lg-2 col-12">
-                <div class="get-quote">
-                  <a href="appointment.html" class="btn">Book Appointment</a>
+                <div class="get-quote d-flex">
+                  {% block auth %}
+                  <a href="{{ path('app_register') }}" class="btn">Sign up</a>
+                  <a href="{{ path('app_login') }}" class="btn ml-3">Log in</a>
+                  {% endblock %}
                 </div>
               </div>
             </div>
@@ -143,7 +150,7 @@
       <!--/ End Header Inner -->
     </header>
     <!-- End Header Area -->
-{% block body%}
+    {% block body%}
     <!-- Slider Area -->
     <section class="slider">
       <div class="hero-slider">
@@ -691,8 +698,6 @@
     </section>
     <!--/ End service -->
 
-   
-
     <!-- Start Blog Area -->
     <section class="blog section" id="blog">
       <div class="container">
@@ -1152,5 +1157,6 @@
     <script src="front/js/main.js"></script>
 
     {% block javascripts %} {% endblock %}
+    <script src="{{ asset('front/js/bootstrap.bundle.min.js') }}"></script>
   </body>
 </html>
