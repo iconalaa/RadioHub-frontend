@@ -20,6 +20,7 @@ class UserType extends AbstractType
             ->add('email', null, [
                 'attr' => ['placeholder' => 'Email@exemp.exp'],
             ])
+            // ->add('roles')
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password', 'placeholder' => 'Password'],
@@ -48,7 +49,7 @@ class UserType extends AbstractType
                 ],
                 'placeholder' => 'Gender',
             ])
-            ->add('submit', SubmitType::class);
+            ->add('SignUp', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -1,5 +1,6 @@
 {% extends 'front.html.twig' %} {% block auth %} {% block stylesheet %}
 <link rel="stylesheet" href="front/css/custom.css" />
+
 {% endblock %} {% if app.user %}
 <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
   <ul
@@ -28,10 +29,16 @@
       >
         <div class="message-body">
           <a
-            href="{{ path('app_profile,') }}"
+            href="{{ path('app_profile') }}"
             class="d-flex align-items-center gap-2 dropdown-item"
           >
-            <i class="ti ti-user fs-6"></i>
+            <i
+              style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              "
+              class="fa-solid fa-user"
+            ></i>
             <p class="mb-0 fs-3">
               <span style="text-transform: capitalize"
                 >{{ app.user.name }} Profile</span
@@ -42,10 +49,30 @@
             href="javascript:void(0)"
             class="d-flex align-items-center gap-2 dropdown-item"
           >
-            <i class="ti ti-settings fs-6"></i>
+            <i
+              style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              "
+              class="fa-solid fa-gear"
+            ></i>
             <p class="mb-0 fs-3">Settings</p>
-            
           </a>
+          {% if is_granted('ROLE_ADMIN') %}
+          <a
+            href="{{ path('app_admin') }}"
+            class="d-flex align-items-center gap-2 dropdown-item"
+          >
+            <i
+              style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              "
+              class="fa-solid fa-lock"
+            ></i>
+            <p class="mb-0 fs-3">Dashboard</p>
+          </a>
+          {% endif %}
 
           <a
             id="logout"

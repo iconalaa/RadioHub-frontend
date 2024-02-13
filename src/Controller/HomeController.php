@@ -15,7 +15,7 @@ class HomeController extends AbstractController
         return $this->render('home/home.html.twig', []);
     }
 
-    #[Route('/profile/{username}', name: 'app_profile')]
+    #[Route('/profile', name: 'app_profile')]
     public function profile(): Response
     {
         return $this->render('home/profile.html.twig', []);

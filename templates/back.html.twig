@@ -3,16 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
-        <title>{% block title %} RadioHub | Dashboard {% endblock %}</title>
+
+    <title>{% block title %} RadioHub | Dashboard {% endblock %}</title>
     <link
       rel="shortcut icon"
       type="image/png"
-      href="back/assets/images/logos/favicon.png"
+      href="../Back/assets/images/logos/favicon.png"
     />
-    <link rel="stylesheet" href="back/assets/css/styles.min.css" />
-    {% block stylesheet %}
-    {% endblock %}
+    <link rel="stylesheet" href="../Back/assets/css/styles.min.css" />
+    {% block stylesheet %} {% endblock %}
   </head>
 
   <body>
@@ -35,7 +34,7 @@
           >
             <a href="./index.html" class="text-nowrap logo-img">
               <img
-                src="back/assets/images/logos/dark-logo.svg"
+                src="../back/assets/images/logos/dark-logo.svg"
                 width="180"
                 alt=""
               />
@@ -57,7 +56,7 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link"
-                  href="{{ path('app_admin')}}"
+                  href="{{ path('app_admin') }}"
                   aria-expanded="false"
                 >
                   <span>
@@ -66,10 +65,7 @@
                   <span class="hide-menu">Dashboard</span>
                 </a>
               </li>
-              <li class="nav-small-cap">
-                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                <span class="hide-menu">UI COMPONENTS</span>
-              </li>
+
               <li class="sidebar-item">
                 <a
                   class="sidebar-link"
@@ -79,7 +75,7 @@
                   <span>
                     <i class="ti ti-article"></i>
                   </span>
-                  <span class="hide-menu">Buttons</span>
+                  <span class="hide-menu">User Management</span>
                 </a>
               </li>
               <li class="sidebar-item">
@@ -222,7 +218,6 @@
               <ul
                 class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
               >
-               
                 <li class="nav-item dropdown">
                   <a
                     class="nav-link nav-icon-hover"
@@ -232,7 +227,7 @@
                     aria-expanded="false"
                   >
                     <img
-                      src="back/assets/images/profile/user-1.jpg"
+                      src="../back/assets/images/profile/user-1.jpg"
                       alt=""
                       width="35"
                       height="35"
@@ -676,7 +671,7 @@
                 <div class="position-relative">
                   <a href="javascript:void(0)"
                     ><img
-                      src="back/assets/images/products/s4.jpg"
+                      src="../back/assets/images/products/s4.jpg"
                       class="card-img-top rounded-0"
                       alt="..."
                   /></a>
@@ -736,7 +731,7 @@
                 <div class="position-relative">
                   <a href="javascript:void(0)"
                     ><img
-                      src="back/assets/images/products/s5.jpg"
+                      src="../back/assets/images/products/s5.jpg"
                       class="card-img-top rounded-0"
                       alt="..."
                   /></a>
@@ -796,7 +791,7 @@
                 <div class="position-relative">
                   <a href="javascript:void(0)"
                     ><img
-                      src="back/assets/images/products/s7.jpg"
+                      src="../back/assets/images/products/s7.jpg"
                       class="card-img-top rounded-0"
                       alt="..."
                   /></a>
@@ -856,7 +851,7 @@
                 <div class="position-relative">
                   <a href="javascript:void(0)"
                     ><img
-                      src="back/assets/images/products/s11.jpg"
+                      src="../back/assets/images/products/s11.jpg"
                       class="card-img-top rounded-0"
                       alt="..."
                   /></a>
@@ -927,16 +922,13 @@
         </div>
       </div>
     </div>
-    {% endblock %}
-
-    {% block javascript %}
-    {% endblock %}
-    <script src="back/assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="back/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="back/assets/js/sidebarmenu.js"></script>
-    <script src="back/assets/js/app.min.js"></script>
-    <script src="back/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="back/assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="back/assets/js/dashboard.js"></script>
+    {% endblock %} {% block javascript %} {% endblock %}
+    <script src="../back/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../back/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../back/assets/js/sidebarmenu.js"></script>
+    <script src="../back/assets/js/app.min.js"></script>
+    <script src="../back/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../back/assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="../back/assets/js/dashboard.js"></script>
   </body>
 </html>

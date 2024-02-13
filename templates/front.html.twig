@@ -54,10 +54,14 @@
     <link rel="stylesheet" href="{{ asset('front/css/normalize.css') }}" />
     <link rel="stylesheet" href="{{ asset('front/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('front/css/responsive.css') }}" />
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     {% block stylesheet %} {% endblock %}
   </head>
   <body>
+
     <!-- Preloader -->
     <div class="preloader">
       <div class="loader">
@@ -87,7 +91,7 @@
               <div class="col-lg-3 col-md-3 col-12">
                 <!-- Start Logo -->
                 <div class="logo">
-                  <a href="{{ path('app_home')}}"
+                  <a href="{{ path('app_home') }}"
                     ><img src="front/img/logo-row.png" alt="logo"
                   /></a>
                 </div>
