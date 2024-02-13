@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<title>CompteRendu index</title>
+
+{% block body %}
+    <h1>CompteRendu index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>InterpretationMed</th>
+                <th>Date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for compte_rendu in compte_rendus %}
+            <tr>
+                <td>{{ compte_rendu.id }}</td>
+                <td>{{ compte_rendu.interpretationMed }}</td>
+                <td>{{ compte_rendu.date ? compte_rendu.date|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_compte_rendu_show', {'id': compte_rendu.id}) }}">show</a>
+                    <a href="{{ path('app_compte_rendu_edit', {'id': compte_rendu.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_compte_rendu_new') }}">Create new</a>
+{% endblock %}

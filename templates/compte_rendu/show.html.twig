@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<title>CompteRendu</title>
+
+{% block body %}
+    <h1>CompteRendu</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ compte_rendu.id }}</td>
+            </tr>
+            <tr>
+                <th>InterpretationMed</th>
+                <td>{{ compte_rendu.interpretationMed }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ compte_rendu.date ? compte_rendu.date|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_compte_rendu_index') }}">back to list</a>
+
+    <a href="{{ path('app_compte_rendu_edit', {'id': compte_rendu.id}) }}">edit</a>
+
+    {{ include('compte_rendu/_delete_form.html.twig') }}
+{% endblock %}

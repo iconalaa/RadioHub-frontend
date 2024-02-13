@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit Radiologist</title>
+
+{% block body %}
+    <h1>Edit Radiologist</h1>
+
+    {{ include('radiologist/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_radiologist_index') }}">back to list</a>
+
+    {{ include('radiologist/_delete_form.html.twig') }}
+{% endblock %}
