@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>InterpretationMed</th>
                 <th>Date</th>
+                <th>Interpretation_rad</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td>{{ compte_rendu.id }}</td>
                 <td>{{ compte_rendu.interpretationMed }}</td>
                 <td>{{ compte_rendu.date ? compte_rendu.date|date('Y-m-d') : '' }}</td>
+                <td>{{ compte_rendu.interpretationRad }}</td>
                 <td>
                     <a href="{{ path('app_compte_rendu_show', {'id': compte_rendu.id}) }}">show</a>
                     <a href="{{ path('app_compte_rendu_edit', {'id': compte_rendu.id}) }}">edit</a>
@@ -27,7 +29,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

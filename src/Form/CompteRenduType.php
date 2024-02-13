@@ -14,6 +14,7 @@ class CompteRenduType extends AbstractType
         $builder
             ->add('interpretationMed')
             ->add('date')
+            ->add('interpretation_rad')
             ->add('id_medecin')
             ->add('id_image')
         ;

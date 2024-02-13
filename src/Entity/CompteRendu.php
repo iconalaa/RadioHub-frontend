@@ -26,6 +26,9 @@ class CompteRendu
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Images $id_image = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $interpretation_rad = null;
+
     
 
     public function getId(): ?int
@@ -84,6 +87,18 @@ class CompteRendu
     public function __toString()
     {
         return $this->id_image;
+    }
+
+    public function getInterpretationRad(): ?string
+    {
+        return $this->interpretation_rad;
+    }
+
+    public function setInterpretationRad(?string $interpretation_rad): static
+    {
+        $this->interpretation_rad = $interpretation_rad;
+
+        return $this;
     }
 
   

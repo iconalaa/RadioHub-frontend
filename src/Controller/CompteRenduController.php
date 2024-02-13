@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/compterendu')]
+#[Route('/compte/rendu')]
 class CompteRenduController extends AbstractController
 {
     #[Route('/', name: 'app_compte_rendu_index', methods: ['GET'])]
