@@ -11,9 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/compte/rendu')]
+#[Route('/rendu')]
 class CompteRenduController extends AbstractController
 {
+    
+
     #[Route('/', name: 'app_compte_rendu_index', methods: ['GET'])]
     public function index(CompteRenduRepository $compteRenduRepository): Response
     {
@@ -71,7 +73,7 @@ class CompteRenduController extends AbstractController
     #[Route('/{id}', name: 'app_compte_rendu_delete', methods: ['POST'])]
     public function delete(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$compteRendu->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $compteRendu->getId(), $request->request->get('_token'))) {
             $entityManager->remove($compteRendu);
             $entityManager->flush();
         }
