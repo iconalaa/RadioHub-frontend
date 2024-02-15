@@ -1,0 +1,50 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %} My Another Page {% endblock %}
+
+{% block header %}
+    <!-- You can override the header block if needed -->
+    {{ parent() }} <!-- This includes the content of the parent block (base template's header) -->
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center mt-5"> <!-- Center the form -->
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <!-- Form content -->
+            {{ form_start(form) }}
+
+            <div class="form-group">
+                <!-- Render the 'interpretation_rad' field -->
+                <label for="{{ form.interpretation_rad.vars.id }}" class="custom-label">Interprétation médicale:</label>
+                {{ form_widget(form.interpretation_rad, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+            
+
+            <div class="form-row">
+                <!-- Render the 'id_medecin' field -->
+                <div class="form-group col-md-6">
+                    <label for="{{ form.id_medecin.vars.id }}" class="custom-label">Medecin:</label>
+                    {{ form_widget(form.id_medecin, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <!-- Render the 'id_image' field -->
+                <div class="form-group col-md-6">
+                    <label for="{{ form.id_image.vars.id }}" class="custom-label">Image:</label>
+                    {{ form_widget(form.id_image, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- Render the submit button -->
+                <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+            </div>
+
+            {{ form_end(form) }}
+            <!-- End Form content -->
+        </div>
+    </div>
+</div>
+{% endblock %}

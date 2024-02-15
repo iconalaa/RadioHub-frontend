@@ -21,6 +21,24 @@ class ImagesRepository extends ServiceEntityRepository
         parent::__construct($registry, Images::class);
     }
 
+
+
+    public function findImagesWithoutCompteRendu()
+{
+    return $this->createQueryBuilder('i')
+        ->leftJoin('App\Entity\CompteRendu', 'cr', 'WITH', 'i.id = cr.id_image')
+        ->where('cr.id_image IS NULL')
+        ->getQuery()
+        ->getResult();
+}
+
+
+    
+    
+
+
+
+    
 //    /**
 //     * @return Images[] Returns an array of Images objects
 //     */

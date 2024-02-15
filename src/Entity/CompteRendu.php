@@ -14,11 +14,13 @@ class CompteRendu
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255 , nullable: true) ]
     private ?string $interpretationMed = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'compteRendus')]
     private ?Medecin $id_medecin = null;

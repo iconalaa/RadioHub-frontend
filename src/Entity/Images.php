@@ -29,6 +29,9 @@ class Images
     private ?Patient $patient = null;
 
     
+
+
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -95,7 +98,7 @@ class Images
     }
     public function __toString()
     {
-        return $this->radiologist;
+        return $this->patient;
     }
 
     

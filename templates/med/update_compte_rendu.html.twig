@@ -1,0 +1,43 @@
+{% block title %}Ajouter Interprétation{% endblock %}
+
+{% block stylesheets %}
+    {# Include Bootstrap CSS #}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    {# Include jQuery UI Datepicker CSS #}
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mt-5">Ajouter Interprétation</h1>
+
+        <form method="post" class="mt-4">
+            {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.interpretationMed, 'Interprétation du médecin') }}
+                {{ form_widget(form.interpretationMed, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.date, 'Date') }}
+                {{ form_widget(form.date, {'attr': {'class': 'form-control datepicker', 'autocomplete': 'off'}}) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            {{ form_end(form) }}
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {# Include jQuery and jQuery UI Datepicker JavaScript #}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    {# Initialize the Datepicker #}
+    <script>
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
+        });
+    </script>
+{% endblock %}
