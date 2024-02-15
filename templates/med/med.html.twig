@@ -3,19 +3,21 @@
 {% block title %} MED {% endblock %}
 
 {% block header %}
-    <!-- You can override the header block if needed -->
-    {{ parent() }} <!-- This includes the content of the parent block (base template's header) -->
+    {{ parent() }}
 {% endblock %}
 
 {% block body %}
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
         <div style="width: 50%; text-align: center;">
-            <h2 style="margin-bottom: 20px;">Compte Rendus affecte a : </h2>
-            {% for compteRendu in compteRendus %}
+        {% for doctor in medname %}
+                <h2 style="margin-bottom: 20px;">Liste D'attente Des Rendus Du Docteur: {{ doctor.username }}</h2>
+            {% endfor %}
+        {% for compteRendu in compteRendus %}
                 <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-                    <p>Date : {{ compteRendu.date |date('d-m-Y') }}</p>
-                    <p>Interprétation du médecin : {{ compteRendu.interpretationMed }}</p>
-                    <a href="{{ path('add_interprétation', {'id': compteRendu.id}) }}">Ajouter interprétation</a>
+                
+                    <p>Radiologist: {{ compteRendu.idImage.radiologist.username }}</p>
+                    <p>Patient: {{ compteRendu.idImage.patient.username }}</p>
+                    <a href="{{ path('add_interprétation', {'id': compteRendu.id}) }}" style="display: inline-block; background-color: #007bff; color: #fff; padding: 8px 16px; text-decoration: none; border-radius: 4px;">Ajouter interprétation</a>
                 </div>
             {% endfor %}
         </div>

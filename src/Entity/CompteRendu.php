@@ -31,6 +31,9 @@ class CompteRendu
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $interpretation_rad = null;
 
+    #[ORM\Column]
+    private ?bool $isEdited = false;
+
     
 
     public function getId(): ?int
@@ -99,6 +102,18 @@ class CompteRendu
     public function setInterpretationRad(?string $interpretation_rad): static
     {
         $this->interpretation_rad = $interpretation_rad;
+
+        return $this;
+    }
+
+    public function getIsEdited(): ?bool
+    {
+        return $this->isEdited;
+    }
+
+    public function setIsEdited(bool $isEdited): self
+    {
+        $this->isEdited = $isEdited;
 
         return $this;
     }

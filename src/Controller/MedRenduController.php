@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\CompteRendu;
+use App\Entity\Medecin;
+use App\Repository\MedecinRepository;
+
 use App\Form\CompteRenduType1;
 use App\Repository\CompteRenduRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,8 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
-
-
 
 class MedRenduController extends AbstractController
 {
@@ -22,10 +23,11 @@ class MedRenduController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $compteRendu->setIsEdited(true); // Mark the compte rendu as edited
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_med');
+            // Redirect back to the 'app_med' route with the updated compte rendu ID
+            return $this->redirectToRoute('app_med', ['updated_id' => $compteRendu->getId()]);
         }
 
         return $this->render('med/update_compte_rendu.html.twig', [
@@ -34,27 +36,28 @@ class MedRenduController extends AbstractController
     }
 
     #[Route('/med', name: 'app_med', methods: ['GET'])]
-    public function index(CompteRenduRepository $rendurepo) : Response
+    public function index(CompteRenduRepository $rendurepo, Request $request,MedecinRepository $repomed): Response
     {
+        // Retrieve the updated compte rendu ID from the request parameters
+        $updatedId = $request->query->get('updated_id');
 
+        $id = 1; // Assuming this is the ID of the logged-in medecin
 
-        $id=1;
+        // Retrieve the list of compte rendus for the logged-in medecin
+        $compteRendus = $rendurepo->findBy(['id_medecin' => $id, 'isEdited' => false]);
+        $med= $repomed->findBy(['id' => $id]);
 
-        $compteRendus=$rendurepo->findBy(['id_medecin' => $id]);
-
+        // Filter out the updated compte rendu from the list if it exists
+        if ($updatedId !== null) {
+            $compteRendus = array_filter($compteRendus, function ($compteRendu) use ($updatedId) {
+                return $compteRendu->getId() != $updatedId;
+            });
+        }
 
         return $this->render('med/med.html.twig', [
             'compteRendus' => $compteRendus,
+            'medname' => $med,
+            
         ]);
     }
-
-
-
-    
-    
-
-
-    
-
-
 }

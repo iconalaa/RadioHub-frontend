@@ -1,17 +1,28 @@
-{% block title %}Ajouter Interprétation{% endblock %}
+
 
 {% block stylesheets %}
     {# Include Bootstrap CSS #}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     {# Include jQuery UI Datepicker CSS #}
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        /* Ajouter des styles CSS personnalisés ici si nécessaire */
+        .custom-form {
+            margin: 0 auto; /* Centrer le formulaire */
+            max-width: 400px; /* Largeur maximale du formulaire */
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%; /* Définir la largeur des champs de formulaire à 100% */
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1 class="mt-5">Ajouter Interprétation</h1>
+        <h2 class="text-center mt-5 mb-4">Ajouter Interprétation</h2>
 
-        <form method="post" class="mt-4">
+        <form method="post" class="mt-4 custom-form">
             {{ form_start(form) }}
             <div class="form-group">
                 {{ form_label(form.interpretationMed, 'Interprétation du médecin') }}
@@ -19,7 +30,7 @@
             </div>
             <div class="form-group">
                 {{ form_label(form.date, 'Date') }}
-                {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                {{ form_widget(form.date )}}
             </div>
             <button type="submit" class="btn btn-primary">Enregistrer</button>
             {{ form_end(form) }}
