@@ -1,8 +1,26 @@
-{% extends 'front.html.twig' %}
- 
-{% block title %}RadioHub | Log in{% endblock
- %}
-{% block body %}
+{% extends 'front.html.twig' %} {% block title %}RadioHub | Log in{% endblock %}
+{% block body %} {% if app.user %}
+<center>
+  <div class="my-5">
+    <h1 class="display-5 mb-5">
+      You are logged in as <b> {{ app.user.name }}</b
+      ><br />
+      😲
+    </h1>
+
+    <a
+      style="
+        text-decoration: underline;
+        color: rgb(50, 50, 241);
+        font-weight: 900;
+      "
+      href="{{ path('app_home') }}"
+      >Go Back to HomePage</a
+    >
+  </div>
+</center>
+
+{% else %}
 <center>
   <h1 class="display-5 mt-5">🌟 Welcome Back 🌟</h1>
 </center>
@@ -17,6 +35,7 @@
       value="{{ last_username }}"
       placeholder="exp@gmail.com"
     />
+    <p class="error text-danger mt-2"></p>
   </div>
   <div class="mb-3">
     <label for="password">Password:</label>
@@ -31,13 +50,12 @@
 
   {# If you want to control the URL the user is redirected to on success
   <input type="hidden" name="_target_path" value="/account" /> #} {% if error %}
-
-  <div class="alert alert-danger">
-    {{ error.messageKey|trans(error.messageData, 'security') }}
-  </div>
+  <div class="alert alert-danger">Password Doesn't Match</div>
   {% endif %}
   <center>
     <button class="btn btn-primary w-25" type="submit">login</button>
   </center>
 </form>
+{% endif %} {% endblock %} {% block javascripts %}
+<script src="../front/js/custom.js"></script>
 {% endblock %}

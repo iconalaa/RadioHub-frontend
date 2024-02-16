@@ -19,6 +19,8 @@ security:
         login_path: app_login
         check_path: app_login
         default_target_path: app_home
+        success_handler: 
+
       logout:
         path: app_logout
         target: app_home

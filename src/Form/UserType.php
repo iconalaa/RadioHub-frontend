@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\User;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,7 +43,9 @@ class UserType extends AbstractType
             ->add('lastname', null, [
                 'attr' => ['placeholder' => 'Last Name'],
             ])
-            ->add('date_birth')
+            ->add('date_birth', DateType::class, [
+                'years' => range(date('Y') - 100, date('Y')),
+            ])
             ->add('gender', ChoiceType::class, [
                 'choices' => [
                     'Male' => 'male',

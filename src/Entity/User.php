@@ -6,8 +6,10 @@ use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -19,6 +21,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: "you should write your Email")]
+    #[Assert\Email(message: "This Email {{ value }} is not a valid Email")]
+
     private ?string $email = null;
 
     #[ORM\Column]
@@ -31,15 +36,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Write your Name")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Write your Last Name")]
     private ?string $lastname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_birth = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Select a Gender")]
     private ?string $gender = null;
 
     public function getId(): ?int
@@ -88,7 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return array_unique($roles);
     }
-    
+
 
     public function setRoles(array $roles): static
     {
@@ -96,7 +104,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-  
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -178,5 +186,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->gender = $gender;
 
         return $this;
+    }
+    function __toString()
+    {
+        return $this->getEmail();
     }
 }

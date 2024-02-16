@@ -1,39 +1,127 @@
 {% extends 'front.html.twig' %} {% block title %}RadioHub | Sign up{% endblock
 %} {% block body %}
 <center>
-  <h1 class="display-5 mt-5">
-    Welcome to Radio<span
-      style="
-        background-color: #007bff;
-        color: white;
-        padding: 0 10px;
-        border-radius: 8px;
-      "
-      >Hub</span
-    >
-  </h1>
+  <h1 class="display-5">Sign Up as</h1>
 </center>
+<style>
+  ul li {
+    color: rgba(255, 0, 0, 0.8);
+  }
+  .list li {
+    color: #222 !important;
+  }
+  .sign-up-cards {
+    display: flex;
+    justify-content: center;
+
+    gap: 3rem;
+    width: 80%;
+    margin: 0 auto;
+  }
+  .sign-card {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    background-color: #d9d9d9;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: 0.2s;
+    width: 320px;
+    height: 300px;
+  }
+  .sign-card:hover {
+    transform: scale(1.05);
+  }
+  .sign-card h1 {
+    color: black;
+    font-size: 30px;
+  }
+  .sign-card p {
+    color: brgba(0, 0, 0, 0.8);
+  }
+  img:not(#logo) {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+  }
+</style>
+
+<div class="sign-up-cards my-5">
+  {# <a href="{{ path('app_register_patient') }}"> #}
+  <a>
+    <div class="sign-card">
+      <img src="../../front/img/patient-card-img.png" alt="" />
+      <h1>Patient</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum, doloremque
+        nemo deserunt a reprehenderit libero.
+      </p>
+    </div>
+  </a>
+  {# <a href="{{ path('app_register_doctor') }}"> #}
+  <a>
+    <div class="sign-card">
+      <img src="../../front/img/doctor-card-img.png" alt="" />
+      <h1>Doctor</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum, doloremque
+        nemo deserunt a reprehenderit libero.
+      </p>
+    </div>
+  </a>
+  {# <a href="{{ path('app_register_radiologist') }}"> #}
+  <a>
+    <div class="sign-card">
+      <img src="../../front/img/radiologist-card-img.png" alt="" />
+      <h1>Radiologist</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum, doloremque
+        nemo deserunt a reprehenderit libero.
+      </p>
+    </div>
+  </a>
+</div>
+
+<!-- ! ------------------------------------- -->
 {{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-5'}} )}}
 <div class="d-flex flex-column w-50 mx-auto gap-3">
   <div class="d-flex gap-3">
-    {{ form_widget(form.name,{'attr':{'class':'form-control px-3 py-2'}}) }}
-    {{ form_widget(form.lastname,{'attr':{'class':'form-control px-3 py-2'}}) }}
-  </div>
-  <div class="d-flex gap-3">
-    {{ form_widget(form.email,{'attr':{'class':'form-control px-3 py-2'}}) }}
-    {{ form_widget(form.plainPassword,{'attr':{'class':'form-control px-3 py-2'
+    <div class="d-flex flex-column w-50">
+      {{ form_widget(form.name,{'attr':{'class':'form-control px-3 py-2'}}) }}
 
-    }}) }}
+      {{ form_errors(form.name) }}
+    </div>
+    <div class="d-flex flex-column w-50">
+      {{ form_widget(form.lastname,{'attr':{'class':'form-control px-3 py-2'}})
+      }} {{ form_errors(form.lastname) }}
+    </div>
   </div>
   <div class="d-flex gap-3">
-    {{ form_widget(form.gender,{'attr':{'class':''}}) }}
+    <div class="d-flex flex-column w-50">
+      {{ form_widget(form.email,{'attr':{'class':'form-control px-3 py-2'}}) }}
+      {{ form_errors(form.email) }}
+    </div>
+    <div class="d-flex flex-column w-50">
+      {{ form_widget(form.plainPassword,{'attr':{'class':'form-control px-3 py-2'
+      }}) }}
+      {{ form_errors(form.plainPassword) }}
+    </div>
+  </div>
+  <div class="d-flex gap-3">
+    <div class="d-flex flex-column">
+      {{ form_widget(form.gender) }}
+      {{ form_errors(form.gender) }}
+    </div>
+
     {{ form_widget(form.date_birth,{'attr':{'class':'d-flex gap-1 justify-content-center'
-
     }}) }}
   </div>
-
   {{ form_widget(form.SignUp,{'attr':{'class':'btn btn-primary w-25 mx-auto'}})
   }}
 </div>
 {{ form_end(form) }}
+
 {% endblock %}

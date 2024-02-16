@@ -2,28 +2,31 @@
 
 namespace App\Controller;
 
+use App\Entity\Doctor;
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Form\DoctorType;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route('/register')]
 class RegistrationController extends AbstractController
 {
     private $tokenStorage;
-
     public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
     }
-    #[Route('/register', name: 'app_register')]
+
+    #[Route('/', name: 'app_register', methods: ['GET','POST'])]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
 
@@ -39,15 +42,11 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            
-
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
-
             $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
             $this->tokenStorage->setToken($token);
-
             return $this->redirectToRoute('app_home');
         }
 
@@ -55,4 +54,6 @@ class RegistrationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+   
 }
