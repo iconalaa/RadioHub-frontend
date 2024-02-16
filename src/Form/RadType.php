@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RadType extends AbstractType
 {
@@ -21,8 +22,18 @@ class RadType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('interpretation_rad')
-            ->add('id_medecin')
+            ->add('interpretation_rad', null, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Please provide interpretation for radiologist']),
+                ],
+                'invalid_message' => 'Custom error message for interpretation_rad field',
+            ])
+            ->add('id_medecin', null, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Attribuer un médecin']),
+                ],
+                'invalid_message' => 'Custom error message for interpretation_rad field',
+            ])
             ->add('id_image', EntityType::class, [
                 'class' => 'App\Entity\Images',
                 'choices' => $this->imagesRepository->findImagesWithoutCompteRendu(),
@@ -31,6 +42,10 @@ class RadType extends AbstractType
                 },
                 'attr' => ['class' => 'form-control'],
                 'placeholder' => '', // Set the placeholder to an empty string
+                'constraints' => [
+                    new NotBlank(['message' => 'Attribuer une image au patient']),
+                ],
+                'invalid_message' => 'Custom error message for interpretation_rad field',
             ]);
     }
 

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240215162059 extends AbstractMigration
+final class Version20240216212017 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20240215162059 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE compte_rendu (id INT AUTO_INCREMENT NOT NULL, id_medecin_id INT DEFAULT NULL, id_image_id INT DEFAULT NULL, interpretation_med VARCHAR(255) DEFAULT NULL, date DATE DEFAULT NULL, interpretation_rad VARCHAR(255) DEFAULT NULL, INDEX IDX_D39E69D2A1799A53 (id_medecin_id), UNIQUE INDEX UNIQ_D39E69D26D7EC9F8 (id_image_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE compte_rendu (id INT AUTO_INCREMENT NOT NULL, id_medecin_id INT DEFAULT NULL, id_image_id INT DEFAULT NULL, interpretation_med VARCHAR(255) DEFAULT NULL, date DATE DEFAULT NULL, interpretation_rad VARCHAR(255) DEFAULT NULL, is_edited TINYINT(1) NOT NULL, INDEX IDX_D39E69D2A1799A53 (id_medecin_id), UNIQUE INDEX UNIQ_D39E69D26D7EC9F8 (id_image_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE images (id INT AUTO_INCREMENT NOT NULL, radiologist_id INT DEFAULT NULL, patient_id INT DEFAULT NULL, path VARCHAR(255) NOT NULL, owner VARCHAR(255) NOT NULL, guest VARCHAR(255) NOT NULL, INDEX IDX_E01FBE6A38A7F06B (radiologist_id), INDEX IDX_E01FBE6A6B899279 (patient_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE medecin (id INT AUTO_INCREMENT NOT NULL, matricule VARCHAR(15) NOT NULL, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE ordonnance (id INT AUTO_INCREMENT NOT NULL, compterendu_id INT DEFAULT NULL, contenu VARCHAR(255) NOT NULL, date DATE NOT NULL, UNIQUE INDEX UNIQ_924B326C55B04C6 (compterendu_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

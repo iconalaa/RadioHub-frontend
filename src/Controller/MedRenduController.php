@@ -45,6 +45,7 @@ class MedRenduController extends AbstractController
 
         // Retrieve the list of compte rendus for the logged-in medecin
         $compteRendus = $rendurepo->findBy(['id_medecin' => $id, 'isEdited' => false]);
+        $compteRendusdone  = $rendurepo->findBy(['id_medecin' => $id, 'isEdited' => True]);
         $med= $repomed->findBy(['id' => $id]);
 
         // Filter out the updated compte rendu from the list if it exists
@@ -57,6 +58,8 @@ class MedRenduController extends AbstractController
         return $this->render('med/med.html.twig', [
             'compteRendus' => $compteRendus,
             'medname' => $med,
+            'done' =>$compteRendusdone,
+
             
         ]);
     }
