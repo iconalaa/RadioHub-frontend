@@ -136,37 +136,18 @@
                 <!-- Main Menu -->
                 <div class="main-menu">
                   <nav class="navigation">
-                    {% block links%}
                     <ul class="nav menu">
-                      <li class="active">
-                        <a href="#"
-                          >Home <i class="icofont-rounded-down"></i
-                        ></a>
-                        <ul class="dropdown">
-                          <li><a href="index.html">Home Page 1</a></li>
-                        </ul>
-                      </li>
-                      <li><a href="#">Doctos </a></li>
-                      <li><a href="#">Services </a></li>
+                      {% block links%}
                       <li>
-                        <a href="#"
-                          >Pages <i class="icofont-rounded-down"></i
-                        ></a>
-                        <ul class="dropdown">
-                          <li><a href="404.html">404 Error</a></li>
-                        </ul>
+                        <a href="{{ path('app_home') }}">Home</a>
                       </li>
-                      <li>
-                        <a href="#"
-                          >Blogs <i class="icofont-rounded-down"></i
-                        ></a>
-                        <ul class="dropdown">
-                          <li><a href="blog-single.html">Blog Details</a></li>
-                        </ul>
-                      </li>
-                      <li><a href="contact.html">Contact Us</a></li>
+                      <li><a href="#">Doctors </a></li>
+                      <li><a href="#">Reclamation </a></li>
+                      <li><a href="#">Dons </a></li>
+                      <li><a href="#">Blog </a></li>
+                      <li><a href="#">Contact Us</a></li>
+                      {% endblock %}
                     </ul>
-                    {% endblock %}
                   </nav>
                 </div>
                 <!--/ End Main Menu -->

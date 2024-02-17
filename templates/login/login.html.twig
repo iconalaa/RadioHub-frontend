@@ -1,5 +1,5 @@
 {% extends 'front.html.twig' %} {% block title %}RadioHub | Log in{% endblock %}
-{% block body %} {% if app.user %}
+{% block body %} {% if is_granted('IS_AUTHENTICATED_FULLY')  %}
 <center>
   <div class="my-5">
     <h1 class="display-5 mb-5">

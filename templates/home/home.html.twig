@@ -1,7 +1,16 @@
-{% extends 'front.html.twig' %} {% block auth %} {% block stylesheet %}
+{% extends 'front.html.twig' %} {% block stylesheet %}
 <link rel="stylesheet" href="front/css/custom.css" />
+{% endblock %} {% block links %}
+<li class="active">
+  <a href="{{ path('app_home') }}">Home</a>
+</li>
+<li><a href="#">Doctors </a></li>
+<li><a href="#">Reclamation </a></li>
+<li><a href="#">Dons </a></li>
+<li><a href="#">Blog </a></li>
+<li><a href="#">Contact Us</a></li>
 
-{% endblock %} {% if app.user %}
+{% endblock %} {% block auth %} {% if app.user %}
 <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
   <ul
     class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
@@ -85,55 +94,9 @@
     </li>
   </ul>
 </div>
+
 {% else %}
 <a href="{{ path('app_register') }}" class="btn">Sign up</a>
 <a href="{{ path('app_login') }}" class="btn ml-3">Log in</a>
-{% endif %} {% endblock %} {% block links %} {% if app.user %}
-<ul class="nav menu">
-  <li class="active">
-    <a href="#">Home <i class="icofont-rounded-down"></i></a>
-    <ul class="dropdown">
-      <li><a href="index.html">Home Page 1</a></li>
-    </ul>
-  </li>
-  <li>
-    <a href="#">Pages <i class="icofont-rounded-down"></i></a>
-    <ul class="dropdown">
-      <li><a href="404.html">404 Error</a></li>
-    </ul>
-  </li>
-  <li>
-    <a href="#">Blogs <i class="icofont-rounded-down"></i></a>
-    <ul class="dropdown">
-      <li><a href="blog-single.html">Blog Details</a></li>
-    </ul>
-  </li>
-  <li><a href="contact.html">Contact Us</a></li>
-</ul>
 
-{% else %}
-
-<ul class="nav menu">
-  <li>
-    <a href="#">Home <i class="icofont-rounded-down"></i></a>
-    <ul class="dropdown">
-      <li><a href="index.html">Home Page 1</a></li>
-    </ul>
-  </li>
-  <li><a href="{{ path('app_home') }}">Doctors </a></li>
-  <li><a href="#">Services </a></li>
-  <li>
-    <a href="#">Pages <i class="icofont-rounded-down"></i></a>
-    <ul class="dropdown">
-      <li><a href="404.html">404 Error</a></li>
-    </ul>
-  </li>
-  <li>
-    <a href="#">Blogs <i class="icofont-rounded-down"></i></a>
-    <ul class="dropdown">
-      <li><a href="blog-single.html">Blog Details</a></li>
-    </ul>
-  </li>
-  <li><a href="contact.html">Contact Us</a></li>
-</ul>
 {% endif %} {% endblock %}

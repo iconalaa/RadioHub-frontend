@@ -18,17 +18,19 @@
           {{ form_widget(f.lastname,{'attr':{'class':'form-control px-3 py-2'
 
 
+
           }}) }}
           {{ form_errors(f.lastname) }}
         </div>
         <div class="d-flex gap-3">
           {{ form_widget(f.email,{'attr':{'class':'form-control px-3 py-2'}}) }}
           {{ form_errors(f.email) }}
-          {{ form_widget(f.plainPassword,{'attr':{'class':'form-control px-3 py-2'
+          {{ form_widget(f.password,{'attr':{'class':'form-control px-3 py-2'
+
 
 
           }}) }}
-          {{ form_errors(f.plainPassword) }}
+          {{ form_errors(f.password) }}
         </div>
         <div class="d-flex gap-3">
           {{ form_widget(f.gender) }}
@@ -36,12 +38,9 @@
           {{ form_widget(f.date_birth,{'attr':{'class':'d-flex gap-1 justify-content-center'
 
 
+
           }}) }}
         </div>
-        {{ form_widget(f.SignUp,{'label':'Update User','attr':{'class':'btn btn-primary w-25 mx-auto'
-
-
-        }}) }}
       </div>
       {{ form_end(f) }}
     </div>

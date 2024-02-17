@@ -102,6 +102,6 @@ class AdminController extends AbstractController
 
         $em->remove($dataid);
         $em->flush();
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_login');
     }
 }
