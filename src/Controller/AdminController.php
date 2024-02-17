@@ -19,10 +19,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
+#[Route('/admin')]
 class AdminController extends AbstractController
 {
-    #[Route('/admin', name: 'app_admin')]
-    public function index(UserRepository $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+
+    #[Route('/', name: 'app_admin', methods: ['GET', 'POST'])]
+    public function admin(UserRepository $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+      
+        return $this->render('admin/admin.html.twig', [
+            
+        ]);
+    }
+    #[Route('/user', name: 'app_admin_user', methods: ['GET', 'POST'])]
+    public function userDashboard(UserRepository $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $addUser = new User();
         $form = $this->createForm(UserType::class, $addUser);
