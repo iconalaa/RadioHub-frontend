@@ -1,5 +1,5 @@
 {% extends 'front.html.twig' %} {% block title %}RadioHub | Log in{% endblock %}
-{% block body %} {% if is_granted('IS_AUTHENTICATED_FULLY')  %}
+{% block body %} {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 <center>
   <div class="my-5">
     <h1 class="display-5 mb-5">
@@ -21,9 +21,6 @@
 </center>
 
 {% else %}
-<center>
-  <h1 class="display-5 mt-5">🌟 Welcome Back 🌟</h1>
-</center>
 <form class="w-50 mx-auto my-5" action="{{ path('app_login') }}" method="post">
   <div class="mb-3">
     <label for="username">Email:</label>
