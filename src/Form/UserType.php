@@ -22,20 +22,9 @@ class UserType extends AbstractType
             ->add('email', null, [
                 'attr' => ['placeholder' => 'Email@exemp.exp'],
             ])
-            // ->add('roles')
-            ->add('plainPassword', PasswordType::class, [
+            ->add('password', PasswordType::class, [
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password', 'placeholder' => 'Password'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 3,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        'max' => 4096,
-                    ]),
-                ],
             ])
             ->add('name', null, [
                 'attr' => ['placeholder' => 'Name'],
@@ -52,8 +41,7 @@ class UserType extends AbstractType
                     'Female' => 'female',
                 ],
                 'placeholder' => 'Gender',
-            ])
-            ->add('SignUp', SubmitType::class);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

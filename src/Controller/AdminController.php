@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\DoctorRepository;
+use App\Repository\PatientRepository;
+use App\Repository\RadiologistRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class AdminController extends AbstractController
 {
@@ -70,13 +74,34 @@ class AdminController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('app_admin');
     }
-    #[Route('/delete/{id}', name: 'app_delete_user_profile')]
-    public function deleteUserProfile($id, ManagerRegistry $managerRegistry, UserRepository $user): Response
+
+    #[Route('/profile/delete/{id}', name: 'app_delete_user_profile')]
+    public function deleteUserProfile($id, ManagerRegistry $managerRegistry, AuthorizationCheckerInterface $authChecker, UserRepository $user, DoctorRepository $doctor, PatientRepository $patient, RadiologistRepository $radiologist): Response
     {
         $em = $managerRegistry->getManager();
         $dataid = $user->find($id);
+
+        if ($authChecker->isGranted('ROLE_DOCTOR')) {
+            $doctorId = $doctor->findDoctorByUser($id);
+            if ($doctorId !== null) {
+                $em->remove($doctorId);
+            }
+        }
+        if ($authChecker->isGranted('ROLE_PATIENT')) {
+            $patientId = $patient->findPatientByUser($id);
+            if ($patientId !== null) {
+                $em->remove($patientId);
+            }
+        }
+        if ($authChecker->isGranted('ROLE_RADIOLOGIST')) {
+            $radiologistId = $radiologist->findradiologistByUser($id);
+            if ($radiologistId !== null) {
+                $em->remove($radiologistId);
+            }
+        }
+
         $em->remove($dataid);
         $em->flush();
-        return $this->redirectToRoute('app_logout');
+        return $this->redirectToRoute('app_home');
     }
 }

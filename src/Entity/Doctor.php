@@ -15,7 +15,7 @@ class Doctor
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "you should write Maatricule Code")]
+    #[Assert\NotBlank(message: "you should write your doctor Matricule !")]
     private ?string $matricule = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'], orphanRemoval:true)]
