@@ -1,0 +1,49 @@
+{% extends 'front.html.twig' %} {% block title %}RadioHub | Profile{% endblock
+%} {% block body %}
+<style>
+  #delete {
+    padding: 0.5rem 1.5rem;
+    background-color: #ce3134;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(128, 128, 128, 0.644);
+  }
+  #profile {
+    width: 200px;
+    border-radius: 50%;
+    box-shadow: -5px 5px 10px;
+  }
+</style>
+<div class="d-flex w-75 mx-auto align-items-center gap-5 my-5">
+  <img id="profile" class="img-fluid" src="contact.png" alt="img" />
+  <div class="d-flex gap-5">
+    <div class="d-flex flex-column gap-3">
+      <b>Name</b>
+      <b>Last Name</b>
+      <b>Email</b>
+      <b>Gender</b>
+      <b>Role</b>
+      <a
+        onclick="return confirm('Are you sure you wanna Delete your Account')"
+        id="delete"
+        href="{{ path('app_delete_user_profile', { id: app.user.id }) }}"
+        >Delete Account</a
+      >
+    </div>
+    <div class="d-flex flex-column gap-3">
+      <p>{{ app.user.name }}</p>
+      <p>{{ app.user.lastname }}</p>
+      <p>{{ app.user.email }}</p>
+      <p>{{ app.user.gender }}</p>
+      {% if is_granted("ROLE_DOCTOR") %}
+      <p>DOCTOR</p>
+      {% endif %} {% if is_granted("ROLE_PATIENT") %}
+      <p>Patient</p>
+      {% endif %} {% if is_granted("ROLE_RADIOLOGIST") %}
+      <p>Radiologist</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% block auth %} {% endblock %} {% endblock %}

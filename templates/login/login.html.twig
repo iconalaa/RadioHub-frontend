@@ -1,0 +1,58 @@
+{% extends 'front.html.twig' %} {% block title %}RadioHub | Log in{% endblock %}
+{% block body %} {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+<center>
+  <div class="my-5">
+    <h1 class="display-5 mb-5">
+      You are logged in as <b> {{ app.user.name }}</b
+      ><br />
+      😲
+    </h1>
+
+    <a
+      style="
+        text-decoration: underline;
+        color: rgb(50, 50, 241);
+        font-weight: 900;
+      "
+      href="{{ path('app_home') }}"
+      >Go Back to HomePage</a
+    >
+  </div>
+</center>
+
+{% else %}
+<form class="w-50 mx-auto my-5" action="{{ path('app_login') }}" method="post">
+  <div class="mb-3">
+    <label for="username">Email:</label>
+    <input
+      class="form-control py-2 px-3"
+      type="text"
+      id="username"
+      name="_username"
+      value="{{ last_username }}"
+      placeholder="exp@gmail.com"
+    />
+    <p class="error text-danger mt-2"></p>
+  </div>
+  <div class="mb-3">
+    <label for="password">Password:</label>
+    <input
+      class="form-control py-2 px-3"
+      type="password"
+      id="password"
+      name="_password"
+      placeholder="password"
+    />
+  </div>
+
+  {# If you want to control the URL the user is redirected to on success
+  <input type="hidden" name="_target_path" value="/account" /> #} {% if error %}
+  <div class="alert alert-danger">Password Doesn't Match</div>
+  {% endif %}
+  <center>
+    <button class="btn btn-primary w-25" type="submit">login</button>
+  </center>
+</form>
+{% endif %} {% endblock %} {% block javascripts %}
+<script src="../front/js/custom.js"></script>
+{% endblock %}

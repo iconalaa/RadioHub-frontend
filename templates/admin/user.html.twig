@@ -1,0 +1,213 @@
+{% extends 'back.html.twig' %} {% block body%}
+
+<style>
+  ul li:not(.sidebar-item) {
+    color: rgba(255, 0, 0, 0.8);
+    padding-left: 10px;
+  }
+  .list li {
+    padding-left: 0px;
+    color: #222 !important;
+  }
+  select {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(128, 128, 128, 0.8);
+  }
+</style>
+
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body d-flex justify-content-around gap-5">
+      <a href="{{ path('app_admin_patient') }}" class="btn btn-primary w-50"
+        >Patient</a
+      >
+      <a href="{{ path('app_admin_doctor') }}" class="btn btn-primary w-50"
+        >Doctor</a
+      >
+      <a href="{{ path('app_admin_radiologist') }}" class="btn btn-primary w-50">Radiologist</a>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid py-0">
+  <div class="card">
+    <div class="card-body">
+      <h1 class="text-center mb-5">Add Users</h1>
+      {{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-1'}}
+      )}}
+      <div class="d-flex flex-column w-50 mx-auto gap-3">
+        <div class="d-flex gap-3">
+          <div class="d-flex flex-column w-50">
+            {{ form_widget(form.name,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }})}}
+            {{ form_errors(form.name) }}
+          </div>
+          <div class="d-flex flex-column w-50">
+            {{ form_widget(form.lastname,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }}) }}
+            {{ form_errors(form.lastname) }}
+          </div>
+        </div>
+        <div class="d-flex gap-3">
+          <div class="d-flex flex-column w-50">
+            {{ form_widget(form.email,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }})}}
+            {{ form_errors(form.email) }}
+          </div>
+          <div class="d-flex flex-column w-50">
+            {{ form_widget(form.password,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }}) }}
+            {{ form_errors(form.password) }}
+          </div>
+        </div>
+        <div class="d-flex gap-3">
+          <div class="d-flex flex-column w-25">
+            {{ form_widget(form.gender,{'attr':{'class':'form-select'}}) }}
+            {{ form_errors(form.gender) }}
+          </div>
+          {{ form_widget(form.date_birth,{'attr':{'class':'d-flex gap-1 justify-content-center h-50'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }}) }}
+        </div>
+        <button class="btn btn-primary" type="submit">Add</button>
+      </div>
+      {{ form_end(form) }}
+    </div>
+  </div>
+  <!-- ! ----------------------------------- -->
+  <div class="card">
+    <div class="card-body">
+      <h2 class="text-center">Users Table</h2>
+      <table class="table">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Actions</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.lastname }}</td>
+          <td>{{ user.email }}</td>
+          <td class="d-flex gap-2">
+            <a
+              href="{{ path('app_update_user', { id: user.id }) }}"
+              class="btn btn-success"
+              >Update</a
+            >
+            <a
+              href="{{ path('app_delete_user', { id: user.id }) }}"
+              class="btn btn-danger"
+              >Delete</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
