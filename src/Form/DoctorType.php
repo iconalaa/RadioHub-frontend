@@ -17,7 +17,9 @@ class DoctorType extends AbstractType
                 'attr' => [
                     'placeholder' => "Doctor Matricule",
                 ]
-            ]);
+            ])
+            ->add('user')
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

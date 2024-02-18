@@ -15,7 +15,22 @@
     border: 1px solid rgba(128, 128, 128, 0.8);
   }
 </style>
+
 <div class="container-fluid">
+  <div class="card">
+    <div class="card-body d-flex justify-content-around gap-5">
+      <a href="{{ path('app_admin_patient') }}" class="btn btn-primary w-50"
+        >Patient</a
+      >
+      <a href="{{ path('app_admin_doctor') }}" class="btn btn-primary w-50"
+        >Doctor</a
+      >
+      <a href="{{ path('app_admin_radiologist') }}" class="btn btn-primary w-50">Radiologist</a>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid py-0">
   <div class="card">
     <div class="card-body">
       <h1 class="text-center mb-5">Add Users</h1>
@@ -35,11 +50,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
             }})}}
             {{ form_errors(form.name) }}
           </div>
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.lastname,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -67,11 +102,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
             }})}}
             {{ form_errors(form.email) }}
           </div>
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.password,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -102,8 +157,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
           }}) }}
         </div>
+        <button class="btn btn-primary" type="submit">Add</button>
       </div>
       {{ form_end(form) }}
     </div>
@@ -144,5 +210,4 @@
     </div>
   </div>
 </div>
-
 {% endblock %}

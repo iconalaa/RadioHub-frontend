@@ -1,4 +1,5 @@
-{% extends 'front.html.twig' %} {% block body %}
+{% extends 'front.html.twig' %} {% block title %}RadioHub | Sign{% endblock %}
+{% block body %}
 
 <style>
   ul li {
@@ -30,12 +31,14 @@
         {{ form_widget(form.user.name,{'attr':{'class':'form-control px-3 py-2'
 
 
+
         }}) }}
 
         {{ form_errors(form.user.name) }}
       </div>
       <div class="d-flex flex-column w-50">
         {{ form_widget(form.user.lastname,{'attr':{'class':'form-control px-3 py-2'
+
 
 
 
@@ -58,11 +61,13 @@
 
 
 
+
         }}) }}
         {{ form_errors(form.user.email) }}
       </div>
       <div class="d-flex flex-column w-50">
         {{ form_widget(form.user.password,{'attr':{'class':'form-control px-3 py-2'
+
 
 
 
@@ -85,6 +90,7 @@
 
 
 
+
       }}) }}
       {{ form_errors(form.radiologist.mat_cnom) }}
     </div>
@@ -94,6 +100,7 @@
         {{ form_errors(form.user.gender) }}
       </div>
       {{ form_widget(form.user.date_birth,{'attr':{'class':'d-flex gap-1 justify-content-center'
+
 
 
 

@@ -13,6 +13,7 @@ class RadiologistType extends AbstractType
     {
         $builder
             ->add('mat_cnom',null,['attr'=>['placeholder' => "Mat_cnom"]])
+            ->add('user')
         ;
     }
 

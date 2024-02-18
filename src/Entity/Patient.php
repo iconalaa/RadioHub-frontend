@@ -31,7 +31,7 @@ class Patient
     #[Assert\NotBlank(message: "you should Write your assurance Nubmer")]
     private ?string $num_assurance = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: ['persist'])]
     private ?User $user = null;
 
     public function getId(): ?int

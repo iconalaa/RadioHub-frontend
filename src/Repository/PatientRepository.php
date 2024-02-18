@@ -34,6 +34,20 @@ class PatientRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleResult();
     }
+    public function findPatientEmail($userId): ?string
+    {
+        $result = $this->createQueryBuilder('p')
+            ->select('p.email')
+            ->innerJoin('p.user', 'u')
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $userId)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getOneOrNullResult();
+    
+        return $result['email'] ?? null;
+    }
+    
 
     //    public function findOneBySomeField($value): ?Patient
     //    {
