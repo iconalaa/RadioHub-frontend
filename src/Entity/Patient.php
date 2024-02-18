@@ -18,20 +18,21 @@ class Patient
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "you should tell us your Medical problem")]
     private ?string $cas_med = null;
-    
+
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "you should give CNUM Number")]
     private ?string $n_cnam = null;
-    
+
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "you should Give Your Assurance Info")]
     private ?string $assurance = null;
-    
+
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "you should Write your assurance Nubmer")]
     private ?string $num_assurance = null;
 
     #[ORM\OneToOne(cascade: ['persist'])]
+    #[Assert\NotBlank(message: "you should select the user  ")]
     private ?User $user = null;
 
     public function getId(): ?int

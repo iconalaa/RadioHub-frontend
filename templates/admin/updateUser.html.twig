@@ -19,6 +19,9 @@
 
 
 
+
+
+
           }}) }}
           {{ form_errors(f.lastname) }}
         </div>
@@ -29,6 +32,9 @@
 
 
 
+
+
+
           }}) }}
           {{ form_errors(f.password) }}
         </div>
@@ -36,8 +42,12 @@
           {{ form_widget(f.gender) }}
           {{ form_errors(f.gender) }}
           {{ form_widget(f.date_birth,{'attr':{'class':'d-flex gap-1 justify-content-center'
+
+
+
           }}) }}
         </div>
+        <button type="submit" class="btn btn-primary">Update</button>
       </div>
       {{ form_end(f) }}
     </div>
