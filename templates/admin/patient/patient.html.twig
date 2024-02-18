@@ -18,23 +18,11 @@
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.cas_med,{'attr':{'class':'form-control px-3 py-2'
 
-
-
-
-
-
-
             }})}}
             {{ form_errors(form.cas_med) }}
           </div>
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.n_cnam,{'attr':{'class':'form-control px-3 py-2'
-
-
-
-
-
-
 
 
 
@@ -45,14 +33,6 @@
         <div class="d-flex gap-3">
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.assurance,{'attr':{'class':'form-control px-3 py-2'
-
-
-
-
-
-
-
-
 
             }})}}
             {{ form_errors(form.assurance) }}
@@ -96,7 +76,7 @@
           <td>{{ patient.assurance }}</td>
           <td>{{ patient.numAssurance }}</td>
           <td class="d-flex gap-2">
-            <a href="#" class="btn btn-success">Update</a>
+            <a href="{{ path('app_update_patient',{'id':patient.id}) }}" class="btn btn-success">Update</a>
             <a href="{{ path('app_delete_patient',{'id':patient.id})}}" class="btn btn-danger">Delete</a>
           </td>
         </tr>

@@ -30,7 +30,7 @@ class AdminController extends AbstractController
     #[Route('/', name: 'app_admin', methods: ['GET', 'POST'])]
     public function admin(): Response
     {
-        return $this->render('admin/admin.html.twig', []);
+        return $this->render('admin/dashboard.html.twig', []);
     }
 
     #[Route('/user', name: 'app_admin_user', methods: ['GET', 'POST'])]
@@ -72,7 +72,7 @@ class AdminController extends AbstractController
             $entityManager->flush();
         }
         $dataPatient = $patient->findAll();
-        return $this->render('admin/patient.html.twig', [
+        return $this->render('admin/patient/patient.html.twig', [
             'form' => $form->createView(),
             'patients' => $dataPatient,
         ]);
@@ -92,7 +92,7 @@ class AdminController extends AbstractController
             $entityManager->flush();
         }
         $dataDoctor = $Doctor->findAll();
-        return $this->render('admin/doctor.html.twig', [
+        return $this->render('admin/doctor/doctor.html.twig', [
             'form' => $form->createView(),
             'doctors' => $dataDoctor,
         ]);
@@ -112,7 +112,7 @@ class AdminController extends AbstractController
             $entityManager->flush();
         }
         $dataradiologist = $radiologist->findAll();
-        return $this->render('admin/radiologist.html.twig', [
+        return $this->render('admin/radiologist/radiologist.html.twig', [
             'form' => $form->createView(),
             'radiologists' => $dataradiologist,
         ]);
@@ -220,11 +220,62 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() and $form->isValid()) {
             $em->persist($dataid);
             $em->flush();
-            return $this->redirectToRoute('app_admin');
+            return $this->redirectToRoute('app_admin_user');
         }
         return $this->renderForm('admin/updateUser.html.twig', [
             'user' => $dataid,
             'f' => $form
+        ]);
+    }
+    #[Route('/update-patient/{id}', name: 'app_update_patient')]
+    public function updatePatient($id, PatientRepository $patient, ManagerRegistry $managerRegistry, Request $req): Response
+    {
+        $em = $managerRegistry->getManager();
+        $dataid = $patient->find($id);
+        $form = $this->createForm(PatientType::class, $dataid);
+        $form->handleRequest($req);
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em->persist($dataid);
+            $em->flush();
+            return $this->redirectToRoute('app_admin_patient');
+        }
+        return $this->renderForm('admin/patient/update.html.twig', [
+            'user' => $dataid,
+            'f' => $form
+        ]);
+    }
+    #[Route('/update-doctor/{id}', name: 'app_update_doctor')]
+    public function updateDoctor($id, DoctorRepository $doctor, ManagerRegistry $managerRegistry, Request $req): Response
+    {
+        $em = $managerRegistry->getManager();
+        $dataid = $doctor->find($id);
+        $form = $this->createForm(DoctorType::class, $dataid);
+        $form->handleRequest($req);
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em->persist($dataid);
+            $em->flush();
+            return $this->redirectToRoute('app_admin_doctor');
+        }
+        return $this->renderForm('admin/doctor/update.html.twig', [
+            'user' => $dataid,
+            'form' => $form
+        ]);
+    }
+    #[Route('/update-radiologist/{id}', name: 'app_update_radiologist')]
+    public function updateRadiologist($id, RadiologistRepository $radiologist, ManagerRegistry $managerRegistry, Request $req): Response
+    {
+        $em = $managerRegistry->getManager();
+        $dataid = $radiologist->find($id);
+        $form = $this->createForm(RadiologistType::class, $dataid);
+        $form->handleRequest($req);
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em->persist($dataid);
+            $em->flush();
+            return $this->redirectToRoute('app_admin_radiologist');
+        }
+        return $this->renderForm('admin/radiologist/update.html.twig', [
+            'user' => $dataid,
+            'form' => $form
         ]);
     }
 }

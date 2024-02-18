@@ -25,7 +25,9 @@
       <a href="{{ path('app_admin_doctor') }}" class="btn btn-primary w-50"
         >Doctor</a
       >
-      <a href="{{ path('app_admin_radiologist') }}" class="btn btn-primary w-50">Radiologist</a>
+      <a href="{{ path('app_admin_radiologist') }}" class="btn btn-primary w-50"
+        >Radiologist</a
+      >
     </div>
   </div>
 </div>
@@ -60,11 +62,29 @@
 
 
 
+
+
+
+
+
+
+
+
+
             }})}}
             {{ form_errors(form.name) }}
           </div>
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.lastname,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
 
 
 
@@ -112,11 +132,29 @@
 
 
 
+
+
+
+
+
+
+
+
+
             }})}}
             {{ form_errors(form.email) }}
           </div>
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.password,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
 
 
 
@@ -167,6 +205,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
           }}) }}
         </div>
         <button class="btn btn-primary" type="submit">Add</button>
@@ -183,6 +230,7 @@
           <th scope="col">ID</th>
           <th scope="col">Name</th>
           <th scope="col">Last Name</th>
+          <th scope="col">Role</th>
           <th scope="col">Email</th>
           <th scope="col">Actions</th>
         </tr>
@@ -191,6 +239,9 @@
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.lastname }}</td>
+          <td>
+            <b>{{ user.roles|join(',') }}</b>
+          </td>
           <td>{{ user.email }}</td>
           <td class="d-flex gap-2">
             <a
