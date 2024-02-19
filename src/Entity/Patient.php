@@ -32,7 +32,6 @@ class Patient
     private ?string $num_assurance = null;
 
     #[ORM\OneToOne(cascade: ['persist'])]
-    #[Assert\NotBlank(message: "you should select the user  ")]
     private ?User $user = null;
 
     public function getId(): ?int

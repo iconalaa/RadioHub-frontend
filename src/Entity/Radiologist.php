@@ -20,7 +20,6 @@ class Radiologist
     private ?string $mat_cnom = null;
 
     #[ORM\OneToOne(cascade: ['persist'])]
-    #[Assert\NotBlank(message: "Select A User")]
     private ?User $user = null;
 
     public function getId(): ?int
