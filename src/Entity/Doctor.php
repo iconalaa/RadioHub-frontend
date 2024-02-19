@@ -79,7 +79,7 @@ class Doctor
     {
         if (!$this->compteRendus->contains($compteRendu)) {
             $this->compteRendus->add($compteRendu);
-            $compteRendu->setIdMedecin($this);
+            $compteRendu->setIdDoctor($this);
         }
 
         return $this;
@@ -89,8 +89,8 @@ class Doctor
     {
         if ($this->compteRendus->removeElement($compteRendu)) {
             // set the owning side to null (unless already changed)
-            if ($compteRendu->getIdMedecin() === $this) {
-                $compteRendu->setIdMedecin(null);
+            if ($compteRendu->getIdDoctor() === $this) {
+                $compteRendu->setIdDoctor(null);
             }
         }
 

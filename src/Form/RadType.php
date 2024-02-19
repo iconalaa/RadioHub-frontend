@@ -28,7 +28,7 @@ class RadType extends AbstractType
                 ],
                 'invalid_message' => 'Custom error message for interpretation_rad field',
             ])
-            ->add('id_medecin', null, [
+            ->add('id_doctor', null, [
                 'constraints' => [
                     new NotBlank(['message' => 'Attribuer un médecin']),
                 ],

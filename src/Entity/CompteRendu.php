@@ -65,12 +65,12 @@ class CompteRendu
         return $this;
     }
 
-    public function getIdMedecin(): ?Doctor
+    public function getIdDoctor(): ?Doctor
     {
         return $this->id_doctor;
     }
 
-    public function setIdMedecin(?Doctor $id_doctor): static
+    public function setIdDoctor(?Doctor $id_doctor): static
     {
         $this->id_doctor = $id_doctor;
 

@@ -18,5 +18,3 @@ symfony serve
 ```
 After finishing all the previous steps Check this Link --> https://127.0.0.1:8000/home
 
-
-

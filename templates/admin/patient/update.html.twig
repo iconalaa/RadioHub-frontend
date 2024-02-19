@@ -1,0 +1,67 @@
+{% extends 'back.html.twig' %} {% block body %}
+
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <h1 class="text-center">
+        Update USER <b>{{ user.id }}</b
+        ><br />
+        <span style="text-transform: capitalize"> </span>
+      </h1>
+      {{ form_start(f,{'attr':{'novalidate': 'novalidate','class':'my-5'}})}}
+      <div class="d-flex flex-column w-50 mx-auto gap-3">
+        <div class="d-flex gap-3">
+          {{ form_widget(f.cas_med,{'attr':{'class':'form-control px-3 py-2'}})
+          }}
+          {{ form_errors(f.cas_med) }}
+          {{ form_widget(f.n_cnam,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
+          }}) }}
+          {{ form_errors(f.n_cnam) }}
+        </div>
+        <div class="d-flex gap-3">
+          {{ form_widget(f.assurance,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+          }}) }}
+          {{ form_errors(f.assurance) }}
+          {{ form_widget(f.num_assurance,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
+          }}) }}
+          {{ form_errors(f.num_assurance) }}
+        </div>
+        <div class="d-flex gap-3">
+          {{ form_widget(f.user,{'attr':{'class':'form-select px-3 py-2'}}) }}
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+      </div>
+      {{ form_end(f) }}
+    </div>
+  </div>
+</div>
+{% endblock %}

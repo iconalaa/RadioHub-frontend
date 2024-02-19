@@ -8,6 +8,7 @@ use App\Repository\MedecinRepository;
 
 use App\Form\CompteRenduType1;
 use App\Repository\CompteRenduRepository;
+use App\Repository\DoctorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +37,7 @@ class MedRenduController extends AbstractController
     }
 
     #[Route('/med', name: 'app_med', methods: ['GET'])]
-    public function index(CompteRenduRepository $rendurepo, Request $request,MedecinRepository $repomed): Response
+    public function index(CompteRenduRepository $rendurepo, Request $request,DoctorRepository $repomed): Response
     {
         // Retrieve the updated compte rendu ID from the request parameters
         $updatedId = $request->query->get('updated_id');
@@ -44,8 +45,8 @@ class MedRenduController extends AbstractController
         $id = 1; // Assuming this is the ID of the logged-in medecin
 
         // Retrieve the list of compte rendus for the logged-in medecin
-        $compteRendus = $rendurepo->findBy(['id_medecin' => $id, 'isEdited' => false]);
-        $compteRendusdone  = $rendurepo->findBy(['id_medecin' => $id, 'isEdited' => True]);
+        $compteRendus = $rendurepo->findBy(['id_doctor' => $id, 'isEdited' => false]);
+        $compteRendusdone  = $rendurepo->findBy(['id_doctor' => $id, 'isEdited' => True]);
         $med= $repomed->findBy(['id' => $id]);
 
         // Filter out the updated compte rendu from the list if it exists

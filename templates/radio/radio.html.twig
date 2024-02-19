@@ -25,11 +25,11 @@
             </div>
 
             <div class="form-row">
-                <!-- Render the 'id_medecin' field -->
+                <!-- Render the 'id_doctor' field -->
                 <div class="form-group col-md-6">
-                    <label for="{{ form.id_medecin.vars.id }}" class="custom-label">Affecter au Medecin:</label>
-                    {{ form_widget(form.id_medecin, {'attr': {'class': 'form-control'}}) }}
-                    {% for error in form.id_medecin.vars.errors %}
+                    <label for="{{ form.id_doctor.vars.id }}" class="custom-label">Affecter au Medecin:</label>
+                    {{ form_widget(form.id_doctor, {'attr': {'class': 'form-control'}}) }}
+                    {% for error in form.id_doctor.vars.errors %}
                         <span class="text-danger">{{ error.message }}</span>
                     {% endfor %}
                 </div>
