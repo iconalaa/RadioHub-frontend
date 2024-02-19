@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # RadioHub
 ![](public/front/img/logo-row.png)
 =======
@@ -22,6 +21,3 @@ symfony serve
 ```
 After finishing all the previous steps Check this Link --> https://127.0.0.1:8000/home
 
-
-
->>>>>>> 12b69fbaf8d989b483d09aacd7091bf130c38467
