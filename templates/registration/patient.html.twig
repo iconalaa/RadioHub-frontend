@@ -91,23 +91,9 @@
         {{ form_errors(form.user.email) }}
       </div>
       <div class="d-flex flex-column w-50">
-        {{ form_widget(form.user.password,{'attr':{'class':'form-control px-3 py-2'
+        {{ form_widget(form.user.password,{'attr':{'class':'form-control px-3 py-2','id':'password'}}) }}
+        <p class="error text-danger mt-2"></p>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        }}) }}
-        {{ form_errors(form.user.password) }}
       </div>
     </div>
     <div class="d-flex gap-3">
@@ -327,3 +313,6 @@
 </div>
 
 {% endblock %} {% block footer%} {% endblock %}
+{% block javascripts %}
+<script src="../front/js/custom.js"></script>
+{% endblock %}

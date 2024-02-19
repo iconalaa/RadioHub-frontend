@@ -1,17 +1,19 @@
-const inputs = document.querySelectorAll("input");
-const email = inputs[0];
-const something = document.querySelector(".error");
-const submit = document.querySelector("button[type=submit]");
+const errorMsg = document.querySelector(".error");
+const password = document.querySelector("#form_user_password");
+const form = document.querySelector("form");
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-submit.addEventListener("click", (e) => {
-  if (!emailRegex.test(email.value))
-    error_msg(e, "[ " + email.value + " ] is not a valid Email !");
-  if (email.value == "") error_msg(e, "Email Can't be empty !");
+form.addEventListener("submit", (e) => {
+  console.log(password.value);
+  if (password.value.length < 6) {
+    errorFun(e, "Your password should be at least 6 Chars ! ");
+  }
+  if (password.value.length === 0) {
+    errorFun(e, "Password Can't be empty !");
+  }
 });
-const error_msg = (e, value) => {
-  email.style.borderColor = "red";
-  something.innerHTML = value;
+
+const errorFun = (e, value) => {
+  errorMsg.innerHTML = value;
   e.preventDefault();
 };
