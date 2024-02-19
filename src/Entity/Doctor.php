@@ -19,7 +19,6 @@ class Doctor
     private ?string $matricule = null;
 
     #[ORM\OneToOne(cascade: ['persist'])]
-    #[Assert\NotBlank(message: "you should Select a User !")]
     private ?User $user = null;
 
     public function getId(): ?int
