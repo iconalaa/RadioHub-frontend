@@ -23,7 +23,7 @@ class CompteRendu
 
 
     #[ORM\ManyToOne(inversedBy: 'compteRendus')]
-    private ?Medecin $id_medecin = null;
+    private ?Doctor $id_doctor = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Images $id_image = null;
@@ -65,14 +65,14 @@ class CompteRendu
         return $this;
     }
 
-    public function getIdMedecin(): ?Medecin
+    public function getIdMedecin(): ?Doctor
     {
-        return $this->id_medecin;
+        return $this->id_doctor;
     }
 
-    public function setIdMedecin(?Medecin $id_medecin): static
+    public function setIdMedecin(?Doctor $id_doctor): static
     {
-        $this->id_medecin = $id_medecin;
+        $this->id_doctor = $id_doctor;
 
         return $this;
     }

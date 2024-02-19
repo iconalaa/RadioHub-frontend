@@ -2,30 +2,30 @@
 
 namespace App\Entity;
 
-use App\Repository\MedecinRepository;
+use App\Repository\DoctorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: MedecinRepository::class)]
-class Medecin
+#[ORM\Entity(repositoryClass: DoctorRepository::class)]
+class Doctor
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 15)]
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "you should write your doctor Matricule !")]
     private ?string $matricule = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $username = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'id_medecin', targetEntity: CompteRendu::class)]
     private Collection $compteRendus;
+
+    #[ORM\OneToOne(cascade: ['persist'])]
+    #[Assert\NotBlank(message: "you should Select a User !")]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -49,29 +49,19 @@ class Medecin
         return $this;
     }
 
-    public function getUsername(): ?string
+    public function getUser(): ?user
     {
-        return $this->username;
+        return $this->user;
     }
 
-    public function setUsername(string $username): static
+    public function setUser(?user $user): static
     {
-        $this->username = $username;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
-    }
+    
 
     /**
      * @return Collection<int, CompteRendu>
@@ -82,7 +72,7 @@ class Medecin
     }
     public function __toString()
     {
-        return $this->username;
+        return $this->matricule;
     }
 
     public function addCompteRendu(CompteRendu $compteRendu): static

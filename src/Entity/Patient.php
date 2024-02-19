@@ -6,6 +6,7 @@ use App\Repository\PatientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
 class Patient
@@ -16,13 +17,27 @@ class Patient
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $username = null;
+    #[Assert\NotBlank(message: "you should tell us your Medical problem")]
+    private ?string $cas_med = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $password = null;
+    #[Assert\NotBlank(message: "you should give CNUM Number")]
+    private ?string $n_cnam = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "you should Give Your Assurance Info")]
+    private ?string $assurance = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "you should Write your assurance Nubmer")]
+    private ?string $num_assurance = null;
 
     #[ORM\OneToMany(mappedBy: 'patient', targetEntity: Images::class,cascade: ['remove'])]
     private Collection $id_patient;
+
+    #[ORM\OneToOne(cascade: ['persist'])]
+    #[Assert\NotBlank(message: "you should select the user  ")]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -34,26 +49,50 @@ class Patient
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getCasMed(): ?string
     {
-        return $this->username;
+        return $this->cas_med;
     }
 
-    public function setUsername(string $username): static
+    public function setCasMed(string $cas_med): static
     {
-        $this->username = $username;
+        $this->cas_med = $cas_med;
 
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getNCnam(): ?string
     {
-        return $this->password;
+        return $this->n_cnam;
     }
 
-    public function setPassword(string $password): static
+    public function setNCnam(string $n_cnam): static
     {
-        $this->password = $password;
+        $this->n_cnam = $n_cnam;
+
+        return $this;
+    }
+
+    public function getAssurance(): ?string
+    {
+        return $this->assurance;
+    }
+
+    public function setAssurance(string $assurance): static
+    {
+        $this->assurance = $assurance;
+
+        return $this;
+    }
+
+    public function getNumAssurance(): ?string
+    {
+        return $this->num_assurance;
+    }
+
+    public function setNumAssurance(string $num_assurance): static
+    {
+        $this->num_assurance = $num_assurance;
 
         return $this;
     }
@@ -76,11 +115,7 @@ class Patient
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->username;
-    }
-
+    
     public function removeIdPatient(Images $idPatient): static
     {
         if ($this->id_patient->removeElement($idPatient)) {
@@ -92,4 +127,23 @@ class Patient
 
         return $this;
     }
+    
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+
+    public function __toString()
+    {
+        return $this->num_assurance;
+    }
+
 }

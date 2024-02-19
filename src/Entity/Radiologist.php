@@ -6,6 +6,7 @@ use App\Repository\RadiologistRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RadiologistRepository::class)]
 class Radiologist
@@ -16,48 +17,40 @@ class Radiologist
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $username = null;
+    #[Assert\NotBlank(message: "Write your Mat Cnom")]
 
-    #[ORM\Column(length: 255)]
-    private ?string $password = null;
+    private ?string $mat_cnom = null;
 
     #[ORM\OneToMany(mappedBy: 'radiologist', targetEntity: Images::class,cascade: ['remove'] )] 
     private Collection $id_radio;
 
-    public function __construct()
-    {
-        $this->id_radio = new ArrayCollection();
-    }
+    #[ORM\OneToOne(cascade: ['persist'])]
+    #[Assert\NotBlank(message: "Select A User")]
+    private ?User $user = null;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getMatCnom(): ?string
     {
-        return $this->username;
+        return $this->mat_cnom;
     }
 
-    public function setUsername(string $username): static
+    public function setMatCnom(string $mat_cnom): static
     {
-        $this->username = $username;
+        $this->mat_cnom = $mat_cnom;
 
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function __construct()
     {
-        return $this->password;
+        $this->id_radio = new ArrayCollection();
     }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
+    
     /**
      * @return Collection<int, Images>
      */
@@ -75,10 +68,7 @@ class Radiologist
 
         return $this;
     }
-    public function __toString()
-    {
-        return $this->username;
-    }
+    
 
     public function removeIdRadio(Images $idRadio): static
     {
@@ -90,5 +80,23 @@ class Radiologist
         }
 
         return $this;
+    }
+
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->mat_cnom;
     }
 }
