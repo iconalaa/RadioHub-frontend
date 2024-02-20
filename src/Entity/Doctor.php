@@ -20,8 +20,9 @@ class Doctor
     #[Assert\NotBlank(message: "you should write your doctor Matricule !")]
     private ?string $matricule = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_medecin', targetEntity: CompteRendu::class)]
+    #[ORM\OneToMany(mappedBy: 'id_doctor', targetEntity: CompteRendu::class)]
     private Collection $compteRendus;
+
 
     #[ORM\OneToOne(cascade: ['persist'])]
     #[Assert\NotBlank(message: "you should Select a User !")]

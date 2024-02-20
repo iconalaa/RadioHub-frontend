@@ -1,57 +1,189 @@
-{% extends 'base.html.twig' %}
-
+{% extends 'front.html.twig' %}
 {% block title %} RAD {% endblock %}
-
-{% block header %}
-    <!-- You can override the header block if needed -->
-    {{ parent() }} <!-- This includes the content of the parent block (base template's header) -->
+{% block header %}{% endblock %}
+{%block footer %} {% endblock %}
+{% block links %}
+<li class="active">
+  <a href="{{ path('app_home') }}">Home</a>
+</li>
+<li><a href="#">Doctors </a></li>
+<li><a href="#">Reclamation </a></li>
+<li><a href="#">Blog </a></li>
+<li><a href="#">Contact Us</a></li>
 {% endblock %}
 
-{% block body %}
-<div class="container">
-    <div class="row justify-content-center mt-5"> <!-- Center the form -->
-        <div class="col-lg-6 col-md-8 col-sm-10">
-            <!-- Form content -->
-            <h2 style="margin-bottom: 20px;">Formulaire radiologue</h2>
-            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-            <div class="form-group">
-                <!-- Render the 'interpretation_rad' field -->
-                <label for="{{ form.interpretation_rad.vars.id }}" class="custom-label">Interprétation du radiologue</label>
-                {{ form_widget(form.interpretation_rad, {'attr': {'class': 'form-control'}}) }}
-                {% for error in form.interpretation_rad.vars.errors %}
-                    <span class="text-danger">{{ error.message }}</span>
-                {% endfor %}
-            </div>
+{% block auth %}{% if app.user %}
+<div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+  <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+    <li class="nav-item dropdown">
+      <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        <img src="contact.png" alt="" width="35" height="35" class="rounded-circle" />
+      </a>
 
-            <div class="form-row">
-                <!-- Render the 'id_doctor' field -->
-                <div class="form-group col-md-6">
-                    <label for="{{ form.id_doctor.vars.id }}" class="custom-label">Affecter au Medecin:</label>
-                    {{ form_widget(form.id_doctor, {'attr': {'class': 'form-control'}}) }}
-                    {% for error in form.id_doctor.vars.errors %}
-                        <span class="text-danger">{{ error.message }}</span>
-                    {% endfor %}
-                </div>
+      <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+        <div class="message-body">
+          <a href="{{ path('app_profile') }}" class="d-flex align-items-center gap-2 dropdown-item">
+            <i style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              " class="fa-solid fa-user"></i>
+            <p class="mb-0 fs-3">
+              <span style="text-transform: capitalize">{{ app.user.name }} Profile</span>
+            </p>
+          </a>
+          <a href="{{ path('app_settings',{'id':app.user.id}) }}" class="d-flex align-items-center gap-2 dropdown-item">
+            <i style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              " class="fa-solid fa-gear"></i>
+            <p class="mb-0 fs-3">Settings</p>
+          </a>
+          {% if is_granted('ROLE_ADMIN') %}
+          <a href="{{ path('app_admin') }}" class="d-flex align-items-center gap-2 dropdown-item">
+            <i style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              " class="fa-solid fa-lock"></i>
+            <p class="mb-0 fs-3">Dashboard</p>
+          </a>
+          {% endif %}
 
-                <!-- Render the 'id_image' field -->
-                <div class="form-group col-md-6">
-                    <label for="{{ form.id_image.vars.id }}" class="custom-label">Image Médicale de :</label>
-                    {{ form_widget(form.id_image, {'attr': {'class': 'form-control'}}) }}
-                    {% for error in form.id_image.vars.errors %}
-                        <span class="text-danger">{{ error.message }}</span>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="form-group">
-                <!-- Render the submit button -->
-                <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
-            </div>
-
-            {{ form_end(form) }}
-            <!-- End Form content -->
+          <a id="logout" href="{{ path('app_logout') }}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
         </div>
-    </div>
+      </div>
+    </li>
+  </ul>
 </div>
+{% endif %} {% endblock %}
+{% block body %}
+<style>
+  .error{
+    color: red!important;
+  }
+  .form-container {
+    border: 2px solid #041425;
+    /* Border color */
+    border-radius: 10px;
+    /* Rounded corners */
+    padding: 20px;
+    /* Padding inside the border */
+    box-shadow: 0 0 10px rgba(115, 28, 85, 0.547);
+    /* Optional: Add shadow effect */
+  }
+
+  .form-inline-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .custom-label {
+    flex: 0 0 200px;
+    /* Adjust as needed */
+    text-align: right;
+    margin-right: 15px;
+  }
+
+  .form-control {
+    flex: 1;
+    border-radius: 5px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    /* Ensure padding is included in width */
+    resize: vertical;
+    /* Allow vertical resizing */
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #007bff;
+    /* Change to desired focus color */
+  }
+
+  .select2-selection {
+    width: calc(100% - 200px);
+    /* Adjust width based on the label width */
+    height: 38px;
+    /* Adjust height as needed */
+  }
+
+  .select2-selection__arrow {
+    height: 38px;
+    /* Adjust height to match select height */
+  }
+
+  .form-control-textarea {
+    min-height: 100px;
+    /* Minimum height for textarea */
+    overflow-y: auto;
+    /* Add scrollbar if content exceeds height */
+  }
+
+  .btn-submit {
+    width: 50%;
+    /* Adjust width as needed */
+    margin-left: auto;
+    /* Align to the right */
+    margin-right: auto;
+    /* Align to the left */
+    display: block;
+    /* Ensure it takes up full width */
+  }
+  .inputs{
+    margin-top: 20px;
+    font-family: 'Georgia, serif';
+    color: #87178d;
+
+
+  }
+
+  
+</style>
+<div class="container">
+  <br><br>
+  <div class="row justify-content-center mt-5">
+    <div class="col-lg-6 col-md-8 col-sm-10 form-container">
+      <h2 style="color: #0047AB;margin-bottom: 20px; text-align: center; font-family: 'Georgia, serif', sans-serif;">RADIOLOGIST FORM</h2>
+
+      {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+      <div class="d-flex flex-column">
+        <label class="inputs" for="{{ form.interpretation_rad.vars.id }}" class="">Interpretation:</label>
+        {{ form_widget(form.interpretation_rad, {'attr': {'class': 'form-control form-control-textarea', 'rows': 5}}) }}
+
+        {{ form_errors(form.interpretation_rad) }}
+      </div>
+      <div class="d-flex justify-content-around">
+
+        <div class="d-flex flex-column">
+          <label class="inputs" for="{{ form.id_doctor.vars.id }}" class="">Assign to Doctor:</label>
+          {{ form_widget(form.id_doctor, {'attr': {'class': 'form-control select2 w-100'}}) }}
+          {{ form_errors(form.id_doctor,{'attr':{'class':'error'}}) }}
+        </div>
+
+        <div class="d-flex flex-column">
+          <label class="inputs" for="{{ form.id_image.vars.id }}" class="">Medical Image of:</label>
+          {{ form_widget(form.id_image, {'attr': {'class': 'form-control select2 w-100'}}) }}
+          {{ form_errors(form.id_image,{'attr':{'class':'text-danger'}}) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-submit mt-3">Save</button>
+      </div>
+
+      {{ form_end(form) }}
+    </div>
+  </div>
+</div>
+<script>
+  // Activate select2 plugin for select inputs
+  $(document).ready(function () {
+    $('.select2').select2();
+  });
+</script>
 {% endblock %}

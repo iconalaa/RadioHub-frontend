@@ -24,13 +24,13 @@ class RadType extends AbstractType
         $builder
             ->add('interpretation_rad', null, [
                 'constraints' => [
-                    new NotBlank(['message' => 'Please provide interpretation for radiologist']),
+                    new NotBlank(['message' => 'Please provide your interpretation']),
                 ],
                 'invalid_message' => 'Custom error message for interpretation_rad field',
             ])
             ->add('id_doctor', null, [
                 'constraints' => [
-                    new NotBlank(['message' => 'Attribuer un médecin']),
+                    new NotBlank(['message' => 'Assign a doctor']),
                 ],
                 'invalid_message' => 'Custom error message for interpretation_rad field',
             ])
@@ -43,7 +43,7 @@ class RadType extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'placeholder' => '', // Set the placeholder to an empty string
                 'constraints' => [
-                    new NotBlank(['message' => 'Attribuer une image au patient']),
+                    new NotBlank(['message' => 'Assign an image to the patient']),
                 ],
                 'invalid_message' => 'Custom error message for interpretation_rad field',
             ]);

@@ -18,15 +18,15 @@ class Radiologist
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Write your Mat Cnom")]
-
     private ?string $mat_cnom = null;
-
-    #[ORM\OneToMany(mappedBy: 'radiologist', targetEntity: Images::class,cascade: ['remove'] )] 
-    private Collection $id_radio;
 
     #[ORM\OneToOne(cascade: ['persist'])]
     #[Assert\NotBlank(message: "Select A User")]
     private ?User $user = null;
+
+
+    #[ORM\OneToMany(mappedBy: 'radiologist', targetEntity: Images::class,cascade: ['remove'] )] 
+    private Collection $id_radio;
 
 
     public function getId(): ?int
@@ -51,6 +51,19 @@ class Radiologist
         $this->id_radio = new ArrayCollection();
     }
     
+    
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Images>
      */
@@ -78,19 +91,6 @@ class Radiologist
                 $idRadio->setRadiologist(null);
             }
         }
-
-        return $this;
-    }
-
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
 
         return $this;
     }

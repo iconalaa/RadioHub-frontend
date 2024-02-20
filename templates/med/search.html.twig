@@ -160,8 +160,8 @@
       <div class="content-column">
         <h3 style=" font-weight: bold; font-family: 'Courier New', monospace;"> Pending list </h3>
         <br></br>
-        {% if compteRendus|length > 0 %}
-        {% for compteRendu in compteRendus %}
+        {% if compteRendusPendingwithsearch|length > 0 %}
+        {% for compteRendu in compteRendusPendingwithsearch %}
 
         <div class="item">
 
@@ -178,8 +178,8 @@
       <div class="content-column">
         <h3 style=" font-weight: bold;font-family: 'Courier New', monospace;">History</h3>
         <br></br>
-        {% if done|length > 0 %}
-        {% for compteRendu in done %}
+        {% if compteRendusDonewithsearch|length > 0 %}
+        {% for compteRendu in compteRendusDonewithsearch %}
         <div class="item">
           <p style="color: #103256!important;">Patient: {{ compteRendu.idImage.patient.user.name }}</p>
           <p>Radiologist: {{ compteRendu.idImage.radiologist.user.name }}</p>

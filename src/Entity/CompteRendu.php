@@ -25,6 +25,8 @@ class CompteRendu
     #[ORM\ManyToOne(inversedBy: 'compteRendus')]
     private ?Doctor $id_doctor = null;
 
+
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Images $id_image = null;
 

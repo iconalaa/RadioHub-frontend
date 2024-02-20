@@ -35,12 +35,13 @@ class Patient
     #[Assert\NotBlank(message: "you should Write your assurance Nubmer")]
     private ?string $num_assurance = null;
 
-    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: Images::class,cascade: ['remove'])]
-    private Collection $id_patient;
 
     #[ORM\OneToOne(cascade: ['persist'])]
     #[Assert\NotBlank(message: "you should select the user  ")]
     private ?User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: Images::class,cascade: ['remove'])]
+    private Collection $id_patient;
 
     public function __construct()
     {
