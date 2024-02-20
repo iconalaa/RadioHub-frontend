@@ -143,18 +143,41 @@
     /* Apply custom font */
     /* Add other font styles as needed */
   }
-</style>
+
+  
+
+a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.previous {
+  background-color: #f1f1f1;
+  color: black;
+}
+
+
+
+
+
+  </style>
 <div class="page-container">
   <div class="content-container">
     <h2 style=" text-transform: uppercase; font-family: 'Courier New', monospace; color: #300c7c;">doctor {{
       app.user.lastname }} {{ app.user.name }}'s space</h2>
     <br></br>
+
     <div class="search-container">
       <form action="{{ path('app_doctor_search') }}" method="GET">
         <input type="text" name="query" placeholder="Search...">
         <button type="submit">Search</button>
       </form>
+      <div style="display: flex; justify-content: flex-start;">
+        <a style="text-decoration: none; display: inline-block; padding: 8px 16px;" href="{{ path('app_doctor')}}" class="previous">&laquo; Main Lists</a>
     </div>
+    </div>
+
+    
 
     <div class="content-wrapper">
       <div class="content-column">
@@ -172,7 +195,7 @@
         </div>
         {% endfor %}
         {% else %}
-        <p>No Report Pending.</p>
+        <p>No Report Pending With Searched.</p>
         {% endif %}
       </div>
       <div class="content-column">
@@ -189,7 +212,7 @@
         </div>
         {% endfor %}
         {% else %}
-        <p>No History yet.</p>
+        <p>No History Match Searched.</p>
         {% endif %}
       </div>
     </div>

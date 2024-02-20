@@ -73,7 +73,11 @@ class Doctor
     }
     public function __toString()
     {
-        return $this->matricule;
+        if ($this->user) {
+            return $this->user->getName() . ' ' . $this->user->getLastname();
+        }
+        
+        return 'Doctor';
     }
 
     public function addCompteRendu(CompteRendu $compteRendu): static

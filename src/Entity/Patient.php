@@ -147,7 +147,11 @@ class Patient
 
     public function __toString()
     {
-        return $this->num_assurance;
+        if ($this->user) {
+            return $this->user->getName() . ' ' . $this->user->getLastname();
+        }
+        
+        return 'Doctor';
     }
 
 }
