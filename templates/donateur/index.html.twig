@@ -1,0 +1,43 @@
+{% extends 'back.html.twig' %}
+
+{% block title %} RadioHub - Our Donors {% endblock %} 
+
+{% block body %}
+    <h1>Donateur index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom_Donateur</th>
+                <th>Prenom_Donateur</th>
+                <th>Type_Donateur</th>
+                <th>Email</th>
+                <th>Telephone</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for donateur in donateurs %}
+            <tr>
+                <td>{{ donateur.id }}</td>
+                <td>{{ donateur.NomDonateur }}</td>
+                <td>{{ donateur.PrenomDonateur }}</td>
+                <td>{{ donateur.TypeDonateur }}</td>
+                <td>{{ donateur.Email }}</td>
+                <td>{{ donateur.Telephone }}</td>
+                <td>
+                    <a href="{{ path('app_donateur_show', {'id': donateur.id}) }}">show</a>
+                    <a href="{{ path('app_donateur_edit', {'id': donateur.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_donateur_new') }}">Create new</a>
+{% endblock %}

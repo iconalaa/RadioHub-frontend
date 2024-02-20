@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Donateur;
+use App\Form\Donateur1Type;
+use App\Repository\DonateurRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+#[Route('/donateur')]
+class DonateurController extends AbstractController
+{
+    #[Route('/', name: 'app_donateur_index', methods: ['GET'])]
+    public function index(DonateurRepository $donateurRepository): Response
+    {
+        return $this->render('donateur/index.html.twig', [
+            'donateurs' => $donateurRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/new', name: 'app_donateur_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $donateur = new Donateur();
+        $form = $this->createForm(Donateur1Type::class, $donateur);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($donateur);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_donateur_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('donateur/new.html.twig', [
+            'donateur' => $donateur,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_donateur_show', methods: ['GET'])]
+    public function show(Donateur $donateur): Response
+    {
+        return $this->render('donateur/show.html.twig', [
+            'donateur' => $donateur,
+        ]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_donateur_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Donateur $donateur, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(Donateur1Type::class, $donateur);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_donateur_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('donateur/edit.html.twig', [
+            'donateur' => $donateur,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_donateur_delete', methods: ['POST'])]
+    public function delete(Request $request, Donateur $donateur, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$donateur->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($donateur);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_donateur_index', [], Response::HTTP_SEE_OTHER);
+    }
+}

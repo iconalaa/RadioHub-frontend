@@ -1,0 +1,39 @@
+{% extends 'back.html.twig' %}
+
+{% block title %} RadioHub - Show Donation {% endblock %} 
+
+
+{% block body %}
+    <h1>Gratification</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ gratification.id }}</td>
+            </tr>
+            <tr>
+                <th>Date_grat</th>
+                <td>{{ gratification.DateGrat ? gratification.DateGrat|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Titre_Grat</th>
+                <td>{{ gratification.TitreGrat }}</td>
+            </tr>
+            <tr>
+                <th>Desc_Grat</th>
+                <td>{{ gratification.DescGrat }}</td>
+            </tr>
+            <tr>
+                <th>Type_Grat</th>
+                <td>{{ gratification.TypeGrat }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_gratification_index') }}">back to list</a>
+
+    <a href="{{ path('app_gratification_edit', {'id': gratification.id}) }}">edit</a>
+
+    {{ include('gratification/_delete_form.html.twig') }}
+{% endblock %}

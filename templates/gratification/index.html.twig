@@ -1,0 +1,44 @@
+{% extends 'back.html.twig' %}
+
+{% block title %} RadioHub - Our Donations {% endblock %} 
+
+
+
+{% block body %}
+    
+    <h1>Gratification index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date_grat</th>
+                <th>Titre_Grat</th>
+                <th>Desc_Grat</th>
+                <th>Type_Grat</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for gratification in gratifications %}
+            <tr>
+                <td>{{ gratification.id }}</td>
+                <td>{{ gratification.DateGrat ? gratification.DateGrat|date('Y-m-d') : '' }}</td>
+                <td>{{ gratification.TitreGrat }}</td>
+                <td>{{ gratification.DescGrat }}</td>
+                <td>{{ gratification.TypeGrat }}</td>
+                <td>
+                    <a href="{{ path('app_gratification_show', {'id': gratification.id}) }}">show</a>
+                    <a href="{{ path('app_gratification_edit', {'id': gratification.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_gratification_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'back.html.twig' %}
+
+{% block title %} RadioHub - Edit Donor {% endblock %} 
+
+{% block body %}
+    <h1>Edit Donateur</h1>
+
+    {{ include('donateur/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_donateur_index') }}">back to list</a>
+
+    {{ include('donateur/_delete_form.html.twig') }}
+{% endblock %}
