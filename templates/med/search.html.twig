@@ -2,6 +2,7 @@
 {% block title %} MED {% endblock %}
 {% block header %}{{ parent() }}{% endblock %}
 {% block links %}
+<link rel="stylesheet" href="{{ asset('../../../front/css/customdoctor.css') }}" />
 <li class="active">
   <a href="{{ path('app_home') }}">Home</a>
 </li>
@@ -63,104 +64,7 @@
 
 
 {% block body %}
-<style>
-  /* Custom CSS styles */
-  .page-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    /* Adjust alignment */
-    min-height: 100vh;
-    /* Use min-height instead of height */
-    margin-top: 20px;
-    /* Adjust margin */
 
-  }
-
-  .content-container {
-    width: 80%;
-    /* Adjust width */
-    text-align: center;
-    border: 1px solid blue;
-    /* Change border color to blue */
-    border-radius: 20px;
-    /* Apply border radius */
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(115, 28, 85, 0.547);
-  }
-
-  .content-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    /* Adjust alignment */
-
-  }
-
-  .content-column {
-    width: calc(50% - 10px);
-    /* Adjusted width to accommodate the line */
-    padding: 10px;
-  }
-
-  .item {
-    border: 1px solid #ccc;
-    ;
-    /* Change border color to blue */
-    border-radius: 10px;
-    /* Apply border radius */
-    padding: 10px;
-    margin-bottom: 10px;
-    box-shadow: 0 0 10px rgba(115, 28, 85, 0.547);
-    font-family: 'Courier New', monospace;
-
-  }
-
-  .button {
-    display: inline-block;
-    background-color: #007bff;
-    padding: 8px 16px;
-    text-decoration: dashed !important;
-    border-radius: 4px;
-    color: black !important;
-    font-weight: bold;
-    margin-top: 20px;
-
-
-  }
-
-  p {
-    color: #808080 !important;
-    font-weight: bold;
-
-  }
-
-
-
-  h2,
-  h3 {
-    font-family: 'Your Custom Font', sans-serif;
-    /* Apply custom font */
-    /* Add other font styles as needed */
-  }
-
-  
-
-a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-.previous {
-  background-color: #f1f1f1;
-  color: black;
-}
-
-
-
-
-
-  </style>
 <div class="page-container">
   <div class="content-container">
     <h2 style=" text-transform: uppercase; font-family: 'Courier New', monospace; color: #300c7c;">doctor {{
@@ -173,11 +77,12 @@ a:hover {
         <button type="submit">Search</button>
       </form>
       <div style="display: flex; justify-content: flex-start;">
-        <a style="text-decoration: none; display: inline-block; padding: 8px 16px;" href="{{ path('app_doctor')}}" class="previous">&laquo; Main Lists</a>
-    </div>
+        <a style="text-decoration: none; display: inline-block; padding: 8px 16px;" href="{{ path('app_doctor')}}"
+          class="previous">&laquo; Main Lists</a>
+      </div>
     </div>
 
-    
+
 
     <div class="content-wrapper">
       <div class="content-column">
@@ -188,8 +93,10 @@ a:hover {
 
         <div class="item">
 
-          <p style="color: #103256!important;">Patient: {{ compteRendu.idImage.patient.user.name }}</p>
-          <p>Radiologist: {{ compteRendu.idImage.radiologist.user.name }}</p>
+          <p class="item_title">Patient: {{ compteRendu.idImage.patient.user.name }} {{ compteRendu.idImage.patient.user.lastname }}</p>
+          <p >Radiologist: {{ compteRendu.idImage.radiologist.user.name }} {{ compteRendu.idImage.radiologist.user.lastname }}</p>
+          <p class="item_interpretation">Radiologist's interpretation : {{ compteRendu.InterpretationRad }}</p>
+
 
           <a href="{{ path('add_interpretation', {'id': compteRendu.id}) }}" class="button">Add interpretation</a>
         </div>
@@ -204,10 +111,10 @@ a:hover {
         {% if compteRendusDonewithsearch|length > 0 %}
         {% for compteRendu in compteRendusDonewithsearch %}
         <div class="item">
-          <p style="color: #103256!important;">Patient: {{ compteRendu.idImage.patient.user.name }}</p>
-          <p>Radiologist: {{ compteRendu.idImage.radiologist.user.name }}</p>
-          <p>Radiologist's interpretation : {{ compteRendu.InterpretationRad }}</p>
-          <p>Doctor’s interpretation: {{ compteRendu.interpretationMed }}</p>
+          <p class="item_title">Patient: {{ compteRendu.idImage.patient.user.name }} {{ compteRendu.idImage.patient.user.lastname }}</p>
+          <p>Radiologist: {{ compteRendu.idImage.radiologist.user.name }} {{ compteRendu.idImage.radiologist.user.lastname }}</p>
+          <p class="item_interpretation">Radiologist's interpretation : {{ compteRendu.InterpretationRad }}</p>
+          <p class="item_interpretation"">Doctor’s interpretation: {{ compteRendu.interpretationMed }}</p>
           <p>Date: {{ compteRendu.date|date('Y-m-d') }}</p>
         </div>
         {% endfor %}

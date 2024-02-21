@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CompteRenduRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompteRenduRepository::class)]
 class CompteRendu
@@ -14,6 +15,7 @@ class CompteRendu
     #[ORM\Column]
     private ?int $id = null;
 
+
     #[ORM\Column(length: 255 , nullable: true) ]
     private ?string $interpretationMed = null;
 
@@ -21,15 +23,16 @@ class CompteRendu
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
-
+    
     #[ORM\ManyToOne(inversedBy: 'compteRendus')]
     private ?Doctor $id_doctor = null;
 
 
-
+    
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Images $id_image = null;
 
+   
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $interpretation_rad = null;
 
@@ -60,8 +63,13 @@ class CompteRendu
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDate($date): self
     {
+        // Convert string to DateTime object if necessary
+        if (is_string($date)) {
+            $date = new \DateTime($date);
+        }
+
         $this->date = $date;
 
         return $this;

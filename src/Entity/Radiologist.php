@@ -97,6 +97,10 @@ class Radiologist
 
     public function __toString()
     {
-        return $this->mat_cnom;
+        if ($this->user) {
+            return $this->user->getName() . ' ' . $this->user->getLastname();
+        }
+        
+        
     }
 }

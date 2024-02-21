@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\CompteRendu;
+use App\Form\CompteRenduType;
 use App\Form\CompteRenduType1;
+use App\Form\MedType;
 use App\Repository\CompteRenduRepository;
 use App\Repository\DoctorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\VarDumper\VarDumper;
+
 
 class DocRenduController extends AbstractController
 {
@@ -33,10 +35,15 @@ class DocRenduController extends AbstractController
             throw new \LogicException('Logged-in user is not associated with any doctor.');
         }
 
-        $form = $this->createForm(CompteRenduType1::class, $compteRendu);
+        $form = $this->createForm(MedType::class, $compteRendu);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Convert string date to DateTime object
+            $dateString = $form->get('date')->getData();
+            $date = \DateTime::createFromFormat('Y-m-d', $dateString);
+            $compteRendu->setDate($date);
+
             $compteRendu->setIsEdited(true); // Mark the compte rendu as edited
             $entityManager->flush();
 
@@ -44,7 +51,7 @@ class DocRenduController extends AbstractController
             return $this->redirectToRoute('app_doctor', ['updated_id' => $compteRendu->getId()]);
         }
 
-        return $this->render('med/update_compte_rendu.html.twig', [
+        return $this->render('med/update.html.twig', [
             'form' => $form->createView(),
         ]);
     }
