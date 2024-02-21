@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\CompteRendu;
-use App\Form\CompteRenduType;
-use App\Form\CompteRenduType1;
 use App\Form\MedType;
 use App\Repository\CompteRenduRepository;
 use App\Repository\DoctorRepository;
@@ -13,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
 
 
 class DocRenduController extends AbstractController
@@ -143,6 +142,36 @@ class DocRenduController extends AbstractController
         return $this->render('med/search.html.twig', [
             'compteRendusPendingwithsearch' => $compteRendusPending,
             'compteRendusDonewithsearch' => $compteRendusDone,
+        ]);
+    }
+
+    #[Route('/generate-pdf/{id}', name: 'generate_pdf')]
+    public function generatePdfAction(CompteRendu $compteRendu): Response
+    {
+        // Render the PDF template with the CompteRendu data
+        $html = $this->renderView('pdf_template.html.twig', [
+            'compteRendu' => $compteRendu,
+        ]);
+
+        // Instantiate Dompdf
+        $dompdf = new Dompdf();
+
+        // Load HTML content
+        $dompdf->loadHtml($html);
+
+        // Set paper size and orientation (optional)
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Generate PDF file name (optional)
+        $pdfFileName = sprintf('compte_rendu_%s.pdf', $compteRendu->getId());
+
+        // Stream the PDF to the client
+        return new Response($dompdf->output(), Response::HTTP_OK, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $pdfFileName . '"',
         ]);
     }
 }

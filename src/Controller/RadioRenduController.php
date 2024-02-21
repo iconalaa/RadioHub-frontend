@@ -20,7 +20,20 @@ class RadioRenduController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, DoctorRepository $medrepo, ImagesRepository $imagesRepo, RadiologistRepository $repoRad): Response
     {
 
-        
+        // Retrieve the currently logged-in user
+        /** @var UserInterface $user */
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw new \LogicException('No user is logged in.');
+        }
+
+        $Radiologist = $repoRad->findOneBy(['user' => $user]);
+
+
+        if (!$Radiologist) {
+            throw new \LogicException('Logged-in user is not associated with any Radiologue.');
+        }
         $compteRendu = new CompteRendu();
         $form = $this->createForm(RadType::class, $compteRendu);
         $form->handleRequest($request);

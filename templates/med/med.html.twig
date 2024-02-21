@@ -86,11 +86,14 @@
         {% for compteRendu in compteRendus %}
 
         <div class="item">
-          
-         
 
-          <p class="item_title">Patient: {{ compteRendu.idImage.patient.user.name }} {{ compteRendu.idImage.patient.user.lastname }}</p>
-          <p >Radiologist: {{ compteRendu.idImage.radiologist.user.name }} {{ compteRendu.idImage.radiologist.user.lastname }}</p>
+
+
+
+          <p class="item_title">Patient: {{ compteRendu.idImage.patient.user.name }} {{
+            compteRendu.idImage.patient.user.lastname }}</p>
+          <p>Radiologist: {{ compteRendu.idImage.radiologist.user.name }} {{
+            compteRendu.idImage.radiologist.user.lastname }}</p>
           <p class="item_interpretation">Radiologist's interpretation : {{ compteRendu.InterpretationRad }}</p>
 
 
@@ -107,10 +110,16 @@
         {% if done|length > 0 %}
         {% for compteRendu in done %}
         <div class="item">
-          <p class="item_title">Patient: {{ compteRendu.idImage.patient.user.name }} {{ compteRendu.idImage.patient.user.lastname }}</p>
-          <p>Radiologist: {{ compteRendu.idImage.radiologist.user.name }} {{ compteRendu.idImage.radiologist.user.lastname }}</p>
+
+
+          <button onclick="downloadPdf('{{ path('generate_pdf', {'id': compteRendu.id}) }}')">Download PDF</button>
+
+          <p class="item_title">Patient: {{ compteRendu.idImage.patient.user.name }} {{
+            compteRendu.idImage.patient.user.lastname }}</p>
+          <p>Radiologist: {{ compteRendu.idImage.radiologist.user.name }} {{
+            compteRendu.idImage.radiologist.user.lastname }}</p>
           <p class="item_interpretation">Radiologist's interpretation : {{ compteRendu.InterpretationRad }}</p>
-          <p class="item_interpretation"">Doctor’s interpretation: {{ compteRendu.interpretationMed }}</p>
+          <p class="item_interpretation">Doctor’s interpretation: {{ compteRendu.interpretationMed }}</p>
           <p>Date: {{ compteRendu.date|date('Y-m-d') }}</p>
         </div>
         {% endfor %}
@@ -121,5 +130,36 @@
     </div>
   </div>
 </div>
+
+<!-- JavaScript function to download the PDF -->
+<script>
+  function downloadPdf(pdfUrl) {
+    // Send an AJAX request to generate the PDF
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', pdfUrl, true);
+    xhr.responseType = 'blob';
+
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // Create a blob URL for the PDF
+        var blobUrl = URL.createObjectURL(xhr.response);
+
+        // Create a link element and trigger the download
+        var a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = 'compte_rendu.pdf';
+        document.body.appendChild(a);
+        a.click();
+
+        // Clean up
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
+      }
+    };
+
+    xhr.send();
+  }
+</script>
 {% endblock %}
+
 {%block footer %} {% endblock %}
