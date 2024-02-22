@@ -1,6 +1,4 @@
-{% extends 'front.html.twig' %}
-{% block title %}RadioHub | Sign{% endblock %}
-
+{% extends 'front.html.twig' %} {% block title %}RadioHub | Sign{% endblock %}
 {% block body %}
 
 <style>
@@ -15,6 +13,10 @@
   }
   input {
     font-size: 15px !important;
+  }
+  .nice-select .list {
+    overflow: scroll;
+    height: 200px;
   }
 </style>
 <center>
@@ -34,12 +36,22 @@
 
 
 
+
+
+
+
+
         }}) }}
 
         {{ form_errors(form.user.name) }}
       </div>
       <div class="d-flex flex-column w-50">
         {{ form_widget(form.user.lastname,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
 
 
 
@@ -60,16 +72,31 @@
 
 
 
+
+
+
+
+
         }}) }}
         {{ form_errors(form.user.email) }}
       </div>
       <div class="d-flex flex-column w-50">
-        {{ form_widget(form.user.password,{'attr':{'class':'form-control px-3 py-2','id':'password'}}) }}
+        {{ form_widget(form.user.password,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+        }}) }}
         <p class="error text-danger mt-2"></p>
       </div>
     </div>
     <div class="d-flex flex-column w-50">
       {{ form_widget(form.doctor.matricule,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
 
 
 
@@ -93,6 +120,11 @@
 
 
 
+
+
+
+
+
       }}) }}
     </div>
 
@@ -104,8 +136,6 @@
   {{ form_end(form) }}
 </div>
 
-{% endblock %} 
-{% block footer %} {% endblock %}
-{% block javascripts %}
+{% endblock %} {% block footer %} {% endblock %} {% block javascripts %}
 <script src="../front/js/custom.js"></script>
 {% endblock %}

@@ -14,14 +14,18 @@ use App\Repository\DoctorRepository;
 use App\Repository\PatientRepository;
 use App\Repository\RadiologistRepository;
 use App\Repository\UserRepository;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/admin')]
 class AdminController extends AbstractController
@@ -34,13 +38,26 @@ class AdminController extends AbstractController
     }
 
     #[Route('/user', name: 'app_admin_user', methods: ['GET', 'POST'])]
-    public function userDashboard(UserRepository $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function userDashboard(UserRepository $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $addUser = new User();
         $form = $this->createForm(UserType::class, $addUser);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            $brochureFile = $form->get('brochureFilename')->getData();
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+                $addUser->setBrochureFilename($newFilename);
+            }
             $addUser->setPassword(
                 $userPasswordHasher->hashPassword(
                     $addUser,
@@ -119,7 +136,7 @@ class AdminController extends AbstractController
     }
 
 
-// ! ---------------- DELETE ---------------------------
+    // ! ---------------- DELETE ---------------------------
 
     #[Route('/delete-patient/{id}', name: 'app_delete_patient')]
     public function deletePatient($id, ManagerRegistry $managerRegistry, PatientRepository $patient): Response
@@ -149,7 +166,7 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('app_admin_doctor');
     }
-    
+
     #[Route('/delete-radiologist/{id}', name: 'app_delete_radiologist')]
     public function deleteRadiologist($id, ManagerRegistry $managerRegistry, RadiologistRepository $radiologist): Response
     {
@@ -208,16 +225,35 @@ class AdminController extends AbstractController
     }
 
 
-// ! --------------------- UPDATE ---------------------------------
+    // ! --------------------- UPDATE ---------------------------------
 
     #[Route('/update/{id}', name: 'app_update_user')]
-    public function updateUser($id, UserRepository $user, ManagerRegistry $managerRegistry, Request $req): Response
+    public function updateUser($id, UserRepository $user, ManagerRegistry $managerRegistry, Request $req, SluggerInterface $slugger): Response
     {
         $em = $managerRegistry->getManager();
+        $userEmpty = new User;
         $dataid = $user->find($id);
-        $form = $this->createForm(UserType::class, $dataid);
+        $userEmpty->setName($dataid->getName());
+        $userEmpty->setLastname($dataid->getLastname());
+        $userEmpty->setEmail($dataid->getEmail());
+        $form = $this->createForm(UserType::class, $userEmpty);
+
         $form->handleRequest($req);
         if ($form->isSubmitted() and $form->isValid()) {
+            $brochureFile = $form->get('brochureFilename')->getData();
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+                $dataid->setBrochureFilename($newFilename);
+            }
             $em->persist($dataid);
             $em->flush();
             return $this->redirectToRoute('app_admin_user');

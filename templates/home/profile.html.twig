@@ -13,10 +13,9 @@
         aria-expanded="false"
       >
         <img
-          src="contact.png"
+          src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}"
           alt=""
-          width="35"
-          height="35"
+          id="pdp-image"
           class="rounded-circle"
         />
       </a>
@@ -94,14 +93,20 @@
     box-shadow: 0 0 5px rgba(128, 128, 128, 0.644);
   }
   #profile {
-    width: 200px;
+    width: 300px;
+    height: 300px;
     border-radius: 50%;
     box-shadow: -5px 5px 10px;
   }
 </style>
 
 <div class="d-flex w-75 mx-auto align-items-center gap-5 my-5">
-  <img id="profile" class="img-fluid" src="contact.png" alt="img" />
+  <img
+    id="profile"
+    class="img-fluid"
+    src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}"
+    alt="img"
+  />
   <div class="d-flex gap-5">
     <div class="d-flex flex-column gap-3">
       <b>Name</b>
@@ -123,15 +128,12 @@
       <p>{{ app.user.email }}</p>
       <p>{{ app.user.gender }}</p>
       <p>{{ app.user.dateBirth | date('Y / m / d') }}</p>
-      {% if is_granted("ROLE_DOCTOR") %}
-      <p>DOCTOR</p>
-      {% endif %} {% if is_granted("ROLE_PATIENT") %}
-      <p>Patient</p>
-      {% endif %} {% if is_granted("ROLE_RADIOLOGIST") %}
-      <p>Radiologist</p>
-      {% endif %} {% if is_granted("ROLE_ADMIN") %}
-      <p>Admin</p>
-      {% endif %}
+      <p>
+        {% if is_granted("ROLE_DOCTOR") %} DOCTOR {% endif %} {% if
+        is_granted("ROLE_PATIENT") %} Patient {% endif %} {% if
+        is_granted("ROLE_RADIOLOGIST") %} Radiologist {% endif %} {% if
+        is_granted("ROLE_ADMIN") %} Admin {% endif %}
+      </p>
     </div>
   </div>
 </div>

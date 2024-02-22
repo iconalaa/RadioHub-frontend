@@ -71,11 +71,67 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }})}}
             {{ form_errors(form.name) }}
           </div>
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.lastname,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -141,11 +197,67 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }})}}
             {{ form_errors(form.email) }}
           </div>
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.password,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -212,9 +324,18 @@
 
 
 
-
-
           }}) }}
+          <label
+            style="white-space: nowrap; cursor: pointer"
+            for="user_brochureFilename"
+            class="required d-flex flex-column align-items-center"
+          >
+            <img width="40px" src="../upload-btn.png" alt="Upload img" />Upload
+            IMG
+          </label>
+          <div style="display: none">
+            {{ form_widget(form.brochureFilename) }}
+          </div>
         </div>
         <button class="btn btn-primary" type="submit">Add</button>
       </div>
@@ -232,6 +353,7 @@
           <th scope="col">Last Name</th>
           <th scope="col">Role</th>
           <th scope="col">Email</th>
+          <th scope="col">Profile Picture</th>
           <th scope="col">Actions</th>
         </tr>
         {% for user in users %}
@@ -243,6 +365,14 @@
             <b>{{ user.roles|join(',') }}</b>
           </td>
           <td>{{ user.email }}</td>
+          <td>
+            <a
+              class="text-nowrap"
+              href="{{ asset('uploads/pdp/' ~ user.brochureFileName) }}"
+              alt="Brochure"
+              >View PDP</a
+            >
+          </td>
           <td class="d-flex gap-2">
             <a
               href="{{ path('app_update_user', { id: user.id }) }}"

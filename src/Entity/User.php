@@ -37,6 +37,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Write your Name")]
     private ?string $name = null;
+    
+    #[ORM\Column(length: 255 ,nullable:true)]
+    private ?string $brochureFilename = null;
+
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Write your Last Name")]
@@ -69,6 +73,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getBrochureFilename(): string
+    {
+        return $this->brochureFilename;
+    }
+
+    public function setBrochureFilename(string $brochureFilename): self
+    {
+        $this->brochureFilename = $brochureFilename;
+
+        return $this;
+    }
     /**
      * A visual identifier that represents this user.
      *

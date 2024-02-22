@@ -18,10 +18,6 @@
           {{ form_widget(f.lastname,{'attr':{'class':'form-control px-3 py-2'
 
 
-
-
-
-
           }}) }}
           {{ form_errors(f.lastname) }}
         </div>
@@ -29,10 +25,6 @@
           {{ form_widget(f.email,{'attr':{'class':'form-control px-3 py-2'}}) }}
           {{ form_errors(f.email) }}
           {{ form_widget(f.password,{'attr':{'class':'form-control px-3 py-2'
-
-
-
-
 
 
           }}) }}
@@ -43,10 +35,10 @@
           {{ form_errors(f.gender) }}
           {{ form_widget(f.date_birth,{'attr':{'class':'d-flex gap-1 justify-content-center'
 
-
-
           }}) }}
         </div>
+        {{ form_widget(f.brochureFilename) }}
+
         <button type="submit" class="btn btn-primary">Update</button>
       </div>
       {{ form_end(f) }}

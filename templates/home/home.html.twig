@@ -24,10 +24,9 @@
         aria-expanded="false"
       >
         <img
-          src="contact.png"
+          src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}"
           alt=""
-          width="35"
-          height="35"
+          id="pdp-image"
           class="rounded-circle"
         />
       </a>
@@ -55,7 +54,7 @@
             </p>
           </a>
           <a
-            href="{{ path('app_settings',{'id':app.user.id}) }}"
+            href="{{ path('app_settings', { id: app.user.id }) }}"
             class="d-flex align-items-center gap-2 dropdown-item"
           >
             <i
