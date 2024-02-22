@@ -11,19 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/rendu')]
-class CompteRenduController extends AbstractController
+class ReportController extends AbstractController
 {
-    
-
-    #[Route('/', name: 'app_compte_rendu_index', methods: ['GET'])]
+    #[Route('/report', name: 'app_admin_report')]
     public function index(CompteRenduRepository $compteRenduRepository): Response
     {
-        return $this->render('compte_rendu/index.html.twig', [
-            'compte_rendus' => $compteRenduRepository->findAll(),
+        return $this->render('admin/report.html.twig', [
+        'compte_rendus' => $compteRenduRepository->findAll(),
         ]);
     }
-
     #[Route('/new', name: 'app_compte_rendu_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -38,7 +34,7 @@ class CompteRenduController extends AbstractController
             return $this->redirectToRoute('app_compte_rendu_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('compte_rendu/new.html.twig', [
+        return $this->renderForm('admin/compte_rendu/new.html.twig', [
             'compte_rendu' => $compteRendu,
             'form' => $form,
         ]);
@@ -47,7 +43,7 @@ class CompteRenduController extends AbstractController
     #[Route('/{id}', name: 'app_compte_rendu_show', methods: ['GET'])]
     public function show(CompteRendu $compteRendu): Response
     {
-        return $this->render('compte_rendu/show.html.twig', [
+        return $this->render('admin/compte_rendu/show.html.twig', [
             'compte_rendu' => $compteRendu,
         ]);
     }
@@ -61,10 +57,10 @@ class CompteRenduController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_compte_rendu_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_report', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('compte_rendu/edit.html.twig', [
+        return $this->renderForm('admin/compte_rendu/edit.html.twig', [
             'compte_rendu' => $compteRendu,
             'form' => $form,
         ]);
@@ -78,6 +74,6 @@ class CompteRenduController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_compte_rendu_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_admin_report', [], Response::HTTP_SEE_OTHER);
     }
 }

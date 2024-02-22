@@ -1,4 +1,5 @@
 {% extends 'front.html.twig' %}
+
 {% block title %} MED {% endblock %}
 {% block header %}{{ parent() }}{% endblock %}
 {% block links %}
@@ -72,10 +73,7 @@
       app.user.lastname }} {{ app.user.name }}'s space</h2>
     <br></br>
     <div class="search-container">
-      <form action="{{ path('app_doctor_search') }}" method="GET">
-        <input type="text" name="query" placeholder="Search...">
-        <button type="submit">Search</button>
-      </form>
+      <input type="text" id="searchInput" onkeyup="searchItems()" placeholder="Search for anything..">
     </div>
 
     <div class="content-wrapper">
@@ -84,19 +82,12 @@
         <br></br>
         {% if compteRendus|length > 0 %}
         {% for compteRendu in compteRendus %}
-
         <div class="item">
-
-
-
-
           <p class="item_title">Patient: {{ compteRendu.idImage.patient.user.name }} {{
             compteRendu.idImage.patient.user.lastname }}</p>
           <p>Radiologist: {{ compteRendu.idImage.radiologist.user.name }} {{
             compteRendu.idImage.radiologist.user.lastname }}</p>
           <p class="item_interpretation">Radiologist's interpretation : {{ compteRendu.InterpretationRad }}</p>
-
-
           <a href="{{ path('add_interpretation', {'id': compteRendu.id}) }}" class="button">Add interpretation</a>
         </div>
         {% endfor %}
@@ -110,17 +101,15 @@
         {% if done|length > 0 %}
         {% for compteRendu in done %}
         <div class="item">
-
-
           <button onclick="downloadPdf('{{ path('generate_pdf', {'id': compteRendu.id}) }}')">Download PDF</button>
-
           <p class="item_title">Patient: {{ compteRendu.idImage.patient.user.name }} {{
             compteRendu.idImage.patient.user.lastname }}</p>
           <p>Radiologist: {{ compteRendu.idImage.radiologist.user.name }} {{
             compteRendu.idImage.radiologist.user.lastname }}</p>
           <p class="item_interpretation">Radiologist's interpretation : {{ compteRendu.InterpretationRad }}</p>
           <p class="item_interpretation">Doctor’s interpretation: {{ compteRendu.interpretationMed }}</p>
-          <p>Date: {{ compteRendu.date|date('Y-m-d') }}</p>
+          <p class="item_date">Date: {{ compteRendu.date|date('Y-m-d') }}</p>
+          <a href=" " class="button">Add Prescription </a>
         </div>
         {% endfor %}
         {% else %}
@@ -159,7 +148,30 @@
 
     xhr.send();
   }
+
+  function searchItems() {
+    // Declare variables
+    var input, filter, items, i, itemTitle, itemInterpretation, itemDate;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    items = document.getElementsByClassName("item");
+
+    // Loop through all items and hide those that don't match the search query
+    for (i = 0; i < items.length; i++) {
+      itemTitle = items[i].getElementsByClassName("item_title")[0];
+      itemInterpretation = items[i].getElementsByClassName("item_interpretation")[0];
+      itemDate = items[i].getElementsByClassName("item_date")[0]; // Assuming you have a class "item_date" for date elements
+
+      // Check if any of the item content matches the search query
+      if (itemTitle.innerText.toUpperCase().indexOf(filter) > -1 ||
+        itemInterpretation.innerText.toUpperCase().indexOf(filter) > -1 ||
+        (itemDate && itemDate.innerText.toUpperCase().indexOf(filter) > -1)) {
+        items[i].style.display = "";
+      } else {
+        items[i].style.display = "none";
+      }
+    }
+  }
+
 </script>
 {% endblock %}
-
-{%block footer %} {% endblock %}

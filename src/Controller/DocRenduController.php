@@ -94,57 +94,6 @@ class DocRenduController extends AbstractController
         ]);
     }
 
-    #[Route('/search', name: 'app_doctor_search')]
-    public function search(Request $request, CompteRenduRepository $compteRenduRepository, DoctorRepository $repoMed): Response
-    {
-        $query = $request->query->get('query');
-
-        if (!$query) {
-            return $this->redirectToRoute('app_doctor');
-        }
-
-        // Retrieve the currently logged-in user
-        /** @var UserInterface $user */
-        $user = $this->getUser();
-
-        // Check if the user is logged in
-        if (!$user) {
-            throw new \LogicException('No user is logged in.');
-        }
-
-        // Retrieve the associated doctor entity using the DoctorRepository
-        $doctor = $repoMed->findOneBy(['user' => $user]);
-
-        // Check if the user is a doctor
-        if (!$doctor) {
-            throw new \LogicException('Logged-in user is not associated with any doctor.');
-        }
-
-        // Retrieve the ID of the associated doctor
-        $doctorId = $doctor->getId();
-
-        // Retrieve the list of compte rendus for the logged-in doctor
-        $compteRendus = $compteRenduRepository->findByField($query);
-
-        // Additional conditions for Pending and Done lists from the search results
-        $compteRendusPending = [];
-        $compteRendusDone = [];
-        foreach ($compteRendus as $cr) {
-            $idDoctor = $cr->getIdDoctor() ? $cr->getIdDoctor()->getId() : null; // Get the ID of the doctor or null
-            if ($cr->getIsEdited() === false && $idDoctor === $doctorId) {
-                $compteRendusPending[] = $cr;
-            } elseif ($cr->getIsEdited() === true && $idDoctor === $doctorId) {
-                $compteRendusDone[] = $cr;
-            }
-        }
-
-
-        return $this->render('med/search.html.twig', [
-            'compteRendusPendingwithsearch' => $compteRendusPending,
-            'compteRendusDonewithsearch' => $compteRendusDone,
-        ]);
-    }
-
     #[Route('/generate-pdf/{id}', name: 'generate_pdf')]
     public function generatePdfAction(CompteRendu $compteRendu): Response
     {

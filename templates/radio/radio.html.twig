@@ -1,7 +1,7 @@
 {% extends 'front.html.twig' %}
 {% block title %} RAD {% endblock %}
 {% block header %}{% endblock %}
-{%block footer %} {% endblock %}
+{% block footer %} {% endblock %}
 {% block links %}
 <link rel="stylesheet" href="{{ asset('../../../front/css/customradio.css') }}" />
 <li class="active">
@@ -12,7 +12,6 @@
 <li><a href="#">Blog </a></li>
 <li><a href="#">Contact Us</a></li>
 {% endblock %}
-
 
 {% block auth %}{% if app.user %}
 <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
@@ -58,6 +57,7 @@
   </ul>
 </div>
 {% endif %} {% endblock %}
+
 {% block body %}
 
 <div class="container">
@@ -69,23 +69,35 @@
       {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
       <div class="d-flex flex-column">
-        <label class="inputs" for="{{ form.interpretation_rad.vars.id }}" class="">Interpretation:</label>
+        <label class="inputs" for="{{ form.interpretation_rad.vars.id }}" class="">Final Interpretation:</label>
         {{ form_widget(form.interpretation_rad, {'attr': {'class': 'form-control '}}) }}
 
-        {{ form_errors(form.interpretation_rad) }}
+        {% if form_errors(form.interpretation_rad) %}
+            <div class="text-danger">
+                {{ form_errors(form.interpretation_rad) }}
+            </div>
+        {% endif %}
       </div>
       <div class="d-flex justify-content-around">
 
         <div class="d-flex flex-column">
           <label class="inputs" for="{{ form.id_doctor.vars.id }}" class="">Assign to Doctor:</label>
           {{ form_widget(form.id_doctor, {'attr': {'class': 'form-control select2 w-100'}}) }}
-          {{ form_errors(form.id_doctor,{'attr':{'class':'error'}}) }}
+          {% if form_errors(form.id_doctor) %}
+            <div class="text-danger">
+                {{ form_errors(form.id_doctor) }}
+            </div>
+          {% endif %}
         </div>
 
         <div class="d-flex flex-column">
           <label class="inputs" for="{{ form.id_image.vars.id }}" class="">Medical Image of:</label>
           {{ form_widget(form.id_image, {'attr': {'class': 'form-control select2 w-100'}}) }}
-          {{ form_errors(form.id_image,{'attr':{'class':'text-danger'}}) }}
+          {% if form_errors(form.id_image) %}
+            <div class="text-danger">
+                {{ form_errors(form.id_image) }}
+            </div>
+          {% endif %}
         </div>
       </div>
 

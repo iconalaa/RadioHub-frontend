@@ -27,12 +27,12 @@ class RadioRenduController extends AbstractController
         if (!$user) {
             throw new \LogicException('No user is logged in.');
         }
+        // Retrieve the associated doctor entity using the DoctorRepository
+        $radiologist = $repoRad->findOneBy(['user' => $user]);
 
-        $Radiologist = $repoRad->findOneBy(['user' => $user]);
-
-
-        if (!$Radiologist) {
-            throw new \LogicException('Logged-in user is not associated with any Radiologue.');
+        // Check if the user is a doctor
+        if (!$radiologist) {
+            throw new \LogicException('Logged-in user is not associated with any doctor.');
         }
         $compteRendu = new CompteRendu();
         $form = $this->createForm(RadType::class, $compteRendu);

@@ -6,16 +6,32 @@ use App\Entity\CompteRendu;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\Date;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CompteRenduType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('interpretationMed')
-            ->add('date')
-            ->add('interpretation_rad')
-            ->add('id_medecin')
+        ->add('interpretationMed', TextareaType::class, [
+            'constraints' => [
+                new NotBlank(['message' => 'Please provide your interpretation']),
+            ],
+            'invalid_message' => 'Custom error message for interpretation_med field',
+            'attr' => [
+                'class' => 'form-control', // Add form-control class for Bootstrap styling
+                'rows' => 5, // Set the number of visible rows for the textarea
+            ],
+        ])
+        ->add('date', null, [
+            'constraints' => [
+                new NotBlank(['message' => 'Please provide the date']),
+            ],
+        ])
+            ->add('interpretation_rad', TextareaType::class)
+            ->add('id_doctor')
             ->add('id_image')
         ;
     }

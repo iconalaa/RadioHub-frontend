@@ -1,0 +1,18 @@
+{# edit.html.twig #}
+{% extends 'back.html.twig' %}
+
+{% block title %} Diagnostics {% endblock %}
+
+{% block body %}
+<div style="display: flex; justify-content: center; padding-top: 70px;"> <!-- Adjust padding-top as needed -->
+    <div style="margin-top: 10px;" class="col-lg-8"> <!-- Adjust the width as needed -->
+        
+        
+        <a href="{{ path('app_admin_report') }}">Back to list</a>
+      
+        {{ include('admin/compte_rendu/_form.html.twig', {'button_label': 'Update'}) }}
+
+        
+    </div>
+</div>
+{% endblock %}
