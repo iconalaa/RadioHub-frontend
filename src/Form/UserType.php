@@ -45,7 +45,7 @@ class UserType extends AbstractType
             ->add('brochureFilename', FileType::class, [
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
+                        'maxSize' => '5024k',
                         'mimeTypes' => [
                             'image/png',
                             'image/jpeg',

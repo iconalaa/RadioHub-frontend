@@ -183,46 +183,32 @@ class AdminController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'app_delete_user')]
-    public function deleteUser($id, ManagerRegistry $managerRegistry, UserRepository $user): Response
+    public function deleteUser($id, ManagerRegistry $managerRegistry, UserRepository $userRepo, DoctorRepository $doctorRepo, PatientRepository $patientRepo, RadiologistRepository $radiologistRepo): Response
     {
         $em = $managerRegistry->getManager();
-        $dataid = $user->find($id);
-        $em->remove($dataid);
+        $user = $userRepo->find($id);
+        // ! -------- Doctor ------------------
+        $doctor = $doctorRepo->findDoctorByUser($id);
+        if ($doctor !== null) {
+            $em->remove($doctor);
+        }
+        // ! -------- Patient ------------------
+        $patient = $patientRepo->findPatientByUser($id);
+        if ($patient !== null) {
+            $em->remove($patient);
+        }
+        // ! -------- Radiologist ------------------
+        $radiologist = $radiologistRepo->findRadiologistByUser($id);
+        if ($radiologist !== null) {
+            $em->remove($radiologist);
+        }
+
+        $em->remove($user);
         $em->flush();
         return $this->redirectToRoute('app_admin_user');
     }
 
 
-
-    #[Route('/profile/delete/{id}', name: 'app_delete_user_profile')]
-    public function deleteUserProfile($id, ManagerRegistry $managerRegistry, AuthorizationCheckerInterface $authChecker, UserRepository $user, DoctorRepository $doctor, PatientRepository $patient, RadiologistRepository $radiologist): Response
-    {
-        $em = $managerRegistry->getManager();
-        $dataid = $user->find($id);
-
-        if ($authChecker->isGranted('ROLE_DOCTOR')) {
-            $doctorId = $doctor->findDoctorByUser($id);
-            if ($doctorId !== null) {
-                $em->remove($doctorId);
-            }
-        }
-        if ($authChecker->isGranted('ROLE_PATIENT')) {
-            $patientId = $patient->findPatientByUser($id);
-            if ($patientId !== null) {
-                $em->remove($patientId);
-            }
-        }
-        if ($authChecker->isGranted('ROLE_RADIOLOGIST')) {
-            $radiologistId = $radiologist->findradiologistByUser($id);
-            if ($radiologistId !== null) {
-                $em->remove($radiologistId);
-            }
-        }
-
-        $em->remove($dataid);
-        $em->flush();
-        return $this->redirectToRoute('app_login');
-    }
 
 
     // ! --------------------- UPDATE ---------------------------------
@@ -232,13 +218,16 @@ class AdminController extends AbstractController
     {
         $em = $managerRegistry->getManager();
         $userEmpty = new User;
+
         $dataid = $user->find($id);
+
         $userEmpty->setName($dataid->getName());
         $userEmpty->setLastname($dataid->getLastname());
         $userEmpty->setEmail($dataid->getEmail());
+       
         $form = $this->createForm(UserType::class, $userEmpty);
-
         $form->handleRequest($req);
+
         if ($form->isSubmitted() and $form->isValid()) {
             $brochureFile = $form->get('brochureFilename')->getData();
             if ($brochureFile) {
@@ -254,6 +243,12 @@ class AdminController extends AbstractController
                 }
                 $dataid->setBrochureFilename($newFilename);
             }
+            $dataid->setName($userEmpty->getName());
+            $dataid->setLastname($userEmpty->getLastname());
+            $dataid->setEmail($userEmpty->getEmail());
+            $dataid->setDateBirth($userEmpty->getDateBirth());
+            $dataid->setGender($userEmpty->getgender());
+            
             $em->persist($dataid);
             $em->flush();
             return $this->redirectToRoute('app_admin_user');
@@ -263,6 +258,7 @@ class AdminController extends AbstractController
             'f' => $form
         ]);
     }
+
     #[Route('/update-patient/{id}', name: 'app_update_patient')]
     public function updatePatient($id, PatientRepository $patient, ManagerRegistry $managerRegistry, Request $req): Response
     {

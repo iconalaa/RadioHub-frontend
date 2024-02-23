@@ -1,88 +1,5 @@
 {% extends 'front.html.twig' %} {% block title %}RadioHub | Profile{% endblock
-%} {% block auth %}
-<div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-  <ul
-    class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
-  >
-    <li class="nav-item dropdown">
-      <a
-        class="nav-link nav-icon-hover"
-        href="javascript:void(0)"
-        id="drop2"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        <img
-          src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}"
-          alt=""
-          id="pdp-image"
-          class="rounded-circle"
-        />
-      </a>
-
-      <div
-        class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
-        aria-labelledby="drop2"
-      >
-        <div class="message-body">
-          <a
-            href="{{ path('app_profile') }}"
-            class="d-flex align-items-center gap-2 dropdown-item"
-          >
-            <i
-              style="
-                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-                  brightness(78%) contrast(81%);
-              "
-              class="fa-solid fa-user"
-            ></i>
-            <p class="mb-0 fs-3">
-              <span style="text-transform: capitalize"
-                >{{ app.user.name }} Profile</span
-              >
-            </p>
-          </a>
-          <a
-            href="{{ path('app_settings', { id: app.user.id }) }}"
-            class="d-flex align-items-center gap-2 dropdown-item"
-          >
-            <i
-              style="
-                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-                  brightness(78%) contrast(81%);
-              "
-              class="fa-solid fa-gear"
-            ></i>
-            <p class="mb-0 fs-3">Settings</p>
-          </a>
-          {% if is_granted('ROLE_ADMIN') %}
-          <a
-            href="{{ path('app_admin') }}"
-            class="d-flex align-items-center gap-2 dropdown-item"
-          >
-            <i
-              style="
-                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-                  brightness(78%) contrast(81%);
-              "
-              class="fa-solid fa-lock"
-            ></i>
-            <p class="mb-0 fs-3">Dashboard</p>
-          </a>
-          {% endif %}
-
-          <a
-            id="logout"
-            href="{{ path('app_logout') }}"
-            class="btn btn-outline-primary mx-3 mt-2 d-block"
-            >Logout</a
-          >
-        </div>
-      </div>
-    </li>
-  </ul>
-</div>
-{% endblock %} {% block body %}
+%} {% block body %}
 <style>
   #delete {
     padding: 0.5rem 1.5rem;
@@ -98,15 +15,32 @@
     border-radius: 50%;
     box-shadow: -5px 5px 10px;
   }
+  .nice-select .list {
+    height: 150px;
+    overflow-y: scroll;
+  }
 </style>
 
 <div class="d-flex w-75 mx-auto align-items-center gap-5 my-5">
   <img
-    id="profile"
-    class="img-fluid"
+    {%
+    if
+    app.user.brochureFileName
+    !="x"
+    %}
     src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}"
+    {%
+    else
+    %}
+    src="./contact.png"
+    {%
+    endif
+    %}
+    id="profile"
+    class="img-fluid object-fit-cover"
     alt="img"
   />
+
   <div class="d-flex gap-5">
     <div class="d-flex flex-column gap-3">
       <b>Name</b>

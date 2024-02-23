@@ -50,109 +50,11 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }})}}
             {{ form_errors(form.name) }}
           </div>
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.lastname,{'attr':{'class':'form-control px-3 py-2'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -177,108 +79,11 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }})}}
             {{ form_errors(form.email) }}
           </div>
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.password,{'attr':{'class':'form-control px-3 py-2'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -297,25 +102,6 @@
             {{ form_errors(form.gender) }}
           </div>
           {{ form_widget(form.date_birth,{'attr':{'class':'d-flex gap-1 justify-content-center h-50'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -359,10 +145,12 @@
         {% for user in users %}
         <tr>
           <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.lastname }}</td>
+          <td>{{ user.name | capitalize }}</td>
+          <td>{{ user.lastname | capitalize }}</td>
           <td>
-            <b>{{ user.roles|join(',') }}</b>
+            <p style="font-size: 15px; font-weight: 600">
+              {{ user.roles|join(',\n') }}
+            </p>
           </td>
           <td>{{ user.email }}</td>
           <td>

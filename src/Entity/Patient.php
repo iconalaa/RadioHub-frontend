@@ -21,6 +21,7 @@ class Patient
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "you should give CNUM Number")]
+    #[Assert\Regex(pattern:"/^\d+$/",message: "you should Put Number")]
     private ?string $n_cnam = null;
 
     #[ORM\Column(length: 255)]
@@ -29,6 +30,7 @@ class Patient
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "you should Write your assurance Nubmer")]
+    #[Assert\Regex(pattern:"/^\d+$/",message: "you should Put Number")]
     private ?string $num_assurance = null;
 
     #[ORM\OneToOne(cascade: ['persist'])]

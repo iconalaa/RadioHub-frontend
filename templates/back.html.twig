@@ -36,7 +36,7 @@
               <img
                 src="../../back/assets/images/logos/dark-logo.svg"
                 width="180"
-                alt=""
+                alt="Logo"
               />
             </a>
             <div
@@ -183,11 +183,23 @@
                     aria-expanded="false"
                   >
                     <img
-                    src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}"
+                      {%
+                      if
+                      app.user.brochureFileName
+                      !="x"
+                      %}
+                      src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}"
+                      {%
+                      else
+                      %}
+                      src="../../../contact.png"
+                      {%
+                      endif
+                      %}
                       alt=""
                       width="35"
                       height="35"
-                      class="rounded-circle"
+                      class="rounded-circle object-fit-cover"
                     />
                   </a>
                   <div
@@ -199,8 +211,22 @@
                         href="{{ path('app_profile') }}"
                         class="d-flex align-items-center gap-2 dropdown-item"
                       >
+                        <i class="ti ti-home fs-6"></i>
+                        <p class="mb-0 fs-3">Home</p>
+                      </a>
+                      <a
+                        href="{{ path('app_profile') }}"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
                         <i class="ti ti-user fs-6"></i>
                         <p class="mb-0 fs-3">My Profile</p>
+                      </a>
+                      <a
+                        href="{{ path('app_profile') }}"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-settings fs-6"></i>
+                        <p class="mb-0 fs-3">Settings</p>
                       </a>
 
                       <a

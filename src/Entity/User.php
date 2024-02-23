@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+// #[UniqueEntity(fields: ['email'], message: 'There is already an account with this Email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -37,8 +37,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Write your Name")]
     private ?string $name = null;
-    
-    #[ORM\Column(length: 255 ,nullable:true)]
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $brochureFilename = null;
 
 
@@ -59,6 +59,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
+    public function setId($id): static
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     public function getEmail(): ?string
     {
@@ -69,6 +74,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+
+    public function setGender(string $gender): static
+    {
+        $this->gender = $gender;
 
         return $this;
     }
@@ -193,17 +210,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isGender(): ?bool
-    {
-        return $this->gender;
-    }
 
-    public function setGender(string $gender): static
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
+  
     function __toString()
     {
         return $this->getEmail();
