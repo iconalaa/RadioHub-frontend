@@ -226,7 +226,16 @@
                     <div class="row">
                         <!-- Chat header -->
                         <div class="col-12 chat-header">
+                            {%if droit == "guest" %}
 
+                            <center><a href="{{ path('add_interpretation', {'id': id}) }}">
+
+                                <button class="btn btn-primary" style="margin-right:5px"> Interpret</button>
+            
+            
+                              </a>
+                              </center>
+                            {%endif%}
                         </div>
 
                         <div class="body-message" id="interpretation-container">

@@ -1,0 +1,148 @@
+{% extends 'backrad.html.twig' %}
+
+
+
+{%block change1%} my images{%endblock%}
+
+{% block change1path%} {{path('app_image')}} {%endblock%}
+
+{%block change2%}shared with me {%endblock%}
+{% block change2path%} {{path('shared')}} {%endblock%}
+
+{%block change3%}Interpretations{%endblock%}
+{% block change3path%} {{path('inter')}} {%endblock%}
+
+{%block change4%}Upload {%endblock%}
+{% block change4path%} {{path('image_upload')}} {%endblock%}
+{%block content%}
+<style>
+  #up {
+    display: flex;
+    align-items: self-start;
+    justify-content: end;
+  }
+</style>
+<div id="show"></div>
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h5>Image Table</h5>
+    <div class="row">
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ path('app_image') }}">/Image</a></li>
+     
+
+        </ol>
+      </nav>
+      <div id="up" class="mb-2"> <a href="{{path('image_upload')}}"> <button class="btn"
+            style="background-color:#64748b;color:white">Upload</button></a>
+          </div>
+    </div>
+
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Default Table</h5>
+
+          <!-- Default Table -->
+          <table class="table" id="dataTable">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">BodyPart</th>
+                <th scope="col">AquisationDate</th>
+                <th scope="col">Radiologist</th>
+
+                <th style="text-align:center">Actions</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in images %}
+
+              <tr>
+                <th scope="row">{{i.id}}</th>
+
+                <td> {{i.bodypart }}</td>
+                <td>{{i.aquisationdate | date }}</td>
+                <td>{{i.radiologist}}</td>
+
+                <td style="display: flex;justify-content: center;">
+                  <a href="{{ path('edit_image', {'id': i.id}) }}">
+                    <button class="btn btn-success " style="margin-right:5px">Edit</button>
+                  </a>
+                  <a href="{{ path('delete', {'id': i.id}) }}">
+                    <button class="btn btn-danger" style="margin-right:5px;">Delete</button>
+                  </a>
+                  <a href="{{ path('consult', {'id': i.id}) }}">
+                    <button class="btn btn-info" style="margin-right:5px"> Consult</button>
+                  </a>
+                  <a onclick="refreshPopupContent({{ i.id }})" class="share" data-id="{{ i.id }}">
+
+                    <button class="btn " style="margin-right:5px;color:white ;background-color:#088af1ba">
+                      share</button>
+
+                  </a>
+
+                </td>
+
+
+              </tr>
+
+              {%endfor%}
+
+
+            </tbody>
+          </table>
+          <!-- End Default Table Example -->
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </section>
+</main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Include DataTables library -->
+
+
+<!-- DataTables Initialization Script -->
+<script>
+  $(document).ready(function () {
+    $('#dataTable').DataTable({
+      "initComplete": function (settings, json) {
+        // Customize the search input field
+        var searchInput = $('#dataTable_filter input[type="search"]');
+        searchInput.addClass('form-control');
+        searchInput.attr('placeholder', 'Search...'); // Set placeholder text
+      }
+    });
+  });
+
+
+  function refreshPopupContent(id) {
+
+
+    // Make AJAX request with the fetched ID
+    $.ajax({
+      url: "/droit/" + id,
+      type: 'GET',
+      success: function (data) {
+        $('#show').html(data);
+      },
+      error: function (error) {
+        console.error('Error fetching pop-up content:', error);
+      }
+    });
+  }
+
+</script>
+
+{% endblock %}
