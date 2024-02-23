@@ -1,3 +1,5 @@
+{# _form.html.twig #}
+
 <style>
     .form-container {
         width: 50%;
@@ -64,16 +66,32 @@
     <div class="form-group">
         {{ form_label(form.interpretation_rad) }}
         {{ form_widget(form.interpretation_rad, {'attr': {'class': 'form-control', 'rows': '4'}}) }}
+        {% if form_errors(form.interpretation_rad) %}
+            <div class="text-danger">
+                {{ form_errors(form.interpretation_rad) }}
+            </div>
+        {% endif %}
     </div>
 
     <div class="form-group">
         {{ form_label(form.id_doctor) }}
         {{ form_widget(form.id_doctor, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.id_doctor) %}
+            <div class="text-danger">
+                {{ form_errors(form.id_doctor) }}
+            </div>
+        {% endif %}
+        
     </div>
 
     <div class="form-group">
         {{ form_label(form.id_image) }}
         {{ form_widget(form.id_image, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.id_image) %}
+            <div class="text-danger">
+                {{ form_errors(form.id_image) }}
+            </div>
+        {% endif %}
     </div>
 
     <div style="text-align: center; margin-top: 10px;">

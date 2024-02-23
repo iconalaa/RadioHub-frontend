@@ -30,10 +30,28 @@ class CompteRenduType extends AbstractType
                 new NotBlank(['message' => 'Please provide the date']),
             ],
         ])
-            ->add('interpretation_rad', TextareaType::class)
-            ->add('id_doctor')
-            ->add('id_image')
-        ;
+            ->add('interpretation_rad', TextareaType::class, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Please provide your interpretation']),
+                ],
+                'invalid_message' => 'Custom error message for interpretation_med field',
+                'attr' => [
+                    'class' => 'form-control', // Add form-control class for Bootstrap styling
+                    'rows' => 5, // Set the number of visible rows for the textarea
+                ],
+            ])
+            ->add('id_doctor', null, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Please provide the doctor ID']),
+                ],
+            ])
+            ->add('id_image', null, [
+                'constraints' => [
+                    new NotBlank(['message' => 'Please provide the image ID']),
+                ],
+            ]);
+        
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -51,7 +51,7 @@ class CompteRendu
         return $this->interpretationMed;
     }
 
-    public function setInterpretationMed(string $interpretationMed): static
+    public function setInterpretationMed(?string $interpretationMed): static
     {
         $this->interpretationMed = $interpretationMed;
 

@@ -109,7 +109,9 @@
           <p class="item_interpretation">Radiologist's interpretation : {{ compteRendu.InterpretationRad }}</p>
           <p class="item_interpretation">Doctor’s interpretation: {{ compteRendu.interpretationMed }}</p>
           <p class="item_date">Date: {{ compteRendu.date|date('Y-m-d') }}</p>
-          <a href=" " class="button">Add Prescription </a>
+          <a href="{{ path('app_prescription_new', {'compteRenduId': compteRendu.id}) }}" class="button">Create Ordonnance</a>
+
+
         </div>
         {% endfor %}
         {% else %}

@@ -1,4 +1,82 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<style>
+    .form-container {
+        width: 50%;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+
+    .form-title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-delete {
+        background-color: #dc3545;
+        color: #fff !important;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 16px;
+        cursor: pointer;
+    }
+
+    .btn-delete:hover {
+        background-color: #c82333;
+    }
+
+    .has-error .form-control {
+        border-color: #a94442;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    }
+
+    .has-error .text-danger {
+        color: #a94442;
+    }
+</style>
+
+
+<div class="form-container">
+    <h2 class="form-title">Prescription form</h2>
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'my-1'}}) }}
+    <div class="col-md-20"> {# Adjust the width as needed #}
+
+        <div class="form-group">
+            {{ form_label(form.contenu, 'prescription content:') }}
+            {{ form_widget(form.contenu, {'attr': {'class': 'form-control'}}) }}
+            {% if form_errors(form.contenu) %}
+            <div class="text-danger">
+                {{ form_errors(form.contenu) }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.date, 'Date :') }}
+            {{ form_widget(form.date, {'attr': {'class': 'form-control datepicker'}}) }}
+            {% if form_errors(form.date) %}
+            <div class="text-danger">
+                {{ form_errors(form.date) }}
+            </div>
+            {% endif %}
+
+            <div style="text-align: center; margin-top: 10px;">
+                <button class="btn">{{ button_label|default('Save') }}</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        {% block javascripts %}
+{# Include jQuery and jQuery UI Datepicker JavaScript #}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+{# Initialize the Datepicker #}
+<script>
+  $(document).ready(function () {
+    $('.datepicker').datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+  });
+</script>
+{% endblock %}
+
+        

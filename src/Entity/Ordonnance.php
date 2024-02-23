@@ -45,8 +45,12 @@ class Ordonnance
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDate($date): static
     {
+        if (is_string($date)) {
+            $date = new \DateTime($date);
+        }
+
         $this->date = $date;
 
         return $this;
