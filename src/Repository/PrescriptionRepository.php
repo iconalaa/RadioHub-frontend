@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\Ordonnance;
+use App\Entity\Prescription;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Ordonnance>
+ * @extends ServiceEntityRepository<Prescription>
  *
- * @method Ordonnance|null find($id, $lockMode = null, $lockVersion = null)
- * @method Ordonnance|null findOneBy(array $criteria, array $orderBy = null)
- * @method Ordonnance[]    findAll()
- * @method Ordonnance[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Prescription|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Prescription|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Prescription[]    findAll()
+ * @method Prescription[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class OrdonnanceRepository extends ServiceEntityRepository
+class PrescriptionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Ordonnance::class);
+        parent::__construct($registry, Prescription::class);
     }
 
 //    /**
-//     * @return Ordonnance[] Returns an array of Ordonnance objects
+//     * @return Prescription[] Returns an array of Prescription objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class OrdonnanceRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Ordonnance
+//    public function findOneBySomeField($value): ?Prescription
 //    {
 //        return $this->createQueryBuilder('o')
 //            ->andWhere('o.exampleField = :val')

@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\OrdonnanceRepository;
+use App\Repository\PrescriptionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: OrdonnanceRepository::class)]
-class Ordonnance
+#[ORM\Entity(repositoryClass: PrescriptionRepository::class)]
+class Prescription
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,12 +20,27 @@ class Ordonnance
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column(type: 'string')]
+    private string $signatureFilename;
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?CompteRendu $compterendu = null;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getSignatureFilename(): string
+    {
+        return $this->signatureFilename;
+    }
+
+    public function setSignatureFilename(string $signatureFilename): self
+    {
+        $this->signatureFilename = $signatureFilename;
+
+        return $this;
     }
 
     public function getContenu(): ?string

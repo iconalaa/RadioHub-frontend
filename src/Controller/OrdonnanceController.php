@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Ordonnance;
-use App\Form\OrdonnanceType;
-use App\Repository\OrdonnanceRepository;
+use App\Entity\Prescription;
+use App\Form\PrescriptionType;
+use App\Repository\PrescriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,45 +15,45 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrdonnanceController extends AbstractController
 {
     #[Route('/', name: 'app_ordonnance_index', methods: ['GET'])]
-    public function index(OrdonnanceRepository $ordonnanceRepository): Response
+    public function index(PrescriptionRepository $PrescriptionRepository): Response
     {
-        return $this->render('ordonnance/index.html.twig', [
-            'ordonnances' => $ordonnanceRepository->findAll(),
+        return $this->render('prescription/index.html.twig', [
+            'ordonnances' => $PrescriptionRepository->findAll(),
         ]);
     }
 
     #[Route('/new', name: 'app_ordonnance_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $ordonnance = new Ordonnance();
-        $form = $this->createForm(OrdonnanceType::class, $ordonnance);
+        $Prescription = new Prescription();
+        $form = $this->createForm(PrescriptionType::class, $Prescription);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($ordonnance);
+            $entityManager->persist($Prescription);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_ordonnance_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('ordonnance/new.html.twig', [
-            'ordonnance' => $ordonnance,
+        return $this->renderForm('prescription/new.html.twig', [
+            'ordonnance' => $Prescription,
             'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_ordonnance_show', methods: ['GET'])]
-    public function show(Ordonnance $ordonnance): Response
+    public function show(Prescription $prescription): Response
     {
-        return $this->render('ordonnance/show.html.twig', [
-            'ordonnance' => $ordonnance,
+        return $this->render('prescription/show.html.twig', [
+            'ordonnance' => $prescription,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_ordonnance_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Ordonnance $ordonnance, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Prescription $prescription, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(OrdonnanceType::class, $ordonnance);
+        $form = $this->createForm(PrescriptionType::class, $prescription);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -62,17 +62,17 @@ class OrdonnanceController extends AbstractController
             return $this->redirectToRoute('app_ordonnance_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('ordonnance/edit.html.twig', [
-            'ordonnance' => $ordonnance,
+        return $this->renderForm('prescription/edit.html.twig', [
+            'ordonnance' => $prescription,
             'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_ordonnance_delete', methods: ['POST'])]
-    public function delete(Request $request, Ordonnance $ordonnance, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Prescription $prescription, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$ordonnance->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($ordonnance);
+        if ($this->isCsrfTokenValid('delete'.$prescription->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($prescription);
             $entityManager->flush();
         }
 
