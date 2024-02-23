@@ -1,0 +1,125 @@
+{% extends 'backrad.html.twig' %}
+
+
+{%block change1%} my images{%endblock%}
+
+{% block change1path%} {{path('app_image')}} {%endblock%}
+
+{%block change2%}shared with me {%endblock%}
+{% block change2path%} {{path('shared')}} {%endblock%}
+
+{%block change3%}Interpretations{%endblock%}
+{% block change3path%} {{path('inter')}} {%endblock%}
+
+
+{%block change4%}Upload {%endblock%}
+{% block change4path%} {{path('image_upload')}} {%endblock%}
+
+{%block content%}
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h5>Image Shared</h5>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('app_image') }}">Image</a></li>
+        <li class="breadcrumb-item">Edit</li>
+
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Default Table</h5>
+
+          <!-- Default Table -->
+          <table class="table" id="dataTable">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">BodyPart</th>
+                <th scope="col">AquisationDate</th>
+                <th scope="col">Radiologist</th>
+
+                <th style="text-align:center">Actions</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in images %}
+
+              <tr>
+                <th scope="row">{{i.id}}</th>
+
+                <td> {{i.bodypart }}</td>
+                <td>{{i.aquisationdate | date }}</td>
+                <td>{{i.radiologist}}</td>
+
+                <td style="display: flex;justify-content: center;">
+                  <a href="{{ path('consult', {'id': i.id}) }}">
+                    <button class="btn btn-info" style="margin-right:5px"> Consult</button>
+                  </a>
+                  <a href="{{ path('add_interpretation', {'id': i.id}) }}">
+
+                    <button class="btn btn-primary" style="margin-right:5px"> intepret</button>
+
+
+                  </a>
+
+
+
+                </td>
+
+
+              </tr>
+
+              {%endfor%}
+
+
+            </tbody>
+          </table>
+          <!-- End Default Table Example -->
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Include DataTables library -->
+
+
+<!-- DataTables Initialization Script -->
+<script>
+  $(document).ready(function () {
+    $('#dataTable').DataTable({
+      "initComplete": function (settings, json) {
+        // Customize the search input field
+        var searchInput = $('#dataTable_filter input[type="search"]');
+        searchInput.addClass('form-control');
+        searchInput.attr('placeholder', 'Search...'); // Set placeholder text
+      }
+    });
+  });
+
+
+  function refreshPopupContent(id) {
+
+
+    // Make AJAX request with the fetched ID
+    $.ajax({
+      url: "/droit/" + id,
+      type: 'GET',
+      success: function (data) {
+        $('#show').html(data);
+      },
+      error: function (error) {
+        console.error('Error fetching pop-up content:', error);
+      }
+    });
+  }
+
+</script>
+{% endblock %}
