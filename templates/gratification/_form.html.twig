@@ -1,19 +1,22 @@
-{{ form_start(form, {'attr': {'novalidate': 'novalidate','class':'my-5'}} ) }}
-<div class="d-flex flex-column gap-3 ">
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'd-flex gap-5 flex-column w-50 mx-auto my-5'}}) }}
+<div class="d-flex flex-column gap-3">
     <div class="d-flex align-items-center"> 
-        {{ form_label(form.Date_grat) }}
-        {{ form_widget(form.Date_grat, {'attr': {'class': 'form-control p-0 ml-2', 'style': 'display: inline-block;'}}) }} 
+        {{ form_widget(form.Date_grat, {'attr': {'class': 'form-control p-0 ml-2', 'id': 'date','type': 'date'}}) }}
+        {{ form_errors(form.Date_grat) }}
     </div>
+    <div classe="d-flex flex_column gap-3">
     {{ form_widget(form.Titre_Grat, {'attr': {'class': 'form-control p-2'}}) }}
+    {{ form_errors(form.Titre_Grat) }}
+    </div>
     {{ form_widget(form.Desc_Grat, {'attr': {'class': 'form-control p-2'}}) }}
-
-    {# Render Type_Grat field as radio buttons #}
+    {{ form_errors(form.Desc_Grat) }}
+    
     {% for child in form.Type_Grat %}
-        <div class="form-check  d-flex">
+        <div class="form-check d-flex">
             {{ form_widget(child, {'id': 'type_' ~ child.vars.value, 'attr': {'class': 'form-check-input'}}) }}
             {{ form_label(child, child.vars.label, {'label_attr': {'class': 'form-check-label'}}) }}
         </div>
     {% endfor %}
 </div>
-<button class="btn btn-lg d-block mx-auto">{{ button_label|default('Save') }}</button> 
+<button class="btn btn-lg d-block mx-auto">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

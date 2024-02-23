@@ -27,9 +27,10 @@
                 <td>{{ donateur.Email }}</td>
                 <td>{{ donateur.Telephone }}</td>
                 <td>
-                    <a href="{{ path('app_donateur_show', {'id': donateur.id}) }}">show</a>
-                    <a href="{{ path('app_donateur_edit', {'id': donateur.id}) }}">edit</a>
+                    <a href="{{ path('app_donateur_show', {'id': donateur.id}) }}" class="btn btn-primary">Show</a>
+                    <a href="{{ path('app_donateur_edit', {'id': donateur.id}) }}" class="btn btn-secondary">Edit</a>
                 </td>
+                
             </tr>
         {% else %}
             <tr>

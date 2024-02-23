@@ -18,9 +18,11 @@ class Donateur
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:'Veuillez saisir votre nom')]
     private ?string $Nom_Donateur = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:'Veuillez saisir votre prénom')]
     private ?string $Prenom_Donateur = null;
 
     #[ORM\Column(length: 255)]
@@ -32,9 +34,11 @@ class Donateur
     private ?string $Email = null;
 
     #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\Length(min:8,max:8,minMessage:('Veuillez Inserez un nombre adéquat'),maxMessage:('Vous avez dépassé le nombre de chiffres permis'))]
+
     private ?string $Telephone = null;
 
-    #[ORM\OneToMany(mappedBy: 'ID_Donateur', targetEntity: Gratification::class)]
+    #[ORM\OneToMany(mappedBy: 'ID_Donateur', targetEntity: Gratification::class, orphanRemoval:true)]
     private Collection $gratifications;
 
     public function __construct()
@@ -52,7 +56,8 @@ class Donateur
         return $this->Nom_Donateur;
     }
 
-    public function setNomDonateur(string $Nom_Donateur): static
+    public function setNomDonateur(?
+    string $Nom_Donateur): static
     {
         $this->Nom_Donateur = $Nom_Donateur;
 
@@ -64,7 +69,7 @@ class Donateur
         return $this->Prenom_Donateur;
     }
 
-    public function setPrenomDonateur(string $Prenom_Donateur): static
+    public function setPrenomDonateur(?string $Prenom_Donateur): static
     {
         $this->Prenom_Donateur = $Prenom_Donateur;
 
@@ -76,7 +81,7 @@ class Donateur
         return $this->Type_Donateur;
     }
 
-    public function setTypeDonateur(string $Type_Donateur): static
+    public function setTypeDonateur(?string $Type_Donateur): static
     {
         $this->Type_Donateur = $Type_Donateur;
 
@@ -88,7 +93,7 @@ class Donateur
         return $this->Email;
     }
 
-    public function setEmail(string $Email): static
+    public function setEmail(?string $Email): static
     {
         $this->Email = $Email;
 
@@ -100,7 +105,7 @@ class Donateur
         return $this->Telephone;
     }
 
-    public function setTelephone(string $Telephone): static
+    public function setTelephone(?string $Telephone): static
     {
         $this->Telephone = $Telephone;
 

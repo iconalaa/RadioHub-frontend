@@ -3,18 +3,34 @@
 namespace App\Form;
 
 use App\Entity\Gratification;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class Gratification1Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Date_grat',)
+
+        // Inside your form type class
+        ->add('Date_grat', DateType::class, [
+            'widget' => 'single_text',
+            
+            'html5' => true,
+            'attr' => [
+                'min' => 'currentDate',
+            ],
+            'input' => 'datetime',
+            'required' => true,
+        ])
+        
             ->add('Titre_Grat', null, [
                 'attr' => [
                     'placeholder' => 'Titre de la gratification'
@@ -30,10 +46,9 @@ class Gratification1Type extends AbstractType
                     'Monnaitaire' => 'Monnaitaire',
                     'Matérielle' => 'Matérielle',
                 ],
-                'placeholder' => 'Choose an option', 
+                'placeholder' => 'Choose an option',
             ])
-            ->add('ID_Donateur')
-        ;
+            ->add('ID_Donateur');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
