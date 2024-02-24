@@ -77,10 +77,27 @@ class PrescriptionController extends AbstractController
     #[Route('/generate_prescription/{id}', name: 'generate_prescription')]
     public function generatePdf(Request $request, Prescription $prescription): Response
     {
-        // Render PDF template with prescription data
+        // Get related CompteRendu
+        $compteRendu = $prescription->getCompterendu();
+
+        // Get absolute file path to the logo image
+        $logoPath = $this->getParameter('kernel.project_dir') . '/public/uploads/signatures/logo.png';
+
+        // Check if the logo image exists
+        if (file_exists($logoPath)) {
+            // Get the logo image as base64 encoded string
+            $logoData = base64_encode(file_get_contents($logoPath));
+        } else {
+            // Provide a fallback image or handle the case where the logo image is missing
+            $logoData = '';
+        }
+
+        // Render PDF template with prescription data and logo image data
         $pdf = $this->renderView('pdf/prescription_template.html.twig', [
             'prescription' => $prescription,
             'imageData' => $this->getBase64ImageData($prescription),
+            'logoData' => $logoData, // Pass the logo data to the template
+            'compteRendu' => $compteRendu,
         ]);
 
         // Create PDF options
