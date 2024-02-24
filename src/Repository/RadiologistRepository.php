@@ -24,7 +24,7 @@ class RadiologistRepository extends ServiceEntityRepository
     //    /**
     //     * @return Radiologist[] Returns an array of Radiologist objects
     //     */
-    public function findRadiologistByUser($userId): Radiologist
+    public function findRadiologistByUser($userId): ?Radiologist
     {
         return $this->createQueryBuilder('r')
             ->innerJoin('r.user', 'u')
@@ -32,7 +32,7 @@ class RadiologistRepository extends ServiceEntityRepository
             ->setParameter('userId', $userId)
             ->orderBy('r.id', 'ASC')
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 
     //    public function findOneBySomeField($value): ?Radiologist

@@ -15,7 +15,7 @@ class Radiologist
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Write your Mat Cnom")]
+    #[Assert\NotBlank(message: "Write your Mat Cnom !")]
 
     private ?string $mat_cnom = null;
 

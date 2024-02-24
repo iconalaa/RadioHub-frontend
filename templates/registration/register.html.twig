@@ -1,188 +1,103 @@
-{% extends 'front.html.twig' %} {% block title %}RadioHub | Sign up{% endblock
-%} {% block auth %} {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-<div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-  <ul
-    class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
-  >
-    <li class="nav-item dropdown">
-      <a
-        class="nav-link nav-icon-hover"
-        href="javascript:void(0)"
-        id="drop2"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        <img
-          src="../../contact.png"
-          alt=""
-          width="35"
-          height="35"
-          class="rounded-circle"
-        />
-      </a>
-
-      <div
-        class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
-        aria-labelledby="drop2"
-      >
-        <div class="message-body">
-          <a
-            href="{{ path('app_profile') }}"
-            class="d-flex align-items-center gap-2 dropdown-item"
-          >
-            <i
-              style="
-                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-                  brightness(78%) contrast(81%);
-              "
-              class="fa-solid fa-user"
-            ></i>
-            <p class="mb-0 fs-3">
-              <span style="text-transform: capitalize"
-                >{{ app.user.name }} Profile</span
-              >
-            </p>
-          </a>
-          <a
-            href="{{ path('app_settings', { id: app.user.id }) }}"
-            class="d-flex align-items-center gap-2 dropdown-item"
-          >
-            <i
-              style="
-                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-                  brightness(78%) contrast(81%);
-              "
-              class="fa-solid fa-gear"
-            ></i>
-            <p class="mb-0 fs-3">
-              <span style="text-transform: capitalize"> Settings</span>
-            </p>
-          </a>
-          {% if is_granted('ROLE_ADMIN') %}
-          <a
-            href="{{ path('app_admin') }}"
-            class="d-flex align-items-center gap-2 dropdown-item"
-          >
-            <i
-              style="
-                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-                  brightness(78%) contrast(81%);
-              "
-              class="fa-solid fa-lock"
-            ></i>
-            <p class="mb-0 fs-3">Dashboard</p>
-          </a>
-          {% endif %}
-          <a
-            id="logout"
-            href="{{ path('app_logout') }}"
-            class="btn btn-outline-primary mx-3 mt-2 d-block"
-            >Logout</a
-          >
-        </div>
-      </div>
-    </li>
-  </ul>
-</div>
-{% else %}
-<a href="{{ path('app_login') }}" class="btn ml-3">Log in</a>
-
-{% endif %} {% endblock %} {% block footer%}{%endblock%} {% block body %} {% if
+{% extends 'front.html.twig' %}
+{% block title %}RadioHub | Sign up{% endblock%}
+{% block footer%}{%endblock%}
+{% block body %}
+	{% if
 is_granted('IS_AUTHENTICATED_FULLY') %}
-<div class="my-5 d-flex flex-column">
-  <h1 class="display-5 mb-5 text-center">
-    You are logged in as <b> {{ app.user.name }}</b>
-    <br />
-    <br />
-    😲
-  </h1>
 
-  <a
-    class="text-center text-primary text-decoration-underline fw-bold"
-    href="{{ path('app_home') }}"
-    >Go Back to HomePage</a
-  >
-</div>
-{% else %}
-<style>
-  ul li {
-    color: rgba(255, 0, 0, 0.8);
-  }
-  .list li {
-    color: #222 !important;
-  }
-  .sign-up-cards {
-    display: flex;
-    justify-content: center;
+		<div class="my-5 d-flex flex-column">
+			<h1 class="display-5 mb-5 text-center">
+				You are logged in as
+				<b>
+					{{ app.user.name }}</b>
+				<br/>
+				<br/>
+				😲
+			</h1>
 
-    gap: 3rem;
-    width: 80%;
-    margin: 0 auto;
-  }
-  .sign-card {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    align-items: center;
-    background-color: #d9d9d9;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    cursor: pointer;
-    transition: 0.2s;
-    width: 320px;
-    height: 350px;
-  }
-  .sign-card:hover {
-    transform: scale(1.05);
-  }
-  .sign-card h1 {
-    color: black;
-    font-size: 30px;
-  }
-  .sign-card p {
-    color: rgba(0, 0, 0, 0.8);
-    text-transform: capitalize;
-  }
-  img:not(#logo) {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-  }
-</style>
-<center>
-  <h1 class="display-5">Sign Up as</h1>
-</center>
-<div class="sign-up-cards my-5">
-  <a href="{{ path('app_register_patient') }}">
-    <div class="sign-card">
-      <img src="../../front/img/patient-card-img.png" alt="" />
-      <h1>Patient</h1>
-      <p>
-        Create an account to access healthcare services, schedule appointments,
-        and manage their medical information
-      </p>
-    </div>
-  </a>
-  <a href="{{ path('app_register_doctor') }}">
-    <div class="sign-card">
-      <img src="../../front/img/doctor-card-img.png" alt="" />
-      <h1>Doctor</h1>
-      <p>
-        create a profile to provide medical services, consult with patients, and
-        collaborate with colleagues.
-      </p>
-    </div>
-  </a>
-  <a href="{{ path('app_register_radiologist') }}">
-    <div class="sign-card">
-      <img src="../../front/img/radiologist-card-img.png" alt="" />
-      <h1>Radiologist</h1>
-      <p>
-        create an account to review and interpret medical images, communicate
-        with healthcare providers, and contribute to patient care.
-      </p>
-    </div>
-  </a>
-</div>
-{% endif %} {% endblock %}
+			<a class="text-center text-primary text-decoration-underline fw-bold" href="{{ path('app_home') }}">Go Back to HomePage</a>
+		</div>
+	{% else %}
+		<style>
+			ul li {
+				color: rgba(255, 0, 0, 0.8);
+			}
+			.list li {
+				color: #222 !important;
+			}
+			.sign-up-cards {
+				display: flex;
+				justify-content: center;
+
+				gap: 3rem;
+				width: 80%;
+				margin: 0 auto;
+			}
+			.sign-card {
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+				align-items: center;
+				background-color: #d9d9d9;
+				border-radius: 8px;
+				padding: 20px;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+				cursor: pointer;
+				transition: 0.2s;
+				width: 320px;
+				height: 350px;
+			}
+			.sign-card:hover {
+				transform: scale(1.05);
+			}
+			.sign-card h1 {
+				color: black;
+				font-size: 30px;
+			}
+			.sign-card p {
+				color: rgba(0, 0, 0, 0.8);
+				text-transform: capitalize;
+			}
+			img:not(#logo) {
+				width: 80px;
+				height: 80px;
+				object-fit: cover;
+			}
+		</style>
+		<center>
+			<h1 class="display-5">Sign Up as</h1>
+		</center>
+		<div class="sign-up-cards my-5">
+			<a href="{{ path('app_register_patient') }}">
+				<div class="sign-card">
+					<img src="../../front/img/patient-card-img.png" alt=""/>
+					<h1>Patient</h1>
+					<p>
+						Create an account to access healthcare services, schedule appointments,
+						        and manage their medical information
+					</p>
+				</div>
+			</a>
+			<a href="{{ path('app_register_doctor') }}">
+				<div class="sign-card">
+					<img src="../../front/img/doctor-card-img.png" alt=""/>
+					<h1>Doctor</h1>
+					<p>
+						create a profile to provide medical services, consult with patients, and
+						        collaborate with colleagues.
+					</p>
+				</div>
+			</a>
+			<a href="{{ path('app_register_radiologist') }}">
+				<div class="sign-card">
+					<img src="../../front/img/radiologist-card-img.png" alt=""/>
+					<h1>Radiologist</h1>
+					<p>
+						create an account to review and interpret medical images, communicate
+						        with healthcare providers, and contribute to patient care.
+					</p>
+				</div>
+			</a>
+		</div>
+	{% endif %}
+{% endblock %}

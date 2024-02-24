@@ -1,6 +1,4 @@
-{% extends 'front.html.twig' %}
-{% block title %}RadioHub | Sign{% endblock %}
-
+{% extends 'front.html.twig' %} {% block title %}RadioHub | Sign{% endblock %}
 {% block body %}
 
 <style>
@@ -15,6 +13,10 @@
   }
   input {
     font-size: 15px !important;
+  }
+  .nice-select .list {
+    overflow: scroll;
+    height: 150px;
   }
 </style>
 <center>
@@ -34,12 +36,26 @@
 
 
 
+
+
+
+
+
+
+
         }}) }}
 
         {{ form_errors(form.user.name) }}
       </div>
       <div class="d-flex flex-column w-50">
         {{ form_widget(form.user.lastname,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
 
 
 
@@ -60,6 +76,13 @@
 
 
 
+
+
+
+
+
+
+
         }}) }}
         {{ form_errors(form.user.email) }}
       </div>
@@ -71,13 +94,19 @@
 
 
 
-
         }}) }}
-        {{ form_errors(form.user.password) }}
+        <p class="error text-danger mt-2"></p>
       </div>
     </div>
     <div class="d-flex flex-column w-50">
       {{ form_widget(form.doctor.matricule,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
 
 
 
@@ -94,17 +123,18 @@
         {{ form_errors(form.user.gender) }}
       </div>
       {{ form_widget(form.user.date_birth,{'attr':{'class':'d-flex gap-1 justify-content-center'
-
-
-
-
-
-
-
       }}) }}
     </div>
 
     <div style="display: none">
+      <label
+        style="white-space: nowrap; cursor: pointer"
+        for="form_user_brochureFilename"
+        class="required d-flex flex-column align-items-center"
+      >
+        <img width="40px" src="../upload-btn.png" alt="Upload img" />Upload IMG
+      </label>
+      {{ form_widget(form.user.brochureFilename) }}
       {{ form_widget(form.doctor.user) }}
     </div>
     <button type="submit" class="btn w-50 mx-auto">Submit</button>
@@ -112,5 +142,6 @@
   {{ form_end(form) }}
 </div>
 
-{% endblock %} 
-{% block footer %} {% endblock %}
+{% endblock %} {% block footer %} {% endblock %} {% block javascripts %}
+<script src="../front/js/custom.js"></script>
+{% endblock %}

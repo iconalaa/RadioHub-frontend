@@ -24,7 +24,7 @@ class DoctorRepository extends ServiceEntityRepository
     //    /**
     //     * @return Doctor[] Returns an array of Doctor objects
     //     */
-    public function findDoctorByUser($userId): Doctor
+    public function findDoctorByUser($userId): ?Doctor
     {
         return $this->createQueryBuilder('d')
             ->innerJoin('d.user', 'u')
@@ -32,8 +32,9 @@ class DoctorRepository extends ServiceEntityRepository
             ->setParameter('userId', $userId)
             ->orderBy('d.id', 'ASC')
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
+
 
     //    public function findOneBySomeField($value): ?Doctor
     //    {
