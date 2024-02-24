@@ -6,6 +6,7 @@ use App\Entity\CompteRendu;
 use App\Form\MedType;
 use App\Repository\CompteRenduRepository;
 use App\Repository\DoctorRepository;
+use App\Repository\PrescriptionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,7 +59,7 @@ class DocRenduController extends AbstractController
 
 
     #[Route('/doctor', name: 'app_doctor', methods: ['GET'])]
-    public function index(CompteRenduRepository $repoCompteendu, DoctorRepository $repoMed): Response
+    public function index(CompteRenduRepository $repoCompteendu, DoctorRepository $repoMed,PrescriptionRepository $prescription): Response
     {
         // Retrieve the currently logged-in user
         /** @var UserInterface $user */
@@ -71,7 +72,7 @@ class DocRenduController extends AbstractController
 
         // Retrieve the associated doctor entity using the DoctorRepository
         $doctor = $repoMed->findOneBy(['user' => $user]);
-
+        $prescriptions=$prescription->findAll();
         // Check if the user is a doctor
         if (!$doctor) {
             throw new \LogicException('Logged-in user is not associated with any doctor.');
@@ -90,6 +91,7 @@ class DocRenduController extends AbstractController
         return $this->render('med/med.html.twig', [
             'compteRendus' => $compteRendus,
             'done' => $compteRendusdone,
+            'prep' => $prescriptions,
 
         ]);
     }
@@ -98,7 +100,7 @@ class DocRenduController extends AbstractController
     public function generatePdfAction(CompteRendu $compteRendu): Response
     {
         // Render the PDF template with the CompteRendu data
-        $html = $this->renderView('pdf_template.html.twig', [
+        $html = $this->renderView('pdf/report_template.html.twig', [
             'compteRendu' => $compteRendu,
         ]);
 

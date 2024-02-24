@@ -20,7 +20,7 @@ class PrescriptionType extends AbstractType
         $builder
             ->add('contenu', TextareaType::class, [
                 'constraints' => [
-                    new NotBlank(['message' => 'Please provide your interpretation']),
+                    new NotBlank(['message' => 'Please provide your prescription']),
                 ],
                 'invalid_message' => 'Custom error message for interpretation_med field',
                 'attr' => [

@@ -99,7 +99,9 @@
         <h3 style=" font-weight: bold;font-family: 'Courier New', monospace;">History</h3>
         <br></br>
         {% if done|length > 0 %}
+
         {% for compteRendu in done %}
+
         <div class="item">
           <button onclick="downloadPdf('{{ path('generate_pdf', {'id': compteRendu.id}) }}')">Download PDF</button>
           <p class="item_title">Patient: {{ compteRendu.idImage.patient.user.name }} {{
@@ -109,7 +111,14 @@
           <p class="item_interpretation">Radiologist's interpretation : {{ compteRendu.InterpretationRad }}</p>
           <p class="item_interpretation">Doctor’s interpretation: {{ compteRendu.interpretationMed }}</p>
           <p class="item_date">Date: {{ compteRendu.date|date('Y-m-d') }}</p>
-          <a href="{{ path('app_prescription_new', {'compteRenduId': compteRendu.id}) }}" class="button">Create Ordonnance</a>
+          {% for p in prep %}
+          {% if p.compterendu.id == compteRendu.id %}
+          <a href="{{ path('generate_prescription', {'id': p.id}) }}" class="button"> Prescription PDF</a>
+          {% else %}
+          <a href="{{ path('app_prescription_new', {'compteRenduId': compteRendu.id}) }}" class="button">Create
+            Prescription</a>
+          {% endif %}
+          {% endfor %}
 
 
         </div>

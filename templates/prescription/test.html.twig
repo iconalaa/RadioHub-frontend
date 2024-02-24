@@ -1,0 +1,3 @@
+{% for p in prescription %}
+    <img src="{{ asset('uploads/signatures/' ~ p.signatureFilename) }}" alt="Prescription Image">
+{% endfor %}

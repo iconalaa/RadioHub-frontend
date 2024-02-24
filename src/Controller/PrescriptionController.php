@@ -5,15 +5,22 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Prescription;
-use App\Form\PrescriptionType;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use App\Repository\PrescriptionRepository;
 use App\Repository\CompteRenduRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
+use App\Form\PrescriptionType;
+use App\Entity\Prescription;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 
+
+
+#[Route('/prescription')]
 class PrescriptionController extends AbstractController
 {
     #[Route('/new/{compteRenduId}', name: 'app_prescription_new', methods: ['GET', 'POST'])]
@@ -57,5 +64,63 @@ class PrescriptionController extends AbstractController
             'prescription' => $prescription,
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/show', name: 'app_prescription_show', methods: ['GET'])]
+    public function show(PrescriptionRepository $PrescriptionRepository): Response
+    {
+        return $this->render('prescription/test.html.twig', [
+            'prescription' => $PrescriptionRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/generate_prescription/{id}', name: 'generate_prescription')]
+    public function generatePdf(Request $request, Prescription $prescription): Response
+    {
+        // Render PDF template with prescription data
+        $pdf = $this->renderView('pdf/prescription_template.html.twig', [
+            'prescription' => $prescription,
+            'imageData' => $this->getBase64ImageData($prescription),
+        ]);
+
+        // Create PDF options
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+
+        // Instantiate Dompdf with options
+        $dompdf = new Dompdf($options);
+
+        // Load HTML content into Dompdf
+        $dompdf->loadHtml($pdf);
+
+        // Set paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render PDF (output to browser)
+        $dompdf->render();
+
+        // Generate PDF file name
+        $fileName = 'prescription_' . $prescription->getId() . '.pdf';
+
+        // Send PDF as response
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+            ]
+        );
+    }
+
+    private function getBase64ImageData(Prescription $prescription): string
+    {
+        if ($prescription->getSignatureFilename()) {
+            $imagePath = $this->getParameter('signature_directory') . '/' . $prescription->getSignatureFilename();
+            $imageData = base64_encode(file_get_contents($imagePath));
+            return $imageData;
+        } else {
+            return ''; // Return an empty string if no signature image is available
+        }
     }
 }
