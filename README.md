@@ -15,18 +15,13 @@ To enable the GD extension in PHP, follow these steps:
 
 2. Open `php.ini` in a text editor.
 
-3. Search for the following line:
+3. Search for the following line:   ==>;extension=gd
 
-4. Remove the semicolon (`;`) at the beginning of the line to uncomment it:
-
+4. Remove the semicolon (`;`) at the beginning of the line to uncomment it: ==> extension=gd
 
 5. Save the changes to `php.ini`.
 
 6. Restart your web server to apply the changes. If you're using Apache, you can restart it using the following command in the Command Prompt or Terminal:
-
-
-
-
 
 
 
