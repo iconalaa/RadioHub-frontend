@@ -33,7 +33,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/settings/{id}', name: 'app_settings')]
-    public function settingsUser($id,UserPasswordHasherInterface $userPasswordHasher, UserRepository $user, ManagerRegistry $managerRegistry, Request $req, SluggerInterface $slugger): Response
+    public function settingsUser($id, UserPasswordHasherInterface $userPasswordHasher, UserRepository $user, ManagerRegistry $managerRegistry, Request $req, SluggerInterface $slugger): Response
     {
         $em = $managerRegistry->getManager();
         $userEmpty = new User;
@@ -43,11 +43,11 @@ class HomeController extends AbstractController
         $userEmpty->setEmail($dataid->getEmail());
         $userEmpty->setGender($dataid->getGender());
         $userEmpty->setDateBirth($dataid->getDateBirth());
-
+        $originalEmail = $userEmpty->getEmail();
         $form = $this->createForm(UserType::class, $userEmpty);
         $form->handleRequest($req);
         if ($form->isSubmitted() and $form->isValid()) {
-
+           
             $brochureFile = $form->get('brochureFilename')->getData();
             if ($brochureFile) {
                 $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -73,7 +73,6 @@ class HomeController extends AbstractController
             $dataid->setLastname($userEmpty->getLastname());
             $dataid->setDateBirth($userEmpty->getDateBirth());
             $dataid->setGender($userEmpty->getgender());
-
             $em->persist($dataid);
             $em->flush();
             return $this->redirectToRoute('app_profile');
@@ -82,7 +81,7 @@ class HomeController extends AbstractController
             'f' => $form
         ]);
     }
-    
+
 
     #[Route('/profile/delete/{id}', name: 'app_delete_user_profile')]
     public function deleteUserProfile($id, ManagerRegistry $managerRegistry, AuthorizationCheckerInterface $authChecker, UserRepository $user, DoctorRepository $doctor, PatientRepository $patient, RadiologistRepository $radiologist): Response

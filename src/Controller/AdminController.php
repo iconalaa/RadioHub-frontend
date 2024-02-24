@@ -32,10 +32,21 @@ class AdminController extends AbstractController
 {
 
     #[Route('/', name: 'app_admin', methods: ['GET', 'POST'])]
-    public function admin(): Response
+    public function admin(UserRepository $userRepo): Response
     {
-        return $this->render('admin/dashboard.html.twig', []);
+        $users = $userRepo->findAll();
+        $patient = $userRepo->countUsersByRole("ROLE_PATIENT");
+        $doctor = $userRepo->countUsersByRole("ROLE_DOCTOR");
+        $radiologist = $userRepo->countUsersByRole("ROLE_RADIOLOGIST");
+
+        return $this->render('admin/dashboard.html.twig', [
+            'patient' => $patient,
+            'doctor' => $doctor,
+            'radiologist' => $radiologist,
+            'allUsers' => $users
+        ]);
     }
+
 
     #[Route('/user', name: 'app_admin_user', methods: ['GET', 'POST'])]
     public function userDashboard(UserRepository $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
@@ -68,9 +79,11 @@ class AdminController extends AbstractController
             $entityManager->flush();
         }
         $users = $user->findAll();
+        $doctorProof = $user->findUsersByRole("ROLE_WAITING_DOCTOR");
         return $this->render('admin/user.html.twig', [
             'form' => $form->createView(),
             'users' => $users,
+            'notification' => $doctorProof,
         ]);
     }
 
@@ -224,7 +237,7 @@ class AdminController extends AbstractController
         $userEmpty->setName($dataid->getName());
         $userEmpty->setLastname($dataid->getLastname());
         $userEmpty->setEmail($dataid->getEmail());
-       
+
         $form = $this->createForm(UserType::class, $userEmpty);
         $form->handleRequest($req);
 
@@ -248,7 +261,7 @@ class AdminController extends AbstractController
             $dataid->setEmail($userEmpty->getEmail());
             $dataid->setDateBirth($userEmpty->getDateBirth());
             $dataid->setGender($userEmpty->getgender());
-            
+
             $em->persist($dataid);
             $em->flush();
             return $this->redirectToRoute('app_admin_user');
@@ -309,5 +322,31 @@ class AdminController extends AbstractController
             'user' => $dataid,
             'form' => $form
         ]);
+    }
+
+    // ! --------------------- Features ---------------------------------
+
+
+    #[Route('/proof/{id}', name: 'app_proof', methods: ['GET', 'POST'])]
+    public function proof($id, UserRepository $userRepo ,ManagerRegistry $managerRegistry): Response
+    {
+        $em = $managerRegistry->getManager();
+        $user = $userRepo->find($id);
+        $user->setRoles(["ROLE_DOCTOR"]);
+        $em->persist($user);
+        $em->flush();
+        return $this->redirectToRoute('app_admin_user');
+    }
+    #[Route('/trash/{id}', name: 'app_trash', methods: ['GET', 'POST'])]
+    public function trash($id, UserRepository $userRepo ,DoctorRepository $doctorRepo ,ManagerRegistry $managerRegistry): Response
+    {
+        $em = $managerRegistry->getManager();
+        $user = $userRepo->find($id);
+        $doctor = $doctorRepo->findDoctorByUser($id);
+        $user->setRoles([]);
+        $em->persist($user);
+        $em->remove($doctor);
+        $em->flush();
+        return $this->redirectToRoute('app_admin_user');
     }
 }
