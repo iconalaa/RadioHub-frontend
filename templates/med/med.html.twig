@@ -111,14 +111,18 @@
           <p class="item_interpretation">Radiologist's interpretation : {{ compteRendu.InterpretationRad }}</p>
           <p class="item_interpretation">Doctor’s interpretation: {{ compteRendu.interpretationMed }}</p>
           <p class="item_date">Date: {{ compteRendu.date|date('Y-m-d') }}</p>
-          {% for p in prep %}
+          {% if prep == null %}
+          <a href="{{ path('app_prescription_new', {'compteRenduId': compteRendu.id}) }}" class="button">Create Prescription</a>
+          {% endif%}
+          {% for p in prep%}
           {% if p.compterendu.id == compteRendu.id %}
           <a href="{{ path('generate_prescription', {'id': p.id}) }}" class="button"> Prescription PDF</a>
           {% else %}
-          <a href="{{ path('app_prescription_new', {'compteRenduId': compteRendu.id}) }}" class="button">Create
-            Prescription</a>
+          <a href="{{ path('app_prescription_new', {'compteRenduId': compteRendu.id}) }}" class="button">Create Prescription</a>
           {% endif %}
           {% endfor %}
+          
+          
 
 
         </div>

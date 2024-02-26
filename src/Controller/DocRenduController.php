@@ -73,6 +73,7 @@ class DocRenduController extends AbstractController
         // Retrieve the associated doctor entity using the DoctorRepository
         $doctor = $repoMed->findOneBy(['user' => $user]);
         $prescriptions=$prescription->findAll();
+       
         // Check if the user is a doctor
         if (!$doctor) {
             throw new \LogicException('Logged-in user is not associated with any doctor.');

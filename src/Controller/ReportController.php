@@ -13,11 +13,33 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ReportController extends AbstractController
 {
+
+    #[Route('/{id}/edit', name: 'app_compte_rendu_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(CompteRenduType::class, $compteRendu);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Handle form submission
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Compte rendu updated successfully.');
+
+            return $this->redirectToRoute('app_admin_report');
+        }
+
+        return $this->render('admin/compte_rendu/edit.html.twig', [
+            'compte_rendu' => $compteRendu,
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[Route('/report', name: 'app_admin_report')]
     public function index(CompteRenduRepository $compteRenduRepository): Response
     {
         return $this->render('admin/report.html.twig', [
-        'compte_rendus' => $compteRenduRepository->findAll(),
+            'compte_rendus' => $compteRenduRepository->findAll(),
         ]);
     }
     #[Route('/new', name: 'app_compte_rendu_new', methods: ['GET', 'POST'])]
@@ -48,23 +70,6 @@ class ReportController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_compte_rendu_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(CompteRenduType::class, $compteRendu);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_admin_report', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('admin/compte_rendu/edit.html.twig', [
-            'compte_rendu' => $compteRendu,
-            'form' => $form,
-        ]);
-    }
 
     #[Route('/{id}', name: 'app_compte_rendu_delete', methods: ['POST'])]
     public function delete(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager): Response

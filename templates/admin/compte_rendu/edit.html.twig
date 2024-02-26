@@ -1,18 +1,108 @@
-{# edit.html.twig #}
+
 {% extends 'back.html.twig' %}
 
-{% block title %} Diagnostics {% endblock %}
+{% block title %}Edit Diagnostic Report{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .form-container {
+            width: 50%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            text-align: center; /* Center align content */
+        }
+
+        .form-title {
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 10px;
+            margin-left: 10px; /* Adjust margin to position the link to the left */
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
 <div style="display: flex; justify-content: center; padding-top: 70px;"> <!-- Adjust padding-top as needed -->
     <div style="margin-top: 10px;" class="col-lg-8"> <!-- Adjust the width as needed -->
-        
-        
-        <a href="{{ path('app_admin_report') }}">Back to list</a>
-      
-        {{ include('admin/compte_rendu/_form.html.twig', {'button_label': 'Update'}) }}
+        <a href="{{ path('app_admin_report') }}" class="back-link">&lt; Back to list</a>
 
-        
+        <div class="form-container">
+            <h2 class="form-title">Edit Diagnostic Report</h2>
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'my-1'}}) }}
+
+            <div class="form-group{% if form.interpretationMed.vars.errors|length > 0 %} has-error{% endif %}">
+                {{ form_label(form.interpretationMed, 'Doctor Decision') }}
+                {{ form_widget(form.interpretationMed, {'attr': {'class': 'form-control', 'rows': '4'}}) }}
+                {% if form_errors(form.interpretationMed) %}
+                    <div class="text-danger">
+                        {{ form_errors(form.interpretationMed) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group{% if form.date.vars.errors|length > 0 %} has-error{% endif %}">
+                {{ form_label(form.date) }}
+                {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                {% if form_errors(form.date) %}
+                    <div class="text-danger">
+                        {{ form_errors(form.date) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.interpretation_rad) }}
+                {{ form_widget(form.interpretation_rad, {'attr': {'class': 'form-control', 'rows': '4'}}) }}
+                {% if form_errors(form.interpretation_rad) %}
+                    <div class="text-danger">
+                        {{ form_errors(form.interpretation_rad) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.id_doctor) }}
+                {{ form_widget(form.id_doctor, {'attr': {'class': 'form-control'}}) }}
+                {% if form_errors(form.id_doctor) %}
+                    <div class="text-danger">
+                        {{ form_errors(form.id_doctor) }}
+                    </div>
+                {% endif %}
+                
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.id_image) }}
+                {{ form_widget(form.id_image, {'attr': {'class': 'form-control'}}) }}
+                {% if form_errors(form.id_image) %}
+                    <div class="text-danger">
+                        {{ form_errors(form.id_image) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div style="text-align: center; margin-top: 10px;">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{{ path('app_compte_rendu_delete', {'id': compte_rendu.id}) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+
     </div>
 </div>
 {% endblock %}
