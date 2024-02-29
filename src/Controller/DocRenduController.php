@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 class DocRenduController extends AbstractController
@@ -56,10 +57,8 @@ class DocRenduController extends AbstractController
         ]);
     }
 
-
-
     #[Route('/doctor', name: 'app_doctor', methods: ['GET'])]
-    public function index(CompteRenduRepository $repoCompteendu, DoctorRepository $repoMed,PrescriptionRepository $prescription): Response
+    public function index(Request $request, CompteRenduRepository $repoCompteendu, DoctorRepository $repoMed, PrescriptionRepository $prescription, PaginatorInterface $paginator): Response
     {
         // Retrieve the currently logged-in user
         /** @var UserInterface $user */
@@ -72,30 +71,36 @@ class DocRenduController extends AbstractController
 
         // Retrieve the associated doctor entity using the DoctorRepository
         $doctor = $repoMed->findOneBy(['user' => $user]);
-        $prescriptions=$prescription->findAll();
-       
+        $prescriptions = $prescription->findAll();
+
         // Check if the user is a doctor
         if (!$doctor) {
             throw new \LogicException('Logged-in user is not associated with any doctor.');
         }
 
-
         // Retrieve the ID of the associated doctor
         $doctorId = $doctor->getId();
-
 
         // Now you have the ID of the associated doctor, you can use it for further processing
         // Retrieve the list of compte rendus for the logged-in doctor
         $compteRendus = $repoCompteendu->findBy(['id_doctor' => $doctorId, 'isEdited' => false]);
         $compteRendusdone = $repoCompteendu->findBy(['id_doctor' => $doctorId, 'isEdited' => true]);
 
+        // Paginate the done compte rendus
+        $pagination = $paginator->paginate(
+            $compteRendusdone,
+            $request->query->getInt('page', 1), // Get page number from the request, default to 1
+            2 // Items per page
+        );
+
         return $this->render('med/med.html.twig', [
             'compteRendus' => $compteRendus,
-            'done' => $compteRendusdone,
+            'done' => $pagination, // Pass the paginated data to the template
             'prep' => $prescriptions,
-
         ]);
     }
+
+
 
     #[Route('/generate-pdf/{id}', name: 'generate_pdf')]
     public function generatePdfAction(CompteRendu $compteRendu): Response
