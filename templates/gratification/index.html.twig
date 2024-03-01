@@ -6,7 +6,8 @@
 
 {% block body %}
     
-    <h1>Gratification index</h1>
+    <h1>Gratification index </h1>
+<div>
 
     <table class="table">
         <thead>
@@ -33,6 +34,7 @@
                 </td>
                 
             </tr>
+            
         {% else %}
             <tr>
                 <td colspan="6">no records found</td>
@@ -40,6 +42,9 @@
         {% endfor %}
         </tbody>
     </table>
-
+   
+        <div>{{ knp_pagination_render(gratifications, 'pagination.html.twig' )}}</div>
+        <div></div>
+</div>
     <a href="{{ path('app_gratification_new') }}">Create new</a>
 {% endblock %}

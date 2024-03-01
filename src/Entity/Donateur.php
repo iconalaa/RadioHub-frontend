@@ -34,6 +34,7 @@ class Donateur
     private ?string $Email = null;
 
     #[ORM\Column(type: Types::BIGINT)]
+    #[Assert\NotBlank(message:'Le numéro de téléphone est nécéssaire pour votre inscri')] 
     #[Assert\Length(min:8,max:8,minMessage:('Veuillez Inserez un nombre adéquat'),maxMessage:('Vous avez dépassé le nombre de chiffres permis'))]
 
     private ?string $Telephone = null;

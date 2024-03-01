@@ -27,18 +27,22 @@ class Gratification
     private ?string $Titre_Grat = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Assert\NotBlank(message:'le titre doit etre précisé')]
+    #[Assert\NotBlank(message:'Une description peut contenir n"importe quelle info supplémentaire')]
     private ?string $Desc_Grat = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull(message:'Veuillez choisir une option')]
     private ?string $Type_Grat = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $Montant = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Type_Machine = null;
+
     #[ORM\ManyToOne(inversedBy: 'gratifications')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Donateur $ID_Donateur = null;
-
-
 
 
     public function getId(): ?int
@@ -105,11 +109,29 @@ class Gratification
 
         return $this;
     }
-/*
-    public function __toString()
+
+    public function getMontant(): ?int
     {
-        return (string)$this->getDateGrat();
+        return $this->Montant;
     }
 
-   */ 
+    public function setMontant(?int $Montant): static
+    {
+        $this->Montant = $Montant;
+
+        return $this;
+    }
+
+    public function getTypeMachine(): ?string
+    {
+        return $this->Type_Machine;
+    }
+
+    public function setTypeMachine(?string $Type_Machine): static
+    {
+        $this->Type_Machine = $Type_Machine;
+
+        return $this;
+    }
+
 }

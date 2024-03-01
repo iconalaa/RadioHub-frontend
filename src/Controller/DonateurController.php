@@ -9,16 +9,23 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/donateur')]
 class DonateurController extends AbstractController
 {
     #[Route('/', name: 'app_donateur_index', methods: ['GET'])]
-    public function index(DonateurRepository $donateurRepository): Response
+    public function index(DonateurRepository $donateurRepository,PaginatorInterface $paginator,Request $req): Response
     {
+        $donateurs = $donateurRepository->findAll();
+        $donateurs = $paginator->paginate(
+            $donateurs, /* query NOT result */
+            $req->query->getInt('page', 1)/*page number*/,
+            3/*limit per page*/
+        );
         return $this->render('donateur/index.html.twig', [
-            'donateurs' => $donateurRepository->findAll(),
+            'donateurs' => $donateurs,
         ]);
     }
 
@@ -33,7 +40,7 @@ class DonateurController extends AbstractController
             $entityManager->persist($donateur);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_donateur_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_gratification_new', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('donateur/new.html.twig', [

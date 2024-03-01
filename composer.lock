@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08bb42bd4e7ea13f6dd19b0917f42933",
+    "content-hash": "2227fce7726b9cd8c1eb9c7ebef3432c",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1474,6 +1474,165 @@
             "time": "2023-10-06T06:47:41+00:00"
         },
         {
+            "name": "knplabs/knp-components",
+            "version": "v3.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/knp-components.git",
+                "reference": "145d74f3fbb24619a60a6f7e54aa4bd10862b07a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/knp-components/zipball/145d74f3fbb24619a60a6f7e54aa4bd10862b07a",
+                "reference": "145d74f3fbb24619a60a6f7e54aa4bd10862b07a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "symfony/event-dispatcher-contracts": "^2.0 || ^3.0",
+                "symfony/http-foundation": "^4.4 || ^5.4 || ^6.0"
+            },
+            "conflict": {
+                "doctrine/dbal": "<2.10"
+            },
+            "require-dev": {
+                "doctrine/mongodb-odm": "^2.0",
+                "doctrine/orm": "^2.7",
+                "doctrine/phpcr-odm": "^1.2",
+                "ext-pdo_sqlite": "*",
+                "jackalope/jackalope-doctrine-dbal": "^1.2",
+                "phpunit/phpunit": "^9.5",
+                "propel/propel1": "^1.7",
+                "ruflin/elastica": "^7.0",
+                "solarium/solarium": "^6.0",
+                "symfony/http-kernel": "^4.4 || ^5.4 || ^6.0",
+                "symfony/property-access": "^4.4 || ^5.4 || ^6.0"
+            },
+            "suggest": {
+                "doctrine/common": "to allow usage pagination with Doctrine ArrayCollection",
+                "doctrine/mongodb-odm": "to allow usage pagination with Doctrine ODM MongoDB",
+                "doctrine/orm": "to allow usage pagination with Doctrine ORM",
+                "doctrine/phpcr-odm": "to allow usage pagination with Doctrine ODM PHPCR",
+                "propel/propel1": "to allow usage pagination with Propel ORM",
+                "ruflin/elastica": "to allow usage pagination with ElasticSearch Client",
+                "solarium/solarium": "to allow usage pagination with Solarium Client",
+                "symfony/property-access": "To allow sorting arrays"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Knp\\Component\\": "src/Knp/Component"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "https://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/KnpLabs/knp-components/contributors"
+                }
+            ],
+            "description": "Knplabs component library",
+            "homepage": "http://github.com/KnpLabs/knp-components",
+            "keywords": [
+                "components",
+                "knp",
+                "knplabs",
+                "pager",
+                "paginator"
+            ],
+            "support": {
+                "issues": "https://github.com/KnpLabs/knp-components/issues",
+                "source": "https://github.com/KnpLabs/knp-components/tree/v3.6.0"
+            },
+            "time": "2022-08-18T06:36:14+00:00"
+        },
+        {
+            "name": "knplabs/knp-paginator-bundle",
+            "version": "v5.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/KnpPaginatorBundle.git",
+                "reference": "7879916a8af4f4d4668535cb0b71f55cc416da66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/7879916a8af4f4d4668535cb0b71f55cc416da66",
+                "reference": "7879916a8af4f4d4668535cb0b71f55cc416da66",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/knp-components": "^2.4 || ^3.0",
+                "php": "^7.3 || ^8.0",
+                "symfony/config": "^4.4 || ^5.4 || ^6.0",
+                "symfony/dependency-injection": "^4.4 || ^5.4 || ^6.0",
+                "symfony/event-dispatcher": "^4.4 || ^5.4 || ^6.0",
+                "symfony/http-foundation": "^4.4 || ^5.4 || ^6.0",
+                "symfony/http-kernel": "^4.4 || ^5.4 || ^6.0",
+                "symfony/routing": "^4.4 || ^5.4 || ^6.0",
+                "symfony/translation": "^4.4 || ^5.4 || ^6.0",
+                "twig/twig": "^2.0 || ^3.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^8.5 || ^9.5",
+                "symfony/expression-language": "^4.4 || ^5.4 || ^6.0",
+                "symfony/templating": "^4.4 || ^5.4 || ^6.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Knp\\Bundle\\PaginatorBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://github.com/KnpLabs/KnpPaginatorBundle/contributors"
+                }
+            ],
+            "description": "Paginator bundle for Symfony to automate pagination and simplify sorting and other features",
+            "homepage": "http://github.com/KnpLabs/KnpPaginatorBundle",
+            "keywords": [
+                "bundle",
+                "knp",
+                "knplabs",
+                "pager",
+                "pagination",
+                "paginator",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/KnpLabs/KnpPaginatorBundle/issues",
+                "source": "https://github.com/KnpLabs/KnpPaginatorBundle/tree/v5.9.0"
+            },
+            "time": "2022-08-28T14:42:14+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "2.9.2",
             "source": {
@@ -2117,6 +2276,65 @@
             },
             "abandoned": "Symfony",
             "time": "2023-02-24T14:57:12+00:00"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v13.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "8052da9058caae10c7297f85821f652b38e31d85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/8052da9058caae10c7297f85821f652b38e31d85",
+                "reference": "8052da9058caae10c7297f85821f652b38e31d85",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "3.5.0",
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^5.7 || ^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stripe\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "support": {
+                "issues": "https://github.com/stripe/stripe-php/issues",
+                "source": "https://github.com/stripe/stripe-php/tree/v13.12.0"
+            },
+            "time": "2024-02-22T22:19:58+00:00"
         },
         {
             "name": "symfony/amqp-messenger",
@@ -10108,16 +10326,16 @@
         },
         {
             "name": "symfony/web-profiler-bundle",
-            "version": "v5.4.34",
+            "version": "v5.4.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-profiler-bundle.git",
-                "reference": "8b3344d0d7faeb6c52e60d4a3657405c5c68625f"
+                "reference": "d71d64739a77ba23e7797d5ed3226796751df058"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/8b3344d0d7faeb6c52e60d4a3657405c5c68625f",
-                "reference": "8b3344d0d7faeb6c52e60d4a3657405c5c68625f",
+                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/d71d64739a77ba23e7797d5ed3226796751df058",
+                "reference": "d71d64739a77ba23e7797d5ed3226796751df058",
                 "shasum": ""
             },
             "require": {
@@ -10168,7 +10386,7 @@
             "description": "Provides a development tool that gives detailed information about the execution of any request",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/web-profiler-bundle/tree/v5.4.34"
+                "source": "https://github.com/symfony/web-profiler-bundle/tree/v5.4.35"
             },
             "funding": [
                 {
@@ -10184,7 +10402,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-20T14:42:24+00:00"
+            "time": "2024-01-23T15:43:50+00:00"
         },
         {
             "name": "theseer/tokenizer",

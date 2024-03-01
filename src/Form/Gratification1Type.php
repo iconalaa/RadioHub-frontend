@@ -9,9 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class Gratification1Type extends AbstractType
 {
@@ -46,8 +43,11 @@ class Gratification1Type extends AbstractType
                     'Monnaitaire' => 'Monnaitaire',
                     'Matérielle' => 'Matérielle',
                 ],
-                'placeholder' => 'Choose an option',
+                
             ])
+
+            ->add('Montant') 
+            ->add('Type_Machine')
             ->add('ID_Donateur');
     }
 
