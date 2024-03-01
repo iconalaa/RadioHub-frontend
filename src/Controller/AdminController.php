@@ -170,10 +170,10 @@ class AdminController extends AbstractController
             'radiologists' => $dataradiologist,
         ]);
     }
-//! ------------------ PDF Controller -------------------------
+    //! ------------------ PDF Controller -------------------------
 
     #[Route('/user/pdf/{id}', name: 'app_user_pdf')]
-    public function downloadcertif($id, UserRepository $repus)
+    public function downloadcertif($id, UserRepository $userRepo, DoctorRepository $docRepo, RadiologistRepository $radioRepo)
     {
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'poppins');
@@ -189,15 +189,21 @@ class AdminController extends AbstractController
             ]
         ]);
         $dompdf->setHttpContext($context);
+        $user = $userRepo->find($id);
+        $doctor = $docRepo->findDoctorByUser($id);
+        $radio = $radioRepo->findRadiologistByUser($id);
         $html = $this->renderView('admin/pdf.html.twig', [
-
+            'user' => $user,
+            'doc' => $doctor,
+            'rad' => $radio,
         ]);
-
+        $name = $user->getName();
+        $lastName = $user->getLastname();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $fichier = 'user-data-' . '.pdf';
-        $dompdf->stream($fichier, ['Attachment' => false]);
+        $fichier = $name . '-' . $lastName . '.pdf';
+        $dompdf->stream($fichier, ['Attachment' => true]);
         return new Response();
     }
 
