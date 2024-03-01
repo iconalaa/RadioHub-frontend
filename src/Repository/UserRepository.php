@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
-* @implements PasswordUpgraderInterface<User>
+ * @implements PasswordUpgraderInterface<User>
  *
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
@@ -39,35 +39,36 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
+    //    /**
+    //     * @return User[] Returns an array of User objects
+    //     */
     public function countUsersByRole($role): int
     {
         return $this->createQueryBuilder('u')
             ->select('COUNT(u.id)')
             ->andWhere('u.roles LIKE :role')
-            ->setParameter('role', '%"'.$role.'"%')
+            ->setParameter('role', '%"' . $role . '"%')
             ->getQuery()
             ->getSingleScalarResult();
     }
     public function findUsersByRole($role): array
-{
-    return $this->createQueryBuilder('u')
-        ->andWhere('u.roles LIKE :role')
-        ->setParameter('role', '%"'.$role.'"%')
-        ->getQuery()
-        ->getResult();
-}
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles LIKE :role')
+            ->setParameter('role', '%"' . $role . '"%')
+            ->getQuery()
+            ->getResult();
+    }
 
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+
+    //    public function findOneBySomeField($value): ?User
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

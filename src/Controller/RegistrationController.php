@@ -149,7 +149,7 @@ class RegistrationController extends AbstractController
             $hashedPassword = $userPasswordHasher->hashPassword($userData, $form->get('user')->get('password')->getData());
             $userData->setPassword($hashedPassword);
             $userData->setBrochureFilename("x");
-            $userData->setRoles(['ROLE_RADIOLOGIST']);
+            $userData->setRoles(['ROLE_WAITING_RADIOLOGIST']);
             $entityManager->persist($userData);
             $entityManager->flush();
             // ! Patient ----

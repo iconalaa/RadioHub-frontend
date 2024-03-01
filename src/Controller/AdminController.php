@@ -14,9 +14,11 @@ use App\Repository\DoctorRepository;
 use App\Repository\PatientRepository;
 use App\Repository\RadiologistRepository;
 use App\Repository\UserRepository;
-use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
@@ -48,8 +50,10 @@ class AdminController extends AbstractController
     }
 
 
+
+
     #[Route('/user', name: 'app_admin_user', methods: ['GET', 'POST'])]
-    public function userDashboard(UserRepository $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    public function userDashboard(UserRepository $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SluggerInterface $slugger, PaginatorInterface $paginator): Response
     {
         $addUser = new User();
         $form = $this->createForm(UserType::class, $addUser);
@@ -79,11 +83,30 @@ class AdminController extends AbstractController
             $entityManager->flush();
         }
         $users = $user->findAll();
+        // ! Proof Start ------------
         $doctorProof = $user->findUsersByRole("ROLE_WAITING_DOCTOR");
+        $radioProof = $user->findUsersByRole("ROLE_WAITING_RADIOLOGIST");
+        // ! Proof End ------------
+        $users = $user->findAll();
+        $users = $paginator->paginate(
+            $users,
+            $request->query->getInt('page', 1),
+            5
+        );
+        $patient = $user->countUsersByRole("ROLE_PATIENT");
+        $doctor = $user->countUsersByRole("ROLE_DOCTOR");
+        $radiologist = $user->countUsersByRole("ROLE_RADIOLOGIST");
+
         return $this->render('admin/user.html.twig', [
             'form' => $form->createView(),
+            // # Statistic start --------
+            'patient' => $patient,
+            'doctor' => $doctor,
+            'radiologist' => $radiologist,
+            // # Statistic end -----------
             'users' => $users,
             'notification' => $doctorProof,
+            'notification_radio' => $radioProof,
         ]);
     }
 
@@ -146,6 +169,36 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
             'radiologists' => $dataradiologist,
         ]);
+    }
+//! ------------------ PDF Controller -------------------------
+
+    #[Route('/user/pdf/{id}', name: 'app_user_pdf')]
+    public function downloadcertif($id, UserRepository $repus)
+    {
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'poppins');
+        $pdfOptions->setIsRemoteEnabled(true);
+
+
+        $dompdf = new Dompdf($pdfOptions);
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer' => FALSE,
+                'verify_peer_name' => FALSE,
+                'allow_self_signed' => TRUE
+            ]
+        ]);
+        $dompdf->setHttpContext($context);
+        $html = $this->renderView('admin/pdf.html.twig', [
+
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $fichier = 'user-data-' . '.pdf';
+        $dompdf->stream($fichier, ['Attachment' => false]);
+        return new Response();
     }
 
 
@@ -325,10 +378,10 @@ class AdminController extends AbstractController
     }
 
     // ! --------------------- Features ---------------------------------
+    // # ----------------- Doctor -----------------
 
-
-    #[Route('/proof/{id}', name: 'app_proof', methods: ['GET', 'POST'])]
-    public function proof($id, UserRepository $userRepo ,ManagerRegistry $managerRegistry): Response
+    #[Route('/proof-doctor/{id}', name: 'app_proof', methods: ['GET', 'POST'])]
+    public function proof($id, UserRepository $userRepo, ManagerRegistry $managerRegistry): Response
     {
         $em = $managerRegistry->getManager();
         $user = $userRepo->find($id);
@@ -337,8 +390,8 @@ class AdminController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('app_admin_user');
     }
-    #[Route('/trash/{id}', name: 'app_trash', methods: ['GET', 'POST'])]
-    public function trash($id, UserRepository $userRepo ,DoctorRepository $doctorRepo ,ManagerRegistry $managerRegistry): Response
+    #[Route('/trash-doctor/{id}', name: 'app_trash', methods: ['GET', 'POST'])]
+    public function trash($id, UserRepository $userRepo, DoctorRepository $doctorRepo, ManagerRegistry $managerRegistry): Response
     {
         $em = $managerRegistry->getManager();
         $user = $userRepo->find($id);
@@ -346,6 +399,31 @@ class AdminController extends AbstractController
         $user->setRoles([]);
         $em->persist($user);
         $em->remove($doctor);
+        $em->flush();
+        return $this->redirectToRoute('app_admin_user');
+    }
+    // # ----------------- Radiologist -----------------
+
+    #[Route('/proof-radio/{id}', name: 'app_proof_radio', methods: ['GET', 'POST'])]
+    public function proofRad($id, UserRepository $userRepo, ManagerRegistry $managerRegistry): Response
+    {
+        $em = $managerRegistry->getManager();
+        $user = $userRepo->find($id);
+        $user->setRoles(["ROLE_RADIOLOGIST"]);
+        $em->persist($user);
+        $em->flush();
+        return $this->redirectToRoute('app_admin_user');
+    }
+
+    #[Route('/trash-radio/{id}', name: 'app_trash_radio', methods: ['GET', 'POST'])]
+    public function trashRad($id, UserRepository $userRepo, RadiologistRepository $radiologistRepo, ManagerRegistry $managerRegistry): Response
+    {
+        $em = $managerRegistry->getManager();
+        $user = $userRepo->find($id);
+        $radiologist = $radiologistRepo->findRadiologistByUser($id);
+        $user->setRoles([]);
+        $em->persist($user);
+        $em->remove($radiologist);
         $em->flush();
         return $this->redirectToRoute('app_admin_user');
     }
