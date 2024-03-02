@@ -21,50 +21,43 @@ class DroitController extends AbstractController
     {
         $droit = $rep->findBy(['image' => 3, 'role' => 'guest']);
         $radioloques = $rep->findRadioloqueWithoutDroit(3);
-        $owner=$rep->findBy(['image'=>3,'role'=>'owner'])[0]->getRadioloqist();
-
-
-
-
+        $owner = $rep->findBy(['image' => 3, 'role' => 'owner'])[0]->getRadioloqist();
 
         return $this->render('droit/test.html.twig', [
             "droits" => $droit,
             "rads" => $radioloques,
-            "owner"=>$owner
+            "owner" => $owner
 
         ]);
-
     }
 
 
-
-
     #[Route('/droit/{id}', name: 'app_droit')]
-    public function index($id, Request $request, DroitRepository $rep ,ImageRepository $repim,ManagerRegistry $em,  RadiologistRepository $repr): Response
+    public function index($id, Request $request, DroitRepository $rep, ImageRepository $repim, ManagerRegistry $em,  RadiologistRepository $repr): Response
     { // Get the list of IDs from the request query parameters
 
-   $ids = $request->request->get('idrad');
+        $ids = $request->request->get('idrad');
 
 
-   // $radioloqueWithoutDroit = $rep->findRadioloqueWithoutDroit($id);
-    //$owner=$rep->findOwnerOfImage($id);
+        // $radioloqueWithoutDroit = $rep->findRadioloqueWithoutDroit($id);
+        //$owner=$rep->findOwnerOfImage($id);
 
-      //  if ($owner) {
+        //  if ($owner) {
         //    $radioloqueWithoutDroit = array_filter($radioloqueWithoutDroit, function ($radioloque) use ($owner) {
-          //      return $radioloque->getId() !== $owner->getId();
-           // });
+        //      return $radioloque->getId() !== $owner->getId();
+        // });
         //}
         // Get users who have the role of "guest"
-    //$guestUsers = $rep->findRadioloqueWithGuestRoleOnImage($id);
+        //$guestUsers = $rep->findRadioloqueWithGuestRoleOnImage($id);
 
 
-// Process the provided IDs here if needed
+        // Process the provided IDs here if needed
 
 
         $droit = $rep->findBy(['image' => $id, 'role' => 'guest']);
         $radioloques = $rep->findRadioloqueWithoutDroit($id);
 
-        $owner=$rep->findBy(['image'=>$id,'role'=>'owner'])[0]->getRadioloqist();
+        $owner = $rep->findBy(['image' => $id, 'role' => 'owner'])[0]->getRadioloqist();
         if (!empty($ids)) {
 
             foreach ($ids as $rad) {
@@ -85,59 +78,38 @@ class DroitController extends AbstractController
 
 
 
-            return $this->render('droit/index.html.twig', [
-                "droits" => $droit,
-                "rads" => $radioloques,
-                "owner"=>$owner,
-                "imageid"=>$id
+        return $this->render('droit/index.html.twig', [
+            "droits" => $droit,
+            "rads" => $radioloques,
+            "owner" => $owner,
+            "imageid" => $id
 
-            ]);
-        }
+        ]);
+    }
     #[Route('/droit/delete/{id}/{idimg}', name: 'deletedroit')]
-    public function delete($id,$idimg, Request $request,ManagerRegistry $em,DroitRepository $rep): Response
+    public function delete($id, $idimg, Request $request, ManagerRegistry $em, DroitRepository $rep): Response
     {
 
         $droit = $rep->find($id);
-        if ($droit and $droit->getRole()!='owner'){
+        if ($droit and $droit->getRole() != 'owner') {
 
-                $em->getManager()->remove($droit);
+            $em->getManager()->remove($droit);
 
-                // Flush the changes to the database
-                $em->getManager()->flush();
+            // Flush the changes to the database
+            $em->getManager()->flush();
 
-                // Return a JSON response indicating success
+            // Return a JSON response indicating success
             return $this->json("200");
-
         } else {
             // If the Droit entity with the given ID doesn't exist, return a JSON response indicating failure
             return $this->json("401");
-
         }
-
-
-
-
-
-
-
-
-
     }
 
 
 
-
-
-
-
-
-
-
-
-
-
     #[Route('/your-route', name: 'your_route')]
-    public function yourAction(Request $request ,DroitRepository $rep)
+    public function yourAction(Request $request, DroitRepository $rep)
     {
 
         $radiologists = $rep->findRadioloqueWithoutDroit(3);
@@ -162,18 +134,4 @@ class DroitController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

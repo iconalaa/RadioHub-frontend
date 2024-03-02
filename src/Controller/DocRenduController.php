@@ -18,7 +18,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class DocRenduController extends AbstractController
 {
-    #[Route('/add_interpretation/{id}', name: 'add_interpretation')]
+    #[Route('/add_decision/{id}', name: 'add_decision')]
     public function addInterpretation(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager, DoctorRepository $repoMed): Response
     {
         // Retrieve the currently logged-in user
@@ -90,7 +90,7 @@ class DocRenduController extends AbstractController
         $pagination = $paginator->paginate(
             $compteRendusdone,
             $request->query->getInt('page', 1), // Get page number from the request, default to 1
-            2 // Items per page
+            1 // Items per page
         );
 
         return $this->render('med/med.html.twig', [

@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Repository\ImagesRepository;
+use App\Repository\ImageRepository;
 use App\Entity\CompteRendu;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +16,7 @@ class RadType extends AbstractType
 {
     private $imagesRepository;
 
-    public function __construct(ImagesRepository $imagesRepository)
+    public function __construct(ImageRepository $imagesRepository)
     {
         $this->imagesRepository = $imagesRepository;
     }
@@ -43,7 +43,7 @@ class RadType extends AbstractType
                 'invalid_message' => 'Custom error message for interpretation_rad field',
             ])
             ->add('id_image', EntityType::class, [
-                'class' => 'App\Entity\Images',
+                'class' => 'App\Entity\Image',
                 'choices' => $this->imagesRepository->findImagesWithoutCompteRendu(),
                 'choice_label' => function($image) {
                     return $image->getpatient();

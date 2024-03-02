@@ -89,7 +89,7 @@
           <p>Radiologist: {{ compteRendu.idImage.radiologist.user.name }} {{
             compteRendu.idImage.radiologist.user.lastname }}</p>
           <p class="item_interpretation">Radiologist's interpretation : {{ compteRendu.InterpretationRad }}</p>
-          <a href="{{ path('add_interpretation', {'id': compteRendu.id}) }}" class="button">Add interpretation</a>
+          <a href="{{ path('add_decision', {'id': compteRendu.id}) }}" class="button">Add interpretation</a>
         </div>
         {% endfor %}
         {% else %}

@@ -19,7 +19,7 @@ class HomeController extends AbstractController
         return $this->render('back.html.twig', []);
     }
 
-    #[Route('/home', name: 'app_home')]
+    #[Route('/', name: 'app_home')]
     public function frontOffice(): Response
     {
         return $this->render('home/home.html.twig', []);

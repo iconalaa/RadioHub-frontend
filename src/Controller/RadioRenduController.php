@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\CompteRendu;
 use App\Form\RadType;
 use App\Repository\DoctorRepository;
-use App\Repository\ImagesRepository;
+use App\Repository\ImageRepository;
 use App\Repository\RadiologistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class RadioRenduController extends AbstractController
 {
     #[Route('/radio', name: 'app_radio', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, DoctorRepository $medrepo, ImagesRepository $imagesRepo, RadiologistRepository $repoRad): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, DoctorRepository $medrepo, ImageRepository $imagesRepo, RadiologistRepository $repoRad): Response
     {
 
         // Retrieve the currently logged-in user
