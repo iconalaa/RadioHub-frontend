@@ -19,10 +19,10 @@ class Image
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255,nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
 
     #[Assert\NotBlank(message: "This field cannot be blank.")]
-    #[Assert\Length(min:3, minMessage:"Your last name must contain at least {{ limit }} characters.")]
+    #[Assert\Length(min: 3, minMessage: "Your last name must contain at least {{ limit }} characters.")]
 
     private ?string $bodypart;
 
@@ -31,7 +31,7 @@ class Image
     private ?string $filename = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\Range(min:"-5 years", minMessage: "You must be at least 5 before years to aquisition of the image ",)]
+    #[Assert\Range(min: "-5 years", minMessage: "You must be at least 5 before years to aquisition of the image ",)]
     #[Assert\NotBlank(message: "This field cannot be blank.")]
 
     private ?\DateTimeInterface $aquisationDate = null;
@@ -45,7 +45,7 @@ class Image
     #[ORM\JoinColumn(nullable: false)]
     private ?Radiologist $radiologist = null;
 
-    #[ORM\OneToMany(mappedBy: 'image', targetEntity: Droit::class,orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'image', targetEntity: Droit::class, orphanRemoval: true)]
 
     private Collection $droits;
 
@@ -54,7 +54,7 @@ class Image
 
     private ?Patient $patient = null;
 
-    #[ORM\OneToMany(mappedBy: 'image', targetEntity: Interpretation::class,orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'image', targetEntity: Interpretation::class, orphanRemoval: true)]
     private Collection $interpretations;
 
     public function __construct()
@@ -85,7 +85,7 @@ class Image
         return $this->filename;
     }
 
-    public function setFilename( ?string $filename): static
+    public function setFilename(?string $filename): static
     {
         $this->filename = $filename;
 
@@ -201,6 +201,6 @@ class Image
     }
     public function __toString(): string
     {
-       return $this->getId();
+        return $this->getId();
     }
 }

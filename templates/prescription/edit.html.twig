@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit Ordonnance</title>
+
+{% block body %}
+    <h1>Edit Ordonnance</h1>
+
+    {{ include('ordonnance/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_ordonnance_index') }}">back to list</a>
+
+    {{ include('ordonnance/_delete_form.html.twig') }}
+{% endblock %}

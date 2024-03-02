@@ -145,9 +145,12 @@ class Patient
         return $this;
     }
 
-    public function __toString(): string
+    public function __toString()
     {
-        // TODO: Implement __toString() method.
-        return  $this->getUser()->getName();
+        if ($this->user) {
+            return $this->user->getName() . ' ' . $this->user->getLastname();
+        }
+        
+        return 'Doctor';
     }
 }

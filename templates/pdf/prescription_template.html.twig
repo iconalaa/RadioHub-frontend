@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            display: block;
+            margin: 0 auto;
+            width: 150px; /* Adjust size as needed */
+            height: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-header {
+            font-weight: bold;
+            color: #555;
+        }
+        .content {
+            margin-left: 20px;
+            color: #666;
+        }
+        .signature {
+            display: block;
+            margin: 0 auto;
+            width: 150px; /* Adjust size as needed */
+            height: auto;
+        }
+        .signature-placeholder {
+            text-align: center;
+        }
+        .divider {
+            border-top: 1px solid #ccc;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="width: 150px; height: auto; margin: 0 auto;">
+            <!-- Embed the logo image with adjusted size -->
+            <img src="data:image/png;base64,{{ logoData }}" alt="Logo" style="max-width: 100%; height: auto;">
+        </div>
+        <h1>Prescription</h1>
+
+        <div class="divider"></div>
+
+        <div class="section">
+            <p class="section-header">Prescription ID:</p>
+            <p class="content">{{ prescription.id }}</p>
+        </div>
+
+        <div class="section">
+            <p class="section-header">Patient Information:</p>
+            <p class="content">Name: {{ prescription.compteRendu.idImage.patient.user.name }}</p>
+            <p class="content">Last Name: {{ prescription.compteRendu.idImage.patient.user.lastname }}</p>
+        </div>
+
+        <div class="section">
+            <p class="section-header">Doctor Information:</p>
+            <p class="content">Name: {{ prescription.compteRendu.IdDoctor.user.name }}</p>
+            <p class="content">Last Name: {{ prescription.compteRendu.IdDoctor.user.lastname }}</p>
+        </div>
+
+        <div class="section">
+            <p class="section-header">Content:</p>
+            <p class="content">{{ prescription.contenu }}</p>
+        </div>
+
+        <div class="section">
+            <p class="section-header">Date:</p>
+            <p class="content">{{ prescription.date ? prescription.date|date('Y-m-d') : 'N/A' }}</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section signature-placeholder">
+            <p class="section-header">Signature:</p>
+            {% if prescription.signatureFilename %}
+                <img class="signature" src="data:image/png;base64,{{ imageData }}" alt="Signature">
+            {% else %}
+                <p class="content">No signature available</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

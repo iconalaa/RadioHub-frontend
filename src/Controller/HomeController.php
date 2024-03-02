@@ -13,6 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    #[Route('/back', name: 'app_back')]
+    public function backOffice(): Response
+    {
+        return $this->render('back.html.twig', []);
+    }
+
     #[Route('/home', name: 'app_home')]
     public function frontOffice(): Response
     {

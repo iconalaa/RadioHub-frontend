@@ -1,0 +1,153 @@
+{% extends 'front.html.twig' %}
+{% block footer %} {% endblock%}
+{% block auth %} {% if app.user %}
+<div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+  <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+    <li class="nav-item dropdown">
+      <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        <img src="../contact.png" alt="" width="35" height="35" class="rounded-circle" />
+      </a>
+
+      <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+        <div class="message-body">
+          <a href="{{ path('app_profile') }}" class="d-flex align-items-center gap-2 dropdown-item">
+            <i style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              " class="fa-solid fa-user"></i>
+            <p class="mb-0 fs-3">
+              <span style="text-transform: capitalize">{{ app.user.name }} Profile</span>
+            </p>
+          </a>
+          <a href="{{ path('app_settings',{'id':app.user.id}) }}" class="d-flex align-items-center gap-2 dropdown-item">
+            <i style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              " class="fa-solid fa-gear"></i>
+            <p class="mb-0 fs-3">Settings</p>
+          </a>
+          {% if is_granted('ROLE_ADMIN') %}
+          <a href="{{ path('app_admin') }}" class="d-flex align-items-center gap-2 dropdown-item">
+            <i style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              " class="fa-solid fa-lock"></i>
+            <p class="mb-0 fs-3">Dashboard</p>
+          </a>
+          {% endif %}
+
+          <a id="logout" href="{{ path('app_logout') }}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+{% else %}
+<a href="{{ path('app_register') }}" class="btn">Sign up</a>
+<a href="{{ path('app_login') }}" class="btn ml-3">Log in</a>
+
+{% endif %} {% endblock %}
+{% block stylesheets %}
+<style>
+  /* Add custom CSS styles here if necessary */
+  .custom-form {
+    margin: 0 auto;
+    /* Center the form */
+    max-width: 400px;
+    /* Set maximum form width */
+  }
+
+  .form-control {
+    max-width: 350px;
+    /* Set maximum width for form controls */
+  }
+
+  .form-group.text-center {
+    margin-top: 20px;
+    /* Add space between the inputs and the button */
+  }
+
+  /* Adjust datepicker input size */
+  .datepicker {
+    width: 30px !important;
+    /* Set width to 30px */
+  }
+
+  .text-danger {
+    color: #dc3545;
+    /* Red danger color */
+  }
+   /* Style for go back arrow link */
+   .go-back-link {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-top: 10px;
+    margin-left: 10px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 20px;
+  }
+
+  .go-back-link:hover {
+    text-decoration: underline;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <a class="go-back-link" href="{{ path('app_doctor') }}">← Go Back</a>
+  <h2 class="text-center mt-5 mb-4">DOCTOR’S DECISION</h2>
+  
+  <div class="row justify-content-center"> {# New container #}
+    <div class="col-md-8"> {# Adjust the width as needed #}
+      <form method="post" class="mt-4 custom-form" novalidate>
+        {{ form_start(form) }}
+
+        <div class="form-group{% if form.interpretationMed.vars.errors|length > 0 %} has-error{% endif %}">
+          {{ form_label(form.interpretationMed, 'Interpretation :') }}
+          {{ form_widget(form.interpretationMed, {'attr': {'class': 'form-control'}}) }}
+          {% if form_errors(form.interpretationMed) %}
+          <div class="text-danger">
+            {{ form_errors(form.interpretationMed) }}
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="form-group{% if form.date.vars.errors|length > 0 %} has-error{% endif %}">
+          {{ form_label(form.date, 'Date :') }}
+          {{ form_widget(form.date, {'attr': {'class': 'form-control datepicker'}}) }}
+          {% if form_errors(form.date) %}
+          <div class="text-danger">
+            {{ form_errors(form.date) }}
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="form-group text-center">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+        {{ form_end(form) }}
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{# Include jQuery and jQuery UI Datepicker JavaScript #}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+{# Initialize the Datepicker #}
+<script>
+  $(document).ready(function () {
+    $('.datepicker').datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+  });
+</script>
+{% endblock %}

@@ -152,41 +152,39 @@ class Radiologist
 
         return $this;
     }
-public function __toString(): string
-{
-    // TODO: Implement __toString() method.
-    return $this->getUser()->getName();
-}
-
-/**
- * @return Collection<int, Interpretation>
- */
-public function getInterpretations(): Collection
-{
-    return $this->interpretations;
-}
-
-public function addInterpretation(Interpretation $interpretation): static
-{
-    if (!$this->interpretations->contains($interpretation)) {
-        $this->interpretations->add($interpretation);
-        $interpretation->setRadiologist($this);
+    public function __toString(): string
+    {
+        // TODO: Implement __toString() method.
+        return $this->getUser()->getName();
     }
 
-    return $this;
-}
+    /**
+     * @return Collection<int, Interpretation>
+     */
+    public function getInterpretations(): Collection
+    {
+        return $this->interpretations;
+    }
 
-public function removeInterpretation(Interpretation $interpretation): static
-{
-    if ($this->interpretations->removeElement($interpretation)) {
-        // set the owning side to null (unless already changed)
-        if ($interpretation->getRadiologist() === $this) {
-            $interpretation->setRadiologist(null);
+    public function addInterpretation(Interpretation $interpretation): static
+    {
+        if (!$this->interpretations->contains($interpretation)) {
+            $this->interpretations->add($interpretation);
+            $interpretation->setRadiologist($this);
         }
+
+        return $this;
     }
 
-    return $this;
-}
+    public function removeInterpretation(Interpretation $interpretation): static
+    {
+        if ($this->interpretations->removeElement($interpretation)) {
+            // set the owning side to null (unless already changed)
+            if ($interpretation->getRadiologist() === $this) {
+                $interpretation->setRadiologist(null);
+            }
+        }
 
-
+        return $this;
+    }
 }

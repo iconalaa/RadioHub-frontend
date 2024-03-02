@@ -1,0 +1,118 @@
+{% extends 'back.html.twig' %}
+
+{% block body %}
+<div style="display: flex; justify-content: center; padding: auto; padding-top: 150px">
+  <div class="col-lg-8 d-flex align-items-stretch">
+    <div class="card w-100">
+      <div class="card-body p-4">
+        <h5 style="color:blue;" class="card-title fw-semibold mb-4">
+          Diagnostic List
+        </h5>
+        <div class="mb-3">
+          <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for anything..">
+        </div>
+        <div class="table-responsive">
+          <table id="compteRenduTable" class="table text-nowrap mb-0 align-middle">
+            <thead class="text-dark fs-4">
+              <tr>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Id</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Assigned By</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">patient Name</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Finished Report</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Assigned To</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Actions</h6>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for compte_rendu in compte_rendus %}
+              <tr>
+                <td class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">{{ compte_rendu.id }}</h6>
+                </td>
+                <td class="border-bottom-0">
+                  <h6 class="fw-semibold mb-1">{{ compte_rendu.idImage.radiologist.user.name }} {{
+                    compte_rendu.idImage.radiologist.user.lastname }}</h6>
+                  <span class="fw-normal"></span>
+                </td>
+                <td class="border-bottom-0">
+                  <p class="mb-0 fw-normal">{{ compte_rendu.idImage.patient.user.name }}
+                    {{compte_rendu.idImage.patient.user.lastname }}</p>
+                </td>
+                {% if compte_rendu.isEdited == 1 %}
+                <td class="border-bottom-0">
+                  <div class="d-flex align-items-center gap-2">
+                    {% set case = 'TRUE' %}
+                    <span class="badge bg-success rounded-3 fw-semibold">{{ case }}</span>
+                  </div>
+                </td>
+                {% else %}
+                <td class="border-bottom-0">
+                  <div class="d-flex align-items-center gap-2">
+                    {% set case = 'FALSE' %}
+                    <span class="badge bg-danger rounded-3 fw-semibold">{{ case }}</span>
+                  </div>
+                </td>
+                {% endif %}
+                <td class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0 fs-4">{{ compte_rendu.IdDoctor.user.name }} {{
+                    compte_rendu.IdDoctor.user.lastname }}</h6>
+                </td>
+                <td class="border-bottom-0">
+                  <a href="{{ path('app_compte_rendu_show', {'id': compte_rendu.id}) }}"
+                    class="btn btn-success">Show</a>
+                  <a href="{{ path('app_compte_rendu_edit', {'id': compte_rendu.id}) }}"
+                    class="btn btn-primary">Update</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function searchTable() {
+    // Declare variables
+    var input, filter, table, tr, td, i, j, txtValue;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("compteRenduTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows
+    for (i = 0; i < tr.length; i++) {
+      // Hide the row by default
+      tr[i].style.display = "none";
+
+      // Loop through all table columns
+      td = tr[i].getElementsByTagName("td");
+      for (j = 0; j < td.length; j++) {
+        // Check if the current cell contains the search query
+        if (td[j]) {
+          txtValue = td[j].textContent || td[j].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            // If found, display the row and exit the inner loop
+            tr[i].style.display = "";
+            break;
+          }
+        }
+      }
+    }
+  }
+</script>
+{% endblock %}
