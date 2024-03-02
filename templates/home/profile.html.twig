@@ -1,4 +1,5 @@
 {% extends 'front.html.twig' %} {% block title %}RadioHub | Profile{% endblock
+<<<<<<< HEAD
 %} {% block auth %} 
 <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
   <ul
@@ -84,6 +85,9 @@
   </ul>
 </div>
 {% endblock %} {% block body %}
+=======
+%} {% block body %}
+>>>>>>> origin/main
 <style>
   #delete {
     padding: 0.5rem 1.5rem;
@@ -94,14 +98,37 @@
     box-shadow: 0 0 5px rgba(128, 128, 128, 0.644);
   }
   #profile {
-    width: 200px;
+    width: 300px;
+    height: 300px;
     border-radius: 50%;
     box-shadow: -5px 5px 10px;
+  }
+  .nice-select .list {
+    height: 150px;
+    overflow-y: scroll;
   }
 </style>
 
 <div class="d-flex w-75 mx-auto align-items-center gap-5 my-5">
-  <img id="profile" class="img-fluid" src="contact.png" alt="img" />
+  <img
+    {%
+    if
+    app.user.brochureFileName
+    !="x"
+    %}
+    src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}"
+    {%
+    else
+    %}
+    src="./contact.png"
+    {%
+    endif
+    %}
+    id="profile"
+    class="img-fluid object-fit-cover"
+    alt="img"
+  />
+
   <div class="d-flex gap-5">
     <div class="d-flex flex-column gap-3">
       <b>Name</b>
@@ -123,15 +150,12 @@
       <p>{{ app.user.email }}</p>
       <p>{{ app.user.gender }}</p>
       <p>{{ app.user.dateBirth | date('Y / m / d') }}</p>
-      {% if is_granted("ROLE_DOCTOR") %}
-      <p>DOCTOR</p>
-      {% endif %} {% if is_granted("ROLE_PATIENT") %}
-      <p>Patient</p>
-      {% endif %} {% if is_granted("ROLE_RADIOLOGIST") %}
-      <p>Radiologist</p>
-      {% endif %} {% if is_granted("ROLE_ADMIN") %}
-      <p>Admin</p>
-      {% endif %}
+      <p>
+        {% if is_granted("ROLE_DOCTOR") %} DOCTOR {% endif %} {% if
+        is_granted("ROLE_PATIENT") %} Patient {% endif %} {% if
+        is_granted("ROLE_RADIOLOGIST") %} Radiologist {% endif %} {% if
+        is_granted("ROLE_ADMIN") %} Admin {% endif %}
+      </p>
     </div>
   </div>
 </div>

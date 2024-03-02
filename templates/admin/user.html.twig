@@ -6,7 +6,7 @@
     padding-left: 10px;
   }
   .list li {
-    padding-left: 0px;
+    padding-left: 0;
     color: #222 !important;
   }
   select {
@@ -71,11 +71,97 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }})}}
             {{ form_errors(form.name) }}
           </div>
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.lastname,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -141,11 +227,97 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }})}}
             {{ form_errors(form.email) }}
           </div>
           <div class="d-flex flex-column w-50">
             {{ form_widget(form.password,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -214,7 +386,41 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           }}) }}
+          <label
+            style="white-space: nowrap; cursor: pointer"
+            for="user_brochureFilename"
+            class="required d-flex flex-column align-items-center"
+          >
+            <img width="40px" src="../upload-btn.png" alt="Upload img" />Upload
+            IMG
+          </label>
+          <div style="display: none">
+            {{ form_widget(form.brochureFilename) }}
+          </div>
         </div>
         <button class="btn btn-primary" type="submit">Add</button>
       </div>
@@ -225,24 +431,108 @@
   <div class="card">
     <div class="card-body">
       <h2 class="text-center">Users Table</h2>
+      <div class="d-flex my-4 gap-2">
+        <input
+          id="search"
+          class="form-control"
+          placeholder="Search"
+          type="text"
+        />
+        <select id="select" class="form-select" style="width: 200px">
+          <option selected value="">All</option>
+          <option value="Admin">Admins</option>
+          <option value="Patient">Patients</option>
+          <option value="Doctor">Doctors</option>
+          <option value="Radiologist">Radiologists</option>
+        </select>
+      </div>
       <table class="table">
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Name</th>
-          <th scope="col">Last Name</th>
+          <th scope="col" style="white-space: nowrap">Last Name</th>
           <th scope="col">Role</th>
           <th scope="col">Email</th>
+          <th scope="col" style="white-space: nowrap">Profile Picture</th>
           <th scope="col">Actions</th>
         </tr>
         {% for user in users %}
         <tr>
           <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.lastname }}</td>
+          <td>{{ user.name | capitalize }}</td>
+          <td>{{ user.lastname | capitalize }}</td>
           <td>
-            <b>{{ user.roles|join(',') }}</b>
+            {% for role in user.roles %} {% if role == "ROLE_USER" %}
+            <span
+              style="
+                background-color: rgb(49, 124, 223);
+                padding: 5px 15px;
+                margin: 0 2px;
+                border-radius: 15px;
+                color: #fff;
+              "
+            >
+              User
+            </span>
+            {% endif %} {% if role == "ROLE_DOCTOR" %}
+            <span
+              style="
+                background-color: rgb(240, 96, 0);
+                padding: 5px 15px;
+                margin: 0 2px;
+                border-radius: 15px;
+                color: #fff;
+              "
+            >
+              Doctor
+            </span>
+            {% endif %} {% if role == "ROLE_WAITING_DOCTOR" %}
+            <span
+              style="
+                background-color: #333;
+                padding: 5px 10px;
+                margin: 0 2px;
+                border-radius: 15px;
+                color: #fff;
+              "
+            >
+              <i class="ti ti-reload"></i> Waiting
+            </span>
+            {% endif %} {% if role == "ROLE_RADIOLOGIST" %}
+            <span
+              style="
+                background-color: rgba(91, 20, 206, 0.795);
+                padding: 5px 15px;
+                margin: 0 2px;
+                border-radius: 15px;
+                color: #fff;
+              "
+            >
+              Radiologist
+            </span>
+            {% endif %} {% if role == "ROLE_ADMIN" %}
+            <span
+              style="
+                background-color: rgb(255, 251, 0);
+                padding: 5px 15px;
+                margin: 0 2px;
+                border-radius: 15px;
+                color: #222;
+              "
+            >
+              Admin
+            </span>
+            {% endif %} {% endfor %}
           </td>
           <td>{{ user.email }}</td>
+          <td>
+            <a
+              class="text-nowrap"
+              href="{{ asset('uploads/pdp/' ~ user.brochureFileName) }}"
+              alt="Brochure"
+              >View PDP</a
+            >
+          </td>
           <td class="d-flex gap-2">
             <a
               href="{{ path('app_update_user', { id: user.id }) }}"
@@ -260,5 +550,53 @@
       </table>
     </div>
   </div>
+</div>
+{% endblock %} {% block javascripts %}
+<script src="../front/js/custom.js"></script>
+{% endblock %} {% block notification %}
+<div class="navbar-collapse justify-content-start px-0" id="navbarNav">
+  <ul class="navbar-nav flex-row align-items-center justify-content-end">
+    <li class="nav-item dropdown">
+      <a
+        class="nav-link nav-icon-hover"
+        href="javascript:void(0)"
+        id="drop2"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <i class="ti ti-bell-ringing"></i>
+        {% if notification |length != 0 %}
+        <div class="notification bg-primary rounded-circle"></div>
+        {% endif %}
+      </a>
+      <div
+        class="dropdown-menu dropdown-menu-start justify-content-start dropdown-menu-animate-up"
+        aria-labelledby="drop2"
+      >
+        <div class="message-body">
+          {% for notif in notification %}
+          <div
+            class="d-flex gap-5 justify-content-around align-items-center px-3 my-3"
+          >
+            <p class="mb-0 fs-3">{{ notif }}</p>
+            <div class="d-flex gap-1">
+              <a
+                href="{{ path('app_proof', { id: notif.id }) }}"
+                class="btn btn-success"
+                ><i class="ti ti-check"></i
+              ></a>
+              <a
+                href="{{ path('app_trash', { id: notif.id }) }}"
+                class="btn btn-danger"
+                ><i class="ti ti-trash"></i
+              ></a>
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+      </div>
+    </li>
+  </ul>
 </div>
 {% endblock %}

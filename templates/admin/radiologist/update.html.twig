@@ -3,13 +3,15 @@
 <div class="container-fluid py-5">
   <div class="card">
     <div class="card-body">
+      <a
+        href="{{ path('app_admin_user') }}"
+        class="btn btn-danger h-25 align-self-start px-4 fs-5"
+        ><i class="ti ti-arrow-back"></i
+      ></a>
       <div class="d-flex gap-2 justify-content-center">
-        <a
-          href="{{ path('app_admin_user') }}"
-          class="btn btn-danger h-25 align-self-start"
-          ><i class="ti ti-arrow-back"></i
-        ></a>
-        <h1 class="text-center mb-5 align-self-baseline">Add Radiologist</h1>
+        <h1 class="text-center mb-5 align-self-baseline">
+          Update Radiologist <b>[ {{ user.id }} ]</b>
+        </h1>
       </div>
       {{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-1 '}}
       )}}
@@ -20,9 +22,13 @@
 
 
 
+
+
         }})}}
         {{ form_errors(form.mat_cnom) }}
         {{ form_widget(form.user,{'attr':{'class':'select-form px-3 py-2'
+
+
 
 
 

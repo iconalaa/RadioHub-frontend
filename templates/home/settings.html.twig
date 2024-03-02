@@ -1,97 +1,129 @@
 {% extends 'front.html.twig' %} {% block title %}RadioHub | Settings{%
-endblock%} {% block auth %}
-<div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-  <ul
-    class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
-  >
-    <li class="nav-item dropdown">
-      <a
-        class="nav-link nav-icon-hover"
-        href="javascript:void(0)"
-        id="drop2"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        <img
-          src="../../contact.png"
-          alt=""
-          width="35"
-          height="35"
-          class="rounded-circle"
-        />
-      </a>
+endblock%} {% block body %}
+<style>
+  #profile {
+    margin-left: 2rem;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    box-shadow: -5px 5px 10px;
+  }
+  #upload {
+    position: absolute;
+    left: 21rem;
+    transform: scale(1.5);
+  }
 
-      <div
-        class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
-        aria-labelledby="drop2"
-      >
-        <div class="message-body">
-          <a
-            href="{{ path('app_profile') }}"
-            class="d-flex align-items-center gap-2 dropdown-item"
-          >
-            <i
-              style="
-                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-                  brightness(78%) contrast(81%);
-              "
-              class="fa-solid fa-user"
-            ></i>
-            <p class="mb-0 fs-3">
-              <span style="text-transform: capitalize"
-                >{{ app.user.name }} Profile</span
-              >
-            </p>
-          </a>
-          {% if is_granted('ROLE_ADMIN') %}
-          <a
-            href="{{ path('app_admin') }}"
-            class="d-flex align-items-center gap-2 dropdown-item"
-          >
-            <i
-              style="
-                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-                  brightness(78%) contrast(81%);
-              "
-              class="fa-solid fa-lock"
-            ></i>
-            <p class="mb-0 fs-3">Dashboard</p>
-          </a>
-          {% endif %}
-          <a
-            id="logout"
-            href="{{ path('app_logout') }}"
-            class="btn btn-outline-primary mx-3 mt-2 d-block"
-            >Logout</a
-          >
-        </div>
-      </div>
-    </li>
-  </ul>
-</div>
-{% endblock %} {% block body %}
+  ul li {
+    color: rgb(209, 14, 14);
+  }
+  .nice-select .list {
+    height: 150px;
+    overflow-y: scroll;
+    color: black;
+  }
+  .email {
+    background-color: #d9d9d9c2;
+  }
+</style>
+
 <div class="d-flex align-items-center justify-content-between">
   <img
+    {%
+    if
+    app.user.brochureFileName
+    !="x"
+    %}
+    src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}"
+    {%
+    else
+    %}
     src="../../contact.png"
-    class="img-fluid w-25 h-25 ml-5"
+    {%
+    endif
+    %}
     alt="user-pdp"
+    id="profile"
+    class="img-fluid rounded-circle object-fit-cover"
   />
-  {{ form_start(f,{'attr':{'novalidate': 'novalidate','class':'my-5 w-50 mr-5 ml-auto'}})}}
+  {{ form_start(f,{'attr':{'novalidate': 'novalidate','class':'my-5 w-50 mr-5 ml-auto'
+
+
+
+
+  }})}}
   <div class="d-flex flex-column gap-3">
-    <div class="d-flex gap-3">
+    <div class="d-flex flex-column gap-3">
       {{ form_widget(f.name,{'attr':{'class':'form-control px-3 py-2'}}) }}
       {{ form_errors(f.name) }}
     </div>
-    <div class="d-flex gap-3">
+    <div class="d-flex flex-column gap-3">
       {{ form_widget(f.lastname,{'attr':{'class':'form-control px-3 py-2'}}) }}
       {{ form_errors(f.lastname) }}
     </div>
-    <div class="d-flex gap-3">
-      {{ form_widget(f.email,{'attr':{'class':'form-control px-3 py-2'}}) }}
+    <div
+      class="d-flex flex-column gap-3"
+      style="pointer-events: none; cursor: no-drop"
+    >
+      {{ form_widget(f.email,{'attr':{'class':'form-control d-flex px-3 py-2 email'
+
+
+
+
+
+
+
+      }}) }}
+
       {{ form_errors(f.email) }}
     </div>
-    <div class="d-flex gap-3">
+    <div class="d-flex flex-column gap-1">
       {{ form_widget(f.password,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -133,31 +165,23 @@ endblock%} {% block auth %}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       }}) }}
+      <label
+        id="upload"
+        style="white-space: nowrap; cursor: pointer"
+        for="user_brochureFilename"
+        class="required d-flex flex-column align-items-center"
+      >
+        <img width="40px" src="../upload-btn.png" alt="Upload img" />
+      </label>
+    </div>
+    <div style="display: none">
+      {{ form_widget(f.brochureFilename) }}
     </div>
     <button type="submit" class="btn btn-primary w-50">Update</button>
     {{ form_end(f) }}
   </div>
 </div>
-{% endblock %} {% block footer %} {% endblock %}
+{% endblock %} {% block footer %} {% endblock %} {% block javascripts %}
+<script src="../../front/js/custom.js"></script>
+{% endblock %}

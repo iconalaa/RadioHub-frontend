@@ -24,7 +24,7 @@ class PatientRepository extends ServiceEntityRepository
     //    /**
     //     * @return Patient[] Returns an array of Patient objects
     //     */
-    public function findPatientByUser($userId): Patient
+    public function findPatientByUser($userId): ?Patient
     {
         return $this->createQueryBuilder('p')
             ->innerJoin('p.user', 'u')
@@ -32,7 +32,7 @@ class PatientRepository extends ServiceEntityRepository
             ->setParameter('userId', $userId)
             ->orderBy('p.id', 'ASC')
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
     public function findPatientEmail($userId): ?string
     {

@@ -1,14 +1,18 @@
 {% extends 'back.html.twig' %} {% block body %}
-
+<style>
+  ul li {
+    color: rgb(231, 1, 1);font-weight: 700;
+  }
+</style>
 <div class="container-fluid py-5">
   <div class="card">
     <div class="card-body">
+      <a
+        href="{{ path('app_admin_user') }}"
+        class="btn btn-danger h-25 align-self-start px-4 fs-5"
+        ><i class="ti ti-arrow-back"></i
+      ></a>
       <div class="d-flex gap-2 justify-content-center">
-        <a
-          href="{{ path('app_admin_user') }}"
-          class="btn btn-danger h-25 align-self-start"
-          ><i class="ti ti-arrow-back"></i
-        ></a>
         <h1 class="text-center mb-5 align-self-baseline">Add Patients</h1>
       </div>
       {{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-1'}}
