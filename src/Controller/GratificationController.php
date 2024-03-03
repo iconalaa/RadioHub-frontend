@@ -2,9 +2,15 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Entity\Donateur;
 use App\Entity\Gratification;
 use App\Form\Gratification1Type;
+use App\Repository\DonateurRepository;
 use App\Repository\GratificationRepository;
+use Doctrine\ORM\EntityManager;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,13 +31,36 @@ class GratificationController extends AbstractController
         $gratification = $paginator->paginate(
             $gratification, /* query NOT result */
             $req->query->getInt('page', 1)/*page number*/,
-            2/*limit per page*/
+            4/*limit per page*/
         );
         #dd($gratification);
         return $this->render('gratification/index.html.twig', [
             'gratifications' => $gratification,
         ]);
     }
+
+    /*public function search(Request $request, GratificationRepository $gratificationRepository): JsonResponse
+    {
+        $searchTerm = $request->query->get('search');
+        $gratifications = $gratificationRepository->findBySearchTerm($searchTerm);
+    
+   
+        $data = [];
+        foreach ($gratifications as $gratification) {
+           
+            $data[] = [
+                'id' => $gratification->getId(),
+                'date' => $gratification->getDateGrat(),
+                'title' => $gratification->getTitreGrat(),
+                'Description' => $gratification->getDescGrat(),
+                'Type' => $gratification->getTypeGrat(),
+             
+            ];
+        }
+    
+        return new JsonResponse(['gratifications' => $data]);
+    }
+    */
 
     #[Route('/new', name: 'app_gratification_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,$StripeSK): Response
@@ -45,6 +74,10 @@ class GratificationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($gratification);
             $entityManager->flush();
+            $donateur = $gratification->getIDDonateur();
+            $donor = $entityManager->getRepository(Donateur::class)->find($donateur);
+
+
 
             $session = Session::create([
                 'payment_method_types' => ['card'],
@@ -61,7 +94,7 @@ class GratificationController extends AbstractController
                     ],
                 ],
                 'mode' => 'payment',
-                'success_url' => $this->generateUrl('success_url', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                'success_url' => $this->generateUrl('success_url', ['donorid' =>$donor ? $donor->getId() : null, 'gratificationId' => $gratification->getId(), ], UrlGeneratorInterface::ABSOLUTE_URL),
                 'cancel_url'  => $this->generateUrl('cancel_url', [], UrlGeneratorInterface::ABSOLUTE_URL),
             ]);
 
@@ -75,11 +108,50 @@ class GratificationController extends AbstractController
         ]);
     }
 
-        #[Route('/success-url', name: 'success_url')]
-        public function successUrl(): Response
-        {
-            return $this->render('gratification/success.html.twig', []);
-        }
+    
+    #[Route('/success-url', name: 'success_url')]
+    public function successUrl(Request $req, EntityManagerInterface $entityManager): Response
+    {
+        
+        $donorId = $req->query->getInt('donorId');
+        $gratificationId = $req->query->getInt('gratificationId');
+
+        //$this->logger->debug('Donor ID: ' . $donorId);
+        //$this->logger->debug('Gratification ID: ' . $gratificationId);
+    
+        $donor = $entityManager->getRepository(Donateur::class)->find($donorId);
+        $gratification = $entityManager->getRepository(Gratification::class)->find($gratificationId);
+    
+        $html = $this->renderView('gratification/gratpdf.html.twig', [
+            'donor' => $donor,
+            'gratification' => $gratification,
+        ]);
+    
+        $options = new Options();
+        $options->set('defaultFont', 'Arial','isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+    
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+    
+        $pdfContent = $dompdf->output();
+        
+        // Create a response with PDF content
+        $response = new Response($pdfContent);
+        
+        // Set the response headers
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', 'inline; filename="gratification_details.pdf"');
+    
+        return $response;
+        /*
+        
+        return $this->render('gratification/success.html.twig', []);
+*/
+    }
+    
+    
     
         #[Route('/cancel-url', name: 'cancel_url')]
         public function cancelUrl(): Response

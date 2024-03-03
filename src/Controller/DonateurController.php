@@ -30,7 +30,7 @@ class DonateurController extends AbstractController
     }
 
     #[Route('/new', name: 'app_donateur_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,DonateurRepository $drepo): Response
     {
         $donateur = new Donateur();
         $form = $this->createForm(Donateur1Type::class, $donateur);
@@ -40,6 +40,8 @@ class DonateurController extends AbstractController
             $entityManager->persist($donateur);
             $entityManager->flush();
 
+            $telephone = "+216" . $donateur->getTelephone();
+            $drepo->sms(strval($telephone));
             return $this->redirectToRoute('app_gratification_new', [], Response::HTTP_SEE_OTHER);
         }
 

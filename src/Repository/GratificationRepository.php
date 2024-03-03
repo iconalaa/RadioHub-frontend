@@ -20,6 +20,19 @@ class GratificationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Gratification::class);
     }
+/*
+    public function findBySearchTerm($searchTerm)
+    {
+        if (!$searchTerm) {
+            return []; // Return an empty array if $searchTerm is null or empty
+        }
+    
+        return $this->createQueryBuilder('g')
+            ->andWhere('g.Titre_Grat LIKE :searchTerm OR g.Desc_Grat LIKE :searchTerm OR g.Type_Grat LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Gratification[] Returns an array of Gratification objects
@@ -45,4 +58,5 @@ class GratificationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }

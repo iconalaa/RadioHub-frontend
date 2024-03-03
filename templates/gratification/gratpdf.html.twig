@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gratification Details</title>
+
+</head>
+<body>
+    <h1>Gratification Details</h1>
+    {% if donor is not null %}
+    <p>Donor Information:</p>
+    <p>Name: {{ donor.getNomDonateur() }}</p>
+    <p>First Name: {{ donor.getPrenomDonateur() }}</p>
+    <p>Email: {{ donor.getEmail() }}</p>
+    <p>Telephone: {{ donor.getTelephone() }}</p> 
+    <p>Type: {{ donor.getTypeDonateur() }}</p>
+    {% endif %}
+    <!-- Add more donor details as needed -->
+
+    {% if gratification is not null %}
+    <p>Titre: {{ gratification.getTitreGrat() }}</p>
+    <p>Description: {{ gratification.getDescGrat() }}</p>
+    <p>Type: {{ gratification.getTypeGrat() }}</p>
+    <p>Montant: {{ gratification.getMontant() }} DT</p>
+    {% endif %}
+    <!-- Add more gratification details as needed -->
+
+    <!-- Signature section -->
+    <div class="signature">
+        <img src="{{ asset('image/Cachet.png') }}">
+    </div>
+
+</body>
+</html>
+
+
+
+<style>
+    body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+}
+
+.container {
+width: 80%;
+margin: 0 auto;
+padding: 20px;
+}
+
+.header {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.header h1 {
+font-size: 24px;
+color: #333;
+}
+
+.section {
+margin-bottom: 30px;
+}
+
+.section h2 {
+font-size: 18px;
+color: #333;
+border-bottom: 1px solid #ccc;
+padding-bottom: 10px;
+margin-bottom: 10px;
+}
+
+.section p {
+font-size: 16px;
+line-height: 1.5;
+color: #666;
+}
+
+.signature {
+margin-top: 50px;
+text-align: center;
+}
+
+.signature img {
+width: 200px;
+height: auto;
+}
+
+</style>
