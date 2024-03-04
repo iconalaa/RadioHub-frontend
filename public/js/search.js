@@ -37,3 +37,47 @@
     }
 });
 */
+
+$(document).ready(function() {
+    $('#searchForm').submit(function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        var searchTerm = $('#searchInput').val();
+
+        $.ajax({
+            url: '/gratification/search',
+            method: 'GET',
+            data: { search: searchTerm },
+            success: function(response) {
+                $('#gratificationTable tbody').empty(); // Clear previous results
+                
+                response.gratifications.forEach(function(gratification) {
+                    var row = '<tr>' +
+                              '<td>' + gratification.id + '</td>' +
+                              '<td>' + gratification.date + '</td>' +
+                              '<td>' + gratification.title + '</td>' +
+                              '<td>' + gratification.description + '</td>' +
+                              '<td>' + gratification.type + '</td>' +
+                              '<td>' + gratification.montant + '</td>' +
+                              '<td>' + gratification.iddonateur + '</td>' +
+                              '<td>' +
+                              '<a href="/gratification/' + gratification.id + '" class="btn btn-primary">Show</a>' +
+                              '<a href="/gratification/' + gratification.id + '/edit" class="btn btn-secondary">Edit</a>' +
+                          '</td>' +
+                          '</tr>';
+                              
+                              '</tr>';
+                    $('#gratificationTable tbody').append(row);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(error); // Handle errors
+            }
+        });
+    });
+});
+
+
+
+
+

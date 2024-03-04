@@ -39,28 +39,27 @@ class GratificationController extends AbstractController
         ]);
     }
 
-    /*public function search(Request $request, GratificationRepository $gratificationRepository): JsonResponse
+    #[Route('/search', name: 'search', methods: ['GET'])]
+    public function search(Request $request, GratificationRepository $gratificationRepository): JsonResponse
     {
         $searchTerm = $request->query->get('search');
         $gratifications = $gratificationRepository->findBySearchTerm($searchTerm);
-    
-   
+
         $data = [];
         foreach ($gratifications as $gratification) {
-           
             $data[] = [
                 'id' => $gratification->getId(),
                 'date' => $gratification->getDateGrat(),
                 'title' => $gratification->getTitreGrat(),
                 'Description' => $gratification->getDescGrat(),
                 'Type' => $gratification->getTypeGrat(),
-             
+                'Montant'=> $gratification->getMontant(),
+                'Donateur'=> $gratification->getIDDonateur(),
             ];
         }
-    
+
         return new JsonResponse(['gratifications' => $data]);
     }
-    */
 
     #[Route('/new', name: 'app_gratification_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager,$StripeSK): Response

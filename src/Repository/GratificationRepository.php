@@ -20,7 +20,7 @@ class GratificationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Gratification::class);
     }
-/*
+
     public function findBySearchTerm($searchTerm)
     {
         if (!$searchTerm) {

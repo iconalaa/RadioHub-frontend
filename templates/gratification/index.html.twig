@@ -8,7 +8,13 @@
     
     <h1>Gratification index </h1>
 
-    <table class="table">
+    <form id="searchForm"  style="margin-top: 50px;">
+        <input type="text" id="searchInput" name="query" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
+    <div id="searchResults"></div>
+
+    <table class="table" id="gratificationTable">
         <thead>
             <tr>
                 <th>Id</th>
@@ -46,4 +52,7 @@
         <div></div>
 </div>
     <a href="{{ path('app_gratification_new') }}">Create new</a>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/search.js') }}"></script>
+
 {% endblock %}

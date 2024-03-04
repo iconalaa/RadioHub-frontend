@@ -27,7 +27,7 @@ class DonateurRepository extends ServiceEntityRepository
     {
         // Your Account SID and Auth Token from twilio.com/console
         $sid = 'ACe1c72f1ecdb0a7c816847cf580845632';
-        $auth_token = 'c138fcff52ccceb645cbb778ac3415b3';
+        $auth_token = '9f87bfd3732f652d16896de2930d7d16';
         // In production, these should be environment variables. E.g.:
         // $auth_token = $_ENV["TWILIO_AUTH_TOKEN"]
         // A Twilio number you own with SMS capabilities
