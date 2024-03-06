@@ -1,0 +1,77 @@
+{% extends 'front.html.twig' %}
+{% block title %}RadioHub | Settings{%
+endblock%}
+{% block body %}
+	<style>
+		#profile {
+			margin-right: 3rem;
+			width: 350px;
+			height: 350px;
+			border-radius: 50%;
+			box-shadow: -5px 5px 10px;
+		}
+		#upload {
+			position: absolute;
+			left: calc(26rem + 10px);
+			transform: scale(1.5);
+			opacity: .9;
+			transition: 0.3s;
+		}
+		#upload:hover {
+			opacity: 1;
+		}
+
+		ul li {
+			color: rgb(209, 14, 14);
+		}
+		.nice-select .list {
+			height: 150px;
+			overflow-y: scroll;
+			color: black;
+		}
+		.email {
+			background-color: #d9d9d9c2;
+		}
+	</style>
+
+	<div class="d-flex align-items-center justify-content-center gap-5">
+		<img {% if app.user.brochureFileName !="x" %} src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}" {% else %} src="../../contact.png" {% endif %} alt="user-pdp" id="profile" class="img-fluid rounded-circle object-fit-cover"/>
+		{{ form_start(f,{'attr':{'novalidate': 'novalidate','class':'my-5 w-50 '  }})}}
+		<div class="d-flex flex-column gap-3">
+			<div class="d-flex flex-column gap-3">
+				{{ form_widget(f.name,{'attr':{'class':'form-control px-3 py-2'}}) }}
+				{{ form_errors(f.name) }}
+			</div>
+			<div class="d-flex flex-column gap-3">
+				{{ form_widget(f.lastname,{'attr':{'class':'form-control px-3 py-2'}}) }}
+				{{ form_errors(f.lastname) }}
+			</div>
+			<div class="d-flex flex-column gap-3" style="pointer-events: none; cursor: no-drop">
+				{{ form_widget(f.email,{'attr':{'class':'form-control d-flex px-3 py-2 email'}}) }}
+
+				{{ form_errors(f.email) }}
+			</div>
+			<div class="d-flex flex-column gap-1">
+				{{ form_widget(f.password,{'attr':{'class':'form-control px-3 py-2' }}) }}
+				{{ form_errors(f.password) }}
+			</div>
+			<div class="d-flex gap-3">
+				{{ form_widget(f.gender) }}
+				{{ form_errors(f.gender) }}
+				{{ form_widget(f.date_birth,{'attr':{'class':'d-flex gap-1 justify-content-center'   }}) }}
+				<label id="upload" style="white-space: nowrap; cursor: pointer" for="user_brochureFilename" class="required d-flex flex-column align-items-center">
+					<img width="40px" src="../upload-btn.png" alt="Upload img"/>
+				</label>
+			</div>
+			<div style="display: none">
+				{{ form_widget(f.brochureFilename) }}
+			</div>
+			<button type="submit" class="btn btn-primary w-50">Update</button>
+			{{ form_end(f) }}
+		</div>
+	</div>
+{% endblock %}
+{% block footer %}{% endblock %}
+{% block javascripts %}
+	<script src="../../front/js/custom.js"></script>
+{% endblock %}

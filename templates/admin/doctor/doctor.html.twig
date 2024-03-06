@@ -1,0 +1,61 @@
+{% extends 'back.html.twig' %}
+{% block body %}
+
+	<style>
+		ul li {
+			color: rgb(231, 1, 1);
+			font-weight: 700;
+		}
+	</style>
+
+	<div class="container-fluid py-5">
+		<div class="card">
+			<div class="card-body">
+				<a href="{{ path('app_admin_user') }}" class="btn btn-danger h-25 align-self-start px-4 fs-5">
+					<i class="ti ti-arrow-back"></i>
+				</a>
+				<div class="d-flex gap-2 justify-content-center">
+					<h1 class="text-center mb-5 align-self-baseline">Add Doctor</h1>
+				</div>
+				{{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-1 '}}
+				)}}
+				<div class="d-flex flex-column w-50 mx-auto gap-3">
+					{{ form_widget(form.matricule,{'attr':{'class':'form-control px-3 py-2' }})}}
+
+					{{ form_errors(form.matricule) }}
+
+					{{ form_widget(form.user,{'attr':{'class':'select-form px-3 py-2'  }})}}
+					<button class="btn btn-primary" type="submit">Add</button>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+		{# ! <!-- ------------- table ------------- --> #}
+		<div class="container-fluid py-0">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="text-center">Doctors Table</h2>
+					<table class="table">
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">User</th>
+							<th scope="col">Matricule</th>
+							<th scope="col">Actions</th>
+						</tr>
+						{% for doctor in doctors %}
+							<tr>
+								<td>{{ doctor.id }}</td>
+								<td>{{ doctor.user }}</td>
+								<td>{{ doctor.matricule }}</td>
+								<td class="d-flex gap-2">
+									<a href="{{ path('app_update_doctor', { id: doctor.id }) }}" class="btn btn-success">Update</a>
+									<a href="{{ path('app_delete_doctor', { id: doctor.id }) }}" class="btn btn-danger">Delete</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'back.html.twig' %} {% block body %}
+<style>
+  ul li {
+    color: rgb(231, 1, 1);font-weight: 700;
+  }
+</style>
+<div class="container-fluid py-5">
+  <div class="card">
+    <div class="card-body">
+      <a
+        href="{{ path('app_admin_user') }}"
+        class="btn btn-danger h-25 align-self-start px-4 fs-5"
+        ><i class="ti ti-arrow-back"></i
+      ></a>
+      <div class="d-flex gap-2 justify-content-center">
+        <h1 class="text-center mb-5 align-self-baseline">Add Patients</h1>
+      </div>
+      {{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-1'}}
+      )}}
+      <div class="d-flex flex-column w-50 mx-auto gap-3">
+        <div class="d-flex gap-3">
+          <div class="d-flex flex-column w-50">
+            {{ form_widget(form.cas_med,{'attr':{'class':'form-control px-3 py-2'
+
+            }})}}
+            {{ form_errors(form.cas_med) }}
+          </div>
+          <div class="d-flex flex-column w-50">
+            {{ form_widget(form.n_cnam,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+            }}) }}
+            {{ form_errors(form.n_cnam) }}
+          </div>
+        </div>
+        <div class="d-flex gap-3">
+          <div class="d-flex flex-column w-50">
+            {{ form_widget(form.assurance,{'attr':{'class':'form-control px-3 py-2'
+
+            }})}}
+            {{ form_errors(form.assurance) }}
+          </div>
+          <div class="d-flex flex-column w-50">
+            {{ form_widget(form.num_assurance,{'attr':{'class':'form-control px-3 py-2'
+
+            }}) }}
+            {{ form_errors(form.num_assurance) }}
+          </div>
+        </div>
+        {{ form_widget(form.user, {'attr': {'class': 'form-select px-3 py-2'
+
+        }}) }}
+
+        <button class="btn btn-primary" type="submit">Add</button>
+      </div>
+      {{ form_end(form) }}
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid py-0">
+  <div class="card">
+    <div class="card-body">
+      <h2 class="text-center">Patients Table</h2>
+      <table class="table">
+        <tr>
+          <th scope="col">Email</th>
+          <th scope="col">Cas Medical</th>
+          <th scope="col">N° Cnam</th>
+          <th scope="col">Assurance</th>
+          <th scope="col">N° Assurance</th>
+          <th scope="col">Actions</th>
+        </tr>
+        {% for patient in patients %}
+        <tr>
+          <td>{{ patient.user }}</td>
+          <td>{{ patient.casMed }}</td>
+          <td>{{ patient.nCnam }}</td>
+          <td>{{ patient.assurance }}</td>
+          <td>{{ patient.numAssurance }}</td>
+          <td class="d-flex gap-2">
+            <a href="{{ path('app_update_patient',{'id':patient.id}) }}" class="btn btn-success">Update</a>
+            <a href="{{ path('app_delete_patient',{'id':patient.id})}}" class="btn btn-danger">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

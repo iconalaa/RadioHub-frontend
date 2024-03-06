@@ -1,13 +1,17 @@
 $(function () {
-
-
   // =====================================
   // Profit
   // =====================================
   var chart = {
     series: [
-      { name: "Earnings this month:", data: [355, 390, 300, 350, 390, 180, 355, 390] },
-      { name: "Expense this month:", data: [280, 250, 325, 215, 250, 310, 280, 250] },
+      {
+        name: "Earnings this month:",
+        data: [355, 390, 300, 350, 390, 180, 355, 390],
+      },
+      {
+        name: "Expense this month:",
+        data: [280, 250, 325, 215, 250, 310, 280, 250],
+      },
     ],
 
     chart: {
@@ -16,21 +20,19 @@ $(function () {
       offsetX: -15,
       toolbar: { show: true },
       foreColor: "#adb0bb",
-      fontFamily: 'inherit',
+      fontFamily: "inherit",
       sparkline: { enabled: false },
     },
 
-
     colors: ["#5D87FF", "#49BEFF"],
-
 
     plotOptions: {
       bar: {
         horizontal: false,
         columnWidth: "35%",
         borderRadius: [6],
-        borderRadiusApplication: 'end',
-        borderRadiusWhenStacked: 'all'
+        borderRadiusApplication: "end",
+        borderRadiusWhenStacked: "all",
       },
     },
     markers: { size: 0 },
@@ -39,11 +41,9 @@ $(function () {
       enabled: false,
     },
 
-
     legend: {
       show: false,
     },
-
 
     grid: {
       borderColor: "rgba(0,0,0,0.1)",
@@ -57,12 +57,20 @@ $(function () {
 
     xaxis: {
       type: "category",
-      categories: ["16/08", "17/08", "18/08", "19/08", "20/08", "21/08", "22/08", "23/08"],
+      categories: [
+        "16/08",
+        "17/08",
+        "18/08",
+        "19/08",
+        "20/08",
+        "21/08",
+        "22/08",
+        "23/08",
+      ],
       labels: {
         style: { cssClass: "grey--text lighten-2--text fill-color" },
       },
     },
-
 
     yaxis: {
       show: true,
@@ -82,7 +90,6 @@ $(function () {
       colors: ["transparent"],
     },
 
-
     tooltip: { theme: "light" },
 
     responsive: [
@@ -92,28 +99,32 @@ $(function () {
           plotOptions: {
             bar: {
               borderRadius: 3,
-            }
+            },
           },
-        }
-      }
-    ]
-
-
+        },
+      },
+    ],
   };
 
   var chart = new ApexCharts(document.querySelector("#chart"), chart);
   chart.render();
 
-
-  // =====================================
-  // Breakup
-  // =====================================
+  // !=====================================
+  // !Breakup
+  // !=====================================
+  var patient = document.querySelector("#numPatient");
+  var doctor = document.querySelector("#numDoctor");
+  var radiologist = document.querySelector("#numRadiologist");
+  
+  patient = parseInt(patient.innerHTML);
+  doctor = parseInt(doctor.innerHTML);
+  radiologist = parseInt(radiologist.innerHTML);
   var breakup = {
     color: "#adb5bd",
-    series: [38, 40, 25],
-    labels: ["2022", "2021", "2020"],
+    series: [patient, doctor, radiologist],
+    labels: ["Patient", "Doctor", "Radiologist"],
     chart: {
-      width: 180,
+      width: 250,
       type: "donut",
       fontFamily: "Plus Jakarta Sans', sans-serif",
       foreColor: "#adb0bb",
@@ -123,7 +134,7 @@ $(function () {
         startAngle: 0,
         endAngle: 360,
         donut: {
-          size: '75%',
+          size: "60%",
         },
       },
     },
@@ -138,7 +149,7 @@ $(function () {
     legend: {
       show: false,
     },
-    colors: ["#5D87FF", "#ecf2ff", "#F9F9FD"],
+    colors: ["#0075DB", "#78B9F2", "#00315C"],
 
     responsive: [
       {
@@ -158,8 +169,6 @@ $(function () {
 
   var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
   chart.render();
-
-
 
   // =====================================
   // Earning
@@ -208,4 +217,4 @@ $(function () {
     },
   };
   new ApexCharts(document.querySelector("#earning"), earning).render();
-})
+});

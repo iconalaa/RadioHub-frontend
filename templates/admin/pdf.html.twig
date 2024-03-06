@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>Matricule</title>
+	</head>
+	<body>
+		<style>
+			* {
+				color: #333;
+			}
+			.title {
+				text-align: center;
+			}
+			h1 {
+				text-transform: capitalize;
+			}
+		</style>
+		{% block body %}
+			<div class="title">
+				<h1 style="margin: 0">- Request for Approval -</h1>
+				<span>[ Matriculation Documentation ]</span>
+			</div>
+			<hr style="margin: 2rem 0"/>
+
+			<h1 style="position: absolute; padding: 0 10px; bottom: 40%; left: 0">
+				Radio
+				<span style="background-color: #1f8bca; color: #fff; padding: 0 5px 5px 5px">
+					Hub
+				</span>
+			</h1>
+
+			<div class="content">
+				<h3>
+					<span style="font-size: 2rem">Dear</span>
+					CEO,
+				</h3>
+				<h5></h5>
+				<p>
+					I am writing to seek your approval regarding the matriculation
+										        documentation for
+				</p>
+				<center>
+					<span>Email :
+						<span style="text-decoration: underline; font-weight: 500">{{
+            user.email | capitalize
+          }}</span>
+						| Matricule :
+						<span style="
+																              font-weight: 500;
+																              color: white;
+																              background-color: #333;
+																              padding: 0 10px 5px 10px;
+																            ">
+							{% if doc is not null %}
+								{{ doc.matricule }}
+							{% else %}
+								{{ rad.matcnom }}
+							{% endif %}
+						</span>
+					</span>
+				</center>
+				<p>
+					. Your feedback and endorsement on this matter are crucial before we
+										        proceed further.
+				</p>
+			</div>
+			<p>Best regards,</p>
+
+		{% endblock %}
+	</body>
+</html>

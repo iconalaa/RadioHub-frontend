@@ -1,0 +1,348 @@
+<meta name="viewport" content="width=device-width, initial-scale=0.3">
+<link rel="stylesheet" href="/dicom/css/chat.css" />
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Bootstrap JS -->
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/cornerstone-math@0.1.10/dist/cornerstoneMath.min.js"></script>
+<script src="https://unpkg.com/cornerstone-core@2.6.1/dist/cornerstone.js"></script>
+<script src="https://unpkg.com/dicom-parser@1.8.21/dist/dicomParser.min.js"></script>
+
+<script src="https://unpkg.com/hammerjs@2.0.8/hammer.js"></script>
+<script src="https://unpkg.com/cornerstone-core@2.6.1/dist/cornerstone.js"></script>
+<script src="https://unpkg.com/cornerstone-core@2.6.1/dist/cornerstone.min.js"></script>
+<script src="https://unpkg.com/cornerstone-math@0.1.10/dist/cornerstoneMath.min.js"></script>
+<script src="https://unpkg.com/hammerjs@2.0.8/hammer.js"></script>
+<script src="~/node_modules/"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/dicom-parser@1.8.21/dist/dicomParser.js"></script>
+<script src="https://unpkg.com/dicom-parser@1.8.21/dist/dicomParser.min.js"></script>
+
+<script
+    src="https://unpkg.com/cornerstone-wado-image-loader@4.13.0/dist/cornerstoneWADOImageLoader.bundle.min.js"></script>
+<script src="https://unpkg.com/cornerstone-tools@4.22.1/dist/cornerstoneTools.js"></script>
+<script
+    src="~/node_modules/cornerstone-tools-rotated-elliptical-roi-tool/dist/rotated-elliptical-roi-tool.umd.js"></script>
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: red;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 300px;
+        color: white;
+        text-align: center;
+    }
+
+    .close {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        cursor: pointer;
+    }
+
+    #my-element {
+        zoom: 100% !important;
+    }
+
+    table {
+        height: 100%;
+        width: 100%;
+    }
+
+    #chat-section {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .body-message {
+        width: 100%;
+    }
+
+    .card {
+        display: flex;
+        margin-bottom: 50px;
+
+    }
+
+    .card-header {
+        background-color: aliceblue
+    }
+</style>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<body id="my-element">
+    <div class="d-flex flex-column" style="height: 100vh;">
+        <div class="bg-tool text-white row" style="height:48px ;">
+            <div class="col-11">
+                <div class="row tool-cls">
+
+
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                            <button type="button" onclick="pan()" id="panButton" class="tool-btn">
+                                <i class="fas fa-arrows-alt color-icon"> </i>
+                            </button>
+
+                            <button value="zoom" onclick="zoom()" id="zoom" class="tool-btn">
+                                <i class="fa fas fa-search-plus"></i>
+
+                            </button>
+
+                            <button value="contrast" onclick="contrast()" id="contrast" class="tool-btn">
+                                <i class="fas fa-adjust"> </i>
+
+                            </button>
+
+
+                            <button value="contrast" onclick="rotate()" class="tool-btn" id="rotate">
+                                <i class="fas fa-sync-alt"> </i>
+                            </button>
+
+
+
+
+                            <button value="contrast" onclick="length()" class="tool-btn" id="length">
+                                <i class="fas fa-ruler-combined"> </i>
+                            </button>
+
+                            <button value="contrast" onclick="scoop()" class="tool-btn" id="scoop">
+                                <i class="fas fa-square"> </i>
+
+
+                            </button>
+
+
+                            <button onclick="annotation()" class="tool-btn" id="annot">
+                                <i class="fas fa-pencil-alt"> </i>
+                            </button>
+
+                            <button onclick="circle()" class="tool-btn" id="circle">
+                                <i class='far fa-circle' style='font-size:20px'></i>
+                            </button>
+
+
+
+                            <button onclick="rectangle()" class="tool-btn" id="rec">
+                                <i class="fa fa fa-solid fa-vector-square"></i>
+                            </button>
+
+
+                            <button value="contrast" onclick=" EllipticalRoi()" class="tool-btn" id="rotate">
+                                <i class='far fa-circle' style='font-size:10px'></i>
+                                <i class='far fa-circle' style='font-size:20px'></i>
+                                <i class='far fa-circle' style='font-size:10px'></i>
+
+                            </button>
+
+
+
+                            <button value="contrast" onclick="FreehandRoiTool()" class="tool-btn" id="rotate">
+                                <i class="fa fa-solid fa-pen"></i>
+                            </button>
+
+                            <button value="contrast" onclick="angle()" class="tool-btn" id="rotate">
+                                <i class="fa-sharp fa-solid fa-pen-ruler"></i>
+
+
+
+
+                            </button>
+
+                            <button value="contrast" onclick="DragProbeTool()" class="tool-btn" id="rotate">
+
+                                <i class="fa fa-solid fa-record-vinyl"></i>
+
+                            </button>
+
+
+                            <button value="contrast" onclick="region()" class="tool-btn" id="rotate">
+                                <i class="fa material-icons">&#xe3b9;</i>
+                            </button>
+
+
+                            <button value="contrast" onclick="text()" class="tool-btn" id="rotate">
+                                <i class="fa fa-solid fa-font"></i>
+                                <!--	</button>
+                                    <button onclick="convert()" class="tool-btn" >
+                                        convert
+                                    </button>
+                                <!--
+                                <div class="col"><button class="btn tool-btn" id="btn-open" onclick="show()">Chat</button></div>
+
+
+                                <button onclick="brain()">Open Popup</button>-->
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="d-flex flex-row flex-grow-1 ">
+
+            <div class="bg-dcm col-9" id="bgdcm" style="flex: 1;border:3px solid #30313ad0;">
+
+
+                <div style="width:100%;height:95%;position:relative;color: white;display:inline-block;border-style:solid;border-color:black;"
+                    oncontextmenu="return false" class='disable-selection noIbar' unselectable='on'
+                    onselectstart='return false;' onmousedown='return false;'>
+                    <div id="dicomImage" style="height:100%;width:100%;">
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-chat col-3" id="houssem" style="flex: 1;">
+
+                <input value="{{id}}" hidden id="image-twig">
+
+
+                <div id="chat-section">
+                    <div class="row">
+                        <!-- Chat header -->
+                        <div class="col-12 chat-header">
+                            {%if droit == "guest" %}
+
+                            <center><a href="{{ path('add_interpretation', {'id': id}) }}">
+
+                                <button class="btn btn-primary" style="margin-right:5px"> Interpret</button>
+            
+            
+                              </a>
+                              </center>
+                            {%endif%}
+                        </div>
+                        <image src="/uploads/images/6.png">
+
+                        <div class="body-message" id="interpretation-container">
+
+
+
+
+
+
+
+                        </div>
+
+
+
+                        <!--chat-footer-->
+
+
+
+
+
+                        <!--this is the closing tag of the main row -->
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="errorMessage">No users are selected</p>
+        </div>
+    </div>
+    <input type="text" id="idimage" value="{{id}}">
+</body>
+
+<script src="/dicom/js/chat.js"></script>
+<script>
+    {%if droit == "guefgfdst" %}
+    /*const x=document.getElementById("idimage").value;
+     $.ajax({
+            url: 'http://127.0.0.1:8000/interpretatin/{{id}}',
+            method: 'Post', // HTTP method
+            success: function(response) {
+    
+                // Update the DOM with the received data
+                $('#interpretation-container').html(response);
+            },
+            error: function(xhr, status, error) {
+                // Handle errors
+                console.error('Error:', error);
+            }
+        });
+    
+    
+    
+    
+    $(document).ready(function() {
+        // Listen for form submission
+        $('#interpretation_send').submit(function(event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+    
+            // Serialize form data
+            var formData = $(this).serialize();
+    
+            // Create a hidden iframe
+            var iframe = $('<iframe>', {
+                name: 'hidden_iframe',
+                id: 'hidden_iframe',
+                style: 'display:none'
+            });
+    
+            // Append the iframe to the document body
+            $('body').append(iframe);
+    
+            // Set the form target to the iframe
+            $(this).attr('target', 'hidden_iframe');
+    
+            // Submit the form asynchronously
+            $(this).get(0).submit();
+        });
+    });
+    */
+    {%else%}
+
+
+
+
+    const x = document.getElementById("idimage").value;
+    $.ajax({
+        url: 'http://127.0.0.1:8000/feedbacks/' + x,
+        method: 'Post', // HTTP method
+        success: function (response) {
+
+            // Update the DOM with the received data
+            $('#interpretation-container').html(response);
+        },
+        error: function (xhr, status, error) {
+            // Handle errors
+            console.error('Error:', error);
+        }
+    });
+
+
+
+    {% endif %}
+</script>
