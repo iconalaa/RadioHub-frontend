@@ -1,0 +1,54 @@
+{% extends "front.html.twig" %} {% block title %}RadioHub | Claims{% endblock %}
+{% block body %}
+<style>
+    form{
+        background-color: #D9D9D9;
+        padding: 20px;border-radius: 8px;
+    }
+</style>
+<div class="d-flex w-100" style="gap: 2rem; padding:3rem;">
+
+<img style="height: 300px;object-fit: cover;" src="../../front/img/IRM_illustration_.jpg" alt="img">
+
+
+{{ form_start(form,{'attr':{'novalidate':'novalidate','class':'w-100'}})}}
+
+<div style="gap: 1rem;" class="d-flex flex-column w-100 mx-auto">
+    <h1 class="text-center my-5">Add Claim</h1>
+  <div class="d-flex" style="gap: .5rem;">
+    <div class="d-flex flex-column w-100">
+      {{ form_widget(form.id_user, {'attr': {'class': 'form-control' }}) }}
+      {{ form_errors(form.id_user,{'attr':{'class':'text-danger'}}) }}
+    </div>
+   <div class="d-flex flex-column w-100">
+       {{ form_widget(form.etat_rec, {'attr': {'class': 'form-control'   }}) }}
+            {{ form_errors(form.etat_rec,{'attr':{'class':'text-danger'}}) }}
+          </div>     
+  </div>
+  <div class="d-flex" style="gap: .5rem;">
+    <div class="d-flex flex-column w-100">
+      {{ form_widget(form.date_rec, {'attr': {'class': 'd-flex',   }}) }}
+      {{ form_errors(form.date_rec,{'attr':{'class':'text-danger'}}) }}
+    </div>  </div>
+    <div class="d-flex flex-column w-100">
+      {{ form_widget(form.desc_rec, {'attr': {'class': 'form-control',   }}) }}
+      {{ form_errors(form.desc_rec,{'attr':{'class':'text-danger'}}) }}
+    </div>
+
+  <div class="d-flex" style="gap: .5rem;">
+    <div class="d-flex flex-column w-100">
+      {{ form_widget(form.type_rec, {'attr': {'class': 'form-control'   }}) }}
+      {{ form_errors(form.type_rec,{'attr':{'class':'text-danger'}}) }}
+    </div>
+    <div class="d-none flex-column w-100">
+      {{ form_widget(form.reponse, {'attr': {'class': 'form-control'}}) }}
+      {{ form_errors(form.reponse,{'attr':{'class':'text-danger'}}) }}
+    </div> 
+  </div>
+  <button type="submit" class="btn btn-primary mx-auto w-25">Send</button>
+</div>
+
+{{ form_end(form) }}
+</div>
+
+{%endblock%} {% block footer %} {% endblock %}

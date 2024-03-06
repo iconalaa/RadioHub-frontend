@@ -1,0 +1,44 @@
+{% extends "back.html.twig" %}
+
+{% block title %} Response {% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+    <h1>Responses</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Desc_rep</th>
+                <th>Date_rep</th>
+                <th colspan="2">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reponse in reponses %}
+            <tr>
+                <td>{{ reponse.id }}</td>
+                <td>{{ reponse.descRep }}</td>
+                <td>{{ reponse.dateRep ? reponse.dateRep|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a  class="btn btn-primary" href="{{ path('app_reponse_show', {'id': reponse.id}) }}">show</a>
+                    <td>
+                    <a  class="btn btn-success" href="{{ path('app_reponse_edit', {'id': reponse.id}) }}">edit</a>
+                </td>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary" href="{{ path('app_reponse_new') }}">Create new</a>
+        </div></div></div>
+{% endblock %}

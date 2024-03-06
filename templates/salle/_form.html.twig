@@ -1,0 +1,44 @@
+{% extends "back.html.twig" %}
+
+{% block title %}RadioHub | rooms {% endblock %}
+
+{% block body %}
+   
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+            <h1>Add an Exam_room</h1>
+          {{ form_start(form,{'attr':{'novalidate':'novalidate','class':'w-100'}}) }}
+    
+          
+        <div class="d-flex" style="gap: .5rem;">
+          <div class="d-flex flex-column w-100">
+            {{ form_widget(form.numSalle, {'attr': {'class': 'form-control'   }}) }}
+            {{ form_errors(form.numSalle,{'attr':{'class':'text-danger'}}) }}
+          </div>
+          <div class="d-flex flex-column w-100">
+            {{ form_widget(form.numDep, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.numDep,{'attr':{'class':'text-danger'}}) }}
+          </div>
+        </div>
+    
+
+           
+        <div class="d-flex" style="gap: .5rem;">
+            <div class="d-flex flex-column w-100">
+              {{ form_widget(form.etatSalle, {'attr': {'class': 'form-control'   }}) }}
+              {{ form_errors(form.etatSalle,{'attr':{'class':'text-danger'}}) }}
+            </div>
+            <div class="d-flex flex-column w-100">
+              {{ form_widget(form.TypeSalle, {'attr': {'class': 'form-control'}}) }}
+              {{ form_errors(form.TypeSalle,{'attr':{'class':'text-danger'}}) }}
+            </div>
+          </div>
+    
+    
+          <button type="submit" class="btn btn-primary">Send</button>
+          {{ form_end(form) }}
+        </div>
+      </div>
+    </div>
+{% endblock %}
