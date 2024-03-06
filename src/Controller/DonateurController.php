@@ -52,7 +52,7 @@ class DonateurController extends AbstractController
         ]);
     }
 
-    #[Route('admin/search', name: 'app_donateur_search', methods: ['GET'])]
+    #[Route('/admin/search', name: 'app_donateur_search', methods: ['GET'])]
     public function search(Request $request, DonateurRepository $donateurRepository): JsonResponse
     {
         $searchTerm = $request->query->get('search');

@@ -24,7 +24,7 @@ use Stripe\Stripe;
 #[Route('/gratification')]
 class GratificationController extends AbstractController
 {
-    #[Route('/admin', name: 'app_gratification_index', methods: ['GET'])]
+    #[Route('/admin/', name: 'app_gratification_index', methods: ['GET'])]
     public function index(PaginatorInterface $paginator,Request $req, GratificationRepository $gratificationRepository): Response
     {
         $gratification = $gratificationRepository->findAll();
