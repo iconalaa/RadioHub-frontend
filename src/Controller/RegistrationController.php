@@ -74,7 +74,7 @@ class RegistrationController extends AbstractController
             $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
             $this->tokenStorage->setToken($token);
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_doctor');
         }
 
         return $this->render('registration/doctor.html.twig', [
@@ -161,7 +161,7 @@ class RegistrationController extends AbstractController
             $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
             $this->tokenStorage->setToken($token);
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_radio');
         }
 
         return $this->render('registration/radiologist.html.twig', [

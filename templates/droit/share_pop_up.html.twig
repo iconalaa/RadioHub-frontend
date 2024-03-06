@@ -1,0 +1,63 @@
+{# popup_template.html.twig #}
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Select Radiologists</h2>
+    <form id="shareForm">
+      <!-- Radiologists list here -->
+      <input type="checkbox" name="radiologist" value="1">Radiologist 1<br>
+      <input type="checkbox" name="radiologist" value="2">Radiologist 2<br>
+      <!-- More radiologists -->
+      <button type="button" id="shareButton">Done</button>
+    </form>
+  </div>
+</div>
+
+<script>
+
+$(document).ready(function() {
+  var lastClickedImageId = null; // Variable to store the ID of the last clicked image
+
+  // Click event for the share-image class
+  $(".share-image").click(function() {
+  $(".close").click(function() {
+          $("#myModal").css("display", "none");
+        });
+    // Extract the image ID from the data attribute
+    var imageId = $(this).data("image-id");
+
+    // Update lastClickedImageId with the current image ID
+    lastClickedImageId = imageId;
+
+    // Show the modal
+    $("#myModal").css("display", "block");
+
+    // Click event for the shareButton inside the modal
+    $("#shareButton").click(function() {
+      var radiologists = [];
+
+      // Retrieve the selected radiologists
+      $("input[name='radiologist']:checked").each(function() {
+        radiologists.push($(this).val());
+      });
+
+      // Close modal when the close button is clicked
+
+$(".close").click();
+      // Call the image share function with lastClickedImageId and radiologists
+      imageShare(lastClickedImageId, radiologists);
+    });
+  });
+});
+
+// Function to perform image sharing
+function imageShare(imageId, radiologists) {
+  // Perform necessary actions to share the image
+  console.log("Sharing Image ID: " + imageId);
+  console.log("Selected Radiologists: " + radiologists.join(", "));
+}
+
+
+
+</script>

@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -7,6 +6,7 @@
 /public/bundles/
 /var/
 /vendor/
+/bin/mercure.exe
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -18,4 +18,9 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+
+# Ignore uploaded files
+/public/uploads/
+/var/uploads/
 /public/uploads/pdp

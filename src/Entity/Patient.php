@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PatientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -35,6 +37,16 @@ class Patient
 
     #[ORM\OneToOne(cascade: ['persist'])]
     private ?User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: Image::class)]
+    private Collection $image;
+
+    public function __construct()
+    {
+        $this->image = new ArrayCollection();
+    }
+
+   
 
     public function getId(): ?int
     {
@@ -99,5 +111,48 @@ class Patient
         $this->user = $user;
 
         return $this;
+    }
+
+
+
+
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImage(): Collection
+    {
+        return $this->image;
+    }
+
+    public function addImage(Image $image): static
+    {
+        if (!$this->image->contains($image)) {
+            $this->image->add($image);
+            $image->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        if ($this->image->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getPatient() === $this) {
+                $image->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        if ($this->user) {
+            return $this->user->getName() . ' ' . $this->user->getLastname();
+        }
+        
+        return 'Doctor';
     }
 }
