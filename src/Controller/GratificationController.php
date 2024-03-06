@@ -39,7 +39,7 @@ class GratificationController extends AbstractController
         ]);
     }
 
-    #[Route('admin/search', name: 'search', methods: ['GET'])]
+    #[Route('/admin/search', name: 'search', methods: ['GET'])]
     public function search(Request $request, GratificationRepository $gratificationRepository): JsonResponse
     {
         $searchTerm = $request->query->get('search');
