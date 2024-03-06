@@ -1,0 +1,68 @@
+{% extends 'back.html.twig' %} {% block body %}
+
+<div class="container-fluid py-5">
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex gap-2 justify-content-center">
+        <a
+          href="{{ path('app_admin_user') }}"
+          class="btn btn-danger h-25 align-self-start"
+          ><i class="ti ti-arrow-back"></i
+        ></a>
+        <h1 class="text-center mb-5 align-self-baseline">Add Radiologist</h1>
+      </div>
+      {{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-1 '}}
+      )}}
+      <div class="d-flex flex-column w-50 mx-auto gap-3">
+        {{ form_widget(form.mat_cnom,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+        }})}}
+        {{ form_errors(form.mat_cnom) }}
+        {{ form_widget(form.user,{'attr':{'class':'select-form px-3 py-2'
+
+
+
+        }})}}
+
+        <button class="btn btn-primary" type="submit">Add</button>
+        {{ form_end(form) }}
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid py-0">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="text-center">Radiologists Table</h2>
+        <table class="table">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">User</th>
+            <th scope="col">Mat_cnom</th>
+            <th scope="col">Actions</th>
+          </tr>
+          {% for radiologist in radiologists %}
+          <tr>
+            <td>{{ radiologist.id }}</td>
+            <td>{{ radiologist.user }}</td>
+            <td>{{ radiologist.matCnom }}</td>
+            <td class="d-flex gap-2">
+              <a href="{{ path('app_update_radiologist', { id: radiologist.id })}}" class="btn btn-success">Update</a>
+              <a
+                href="{{
+                  path('app_delete_radiologist', { id: radiologist.id })
+                }}"
+                class="btn btn-danger"
+                >Delete</a
+              >
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

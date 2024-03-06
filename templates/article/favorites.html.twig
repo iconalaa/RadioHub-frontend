@@ -1,0 +1,21 @@
+{# templates/article/favorites.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Articles Favoris{% endblock %}
+
+{% block body %}
+    <h1>Mes Articles Favoris</h1>
+
+    {% if favoriteArticles is empty %}
+        <p>Aucun article favori pour le moment.</p>
+    {% else %}
+        <ul>
+            {% for article in favoriteArticles %}
+                <li>
+                    <a href="{{ path('app_article_show', {'id': article.id}) }}">{{ article.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

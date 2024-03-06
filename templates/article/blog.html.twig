@@ -1,0 +1,79 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}Blog{% endblock %}
+
+{% block body %}
+<style>
+    .all-blog {
+        width: 80%;
+        margin: 0 auto;
+    }
+    .blog {
+        display: inline-block;
+        width: calc(33.33% - 20px); /* 3 articles per row with 20px margin */
+        margin: 10px;
+        height: 450px;
+        box-shadow: 0 0 15px;
+        border-radius: 12px;
+        background-color: #d9d9d97e;
+        padding: 20px;
+    }
+    .blog img {
+        height: 70%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    .over {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 100em; /* Adjust the number of lines you want to show */
+    }
+    /* Pagination style */
+    .pagination {
+        justify-content: center;
+        margin-top: 20px;
+       }
+</style>
+
+<a class="btn btn-primary" href="{{ path('app_home') }}">Retour</a>
+
+<!-- Centrer le formulaire de recherche -->
+<div class="d-flex justify-content-center mt-3">
+    <form action="{{ path('app_blog') }}" method="GET" class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+            <input type="text" name="q" placeholder="Rechercher..." class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Rechercher</button>
+    </form>
+</div>
+
+<div class="all-blog">
+    {% for article in articles %}
+    <div class="blog">
+        <h1 class="card-title">{{ article.title  }}</h1>
+        <img src="{{ asset('articles/' ~ article.image) }}" class="card-img-top" alt="...">
+        <p class="card-text over">{{ article.content }}</p>
+        <a href="{{ path('app_blog_suivi', {'id': article.id}) }}">lire la suite</a>
+        <p class="card-text text-muted">{{ article.createdAt | date('Y-m-d') }}</p>
+        {% if article.id in favorites %}
+                <a href="{{ path('toggle_favorite', {'id': article.id}) }}" class="btn btn-danger">Retirer des favoris</a>
+            {% else %}
+                <a href="{{ path('toggle_favorite', {'id': article.id}) }}" class="btn btn-primary">Ajouter aux favoris</a>
+            {% endif %}
+    </div>
+    {% endfor %}
+    {{ knp_pagination_render(articles) }}
+</div>
+
+<div class="col-md-8 offset-md-2">
+    {{ form_start(comment) }}
+    {{ form_row(comment.content, {"attr": {"placeholder": "Saisir votre commentaire"}, "label": false}) }}
+    <div class="d-none">
+        {{ form_rest(comment) }}
+    </div>
+    <button type="submit" class="btn btn-secondary mt-3">Valider</button>
+    {{ form_end(comment) }}
+</div>
+
+{% endblock %}
