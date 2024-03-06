@@ -12,7 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mercure\HubInterface;
 
+use Symfony\Component\Mercure\Update;
 
 class DroitController extends AbstractController
 {
@@ -33,7 +35,7 @@ class DroitController extends AbstractController
 
 
     #[Route('/droit/{id}', name: 'app_droit')]
-    public function index($id, Request $request, DroitRepository $rep, ImageRepository $repim, ManagerRegistry $em,  RadiologistRepository $repr): Response
+    public function index($id, Request $request, DroitRepository $rep, ImageRepository $repim, ManagerRegistry $em,  RadiologistRepository $repr,HubInterface $hub): Response
     { // Get the list of IDs from the request query parameters
 
         $ids = $request->request->get('idrad');
@@ -71,11 +73,45 @@ class DroitController extends AbstractController
                 $em->getManager()->persist($droit);
             }
 
+
+
+                
+        $sharedimage=$repim->find($id);
+        $bodypart=$sharedimage->getBodypart();
+        $aquisition=$sharedimage->getAquisationDate();
+        $rad=$sharedimage->getRadiologist();
+
+        $update = new Update(
+            '/test',
+            json_encode(['users' =>$ids,'idimage'=>$id,'aquisition'=>$aquisition,'bodypart'=>$bodypart
+            ,'rad'=>$rad->getUser()->getName()
+
+            ])
+        );
+
+        $hub->publish($update);
+
+
+
             $em->getManager()->flush();
             // For now, let's just return a response indicating that IDs are provided
             return new Response('IDs provided: ' . implode(',', $ids));
         }
 
+        $sharedimage=$repim->find($id);
+        $bodypart=$sharedimage->getBodypart();
+        $aquisition=$sharedimage->getAquisationDate();
+        $rad=$sharedimage->getRadiologist();
+
+        $update = new Update(
+            '/test',
+            json_encode(['users' =>$ids,'idimage'=>$id,'aquisition'=>$aquisition,'bodypart'=>$bodypart
+            ,'rad'=>$rad->getUser()->getName()
+
+            ])
+        );
+
+        $hub->publish($update);
 
 
         return $this->render('droit/index.html.twig', [
@@ -87,7 +123,7 @@ class DroitController extends AbstractController
         ]);
     }
     #[Route('/droit/delete/{id}/{idimg}', name: 'deletedroit')]
-    public function delete($id, $idimg, Request $request, ManagerRegistry $em, DroitRepository $rep): Response
+    public function delete($id, $idimg, Request $request, ManagerRegistry $em, DroitRepository $rep,HubInterface $hub): Response
     {
 
         $droit = $rep->find($id);
@@ -97,6 +133,15 @@ class DroitController extends AbstractController
 
             // Flush the changes to the database
             $em->getManager()->flush();
+                ///add delete real time event 
+            $idrad=$droit->getRadioloqist()->getId();
+    
+            $update = new Update(
+                '/delete',
+                json_encode(['image'=>$idimg,'idrad'=>$idrad]));
+
+            $hub->publish($update);
+
 
             // Return a JSON response indicating success
             return $this->json("200");

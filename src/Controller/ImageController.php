@@ -18,19 +18,28 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-
+use Knp\Component\Pager\PaginatorInterfaced;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Security\Core\Security;
+use Knp\Component\Pager\PaginatorInterface;
 
 class ImageController extends AbstractController
 {
     #[Route('/image', name: 'app_image')]
-    public function index(ImageRepository $rep,Security $security,RadiologistRepository $reprad): Response
-    { $user = $security->getUser();
-        $rad=$reprad->findOneBy(['user'=> $user]);
-        $images= $rep->findBy(['radiologist'=>$rad]);
-
+    public function index(ImageRepository $rep, Security $security, RadiologistRepository $reprad, PaginatorInterface $paginator,Request $request): Response
+    {
+        $user = $security->getUser();
+        $rad = $reprad->findOneBy(['user' => $user]);
+        $imagesQuery = $rep->findBy(['radiologist' => $rad]);
+    
+        // Paginate the query
+        $images = $paginator->paginate(
+            $imagesQuery,
+            $request->query->getInt('page', 1), // Get the current page from the request
+            1// Limit of items per page
+        );
+    
         return $this->render('image/index.html.twig', [
             'images' => $images,
         ]);
@@ -144,6 +153,8 @@ class ImageController extends AbstractController
         // Par exemple, passez-les à un modèle pour les afficher
         return $this->render('Image/share.html.twig', [
             'images' => $sharedImages,
+            'currectuserid'=>$radiologistId
+
         ]);
     }
 
@@ -245,9 +256,52 @@ class ImageController extends AbstractController
 
 
 
+    #[Route('/search', name: 'search', methods: ['GET', 'POST'])]
+    public function search(Request $request, ImageRepository $imageRepository): Response
+    {
+        // Get the search query from the request
+        $searchQuery = $request->query->get('search');
+
+        // Perform the search using the ImageRepository
+        $searchResults = $imageRepository->searchImages($searchQuery);
+
+        // Render the table rows
+        $tableRows = '';
+        foreach ($searchResults as $image) {
+            $tableRows .= '<tr>';
+            $tableRows .= '<td>' . $image->getId() . '</td>';
+            $tableRows .= '<td>' . $image->getBodyPart() . '</td>';
+            $tableRows .= '<td>' . $image->getAquisationDate()->format('Y-m-d H:i') . '</td>';
+            $tableRows .= '<td>' . $image->getRadiologist() . '</td>';
+
+            // Add action buttons if needed
+            $tableRows .= '<td style="display: flex; justify-content: center;">';
+            $tableRows .= '<a href="/image/edit/' . $image->getId() . '"><button class="btn btn-success" style="margin-right:5px">Edit</button></a>';
+            $tableRows .= '<a href="/image/delete/' . $image->getId() . '"><button class="btn btn-danger" style="margin-right:5px;">Delete</button></a>';
+            $tableRows .= '<a href="/image/consult/' . $image->getId() . '"><button class="btn btn-info" style="margin-right:5px">Consult</button></a>';
+            $tableRows .= '<a onclick="refreshPopupContent(' . $image->getId() . ')" class="share" data-id="' . $image->getId() . '"><button class="btn" style="margin-right:5px;color:white;background-color:#088af1ba">Share</button></a>';
+            $tableRows .= '</td>';
+            $tableRows .= '</tr>';
+            $tableRows .= '</tr>';
+        }
+
+        // Return the HTML response with the table rows
+        return new Response($tableRows);
+    }
+
+    #[Route('/sample', name: 'sample')]
+
+    public   function sample( ): Response
+    {
 
 
-
-
+        return $this->render('image/sample.html');
+    }
 
 }
+
+
+
+
+
+

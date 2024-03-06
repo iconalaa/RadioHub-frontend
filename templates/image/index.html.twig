@@ -42,6 +42,7 @@
     </div>
 
   </div><!-- End Page Title -->
+<input type="text" id="searchInput" placeholder="Search by body part, radiologist, or date">
 
   <section class="section">
     <div class="row">
@@ -50,7 +51,7 @@
           <h5 class="card-title">Default Table</h5>
 
           <!-- Default Table -->
-          <table class="table" id="dataTable">
+          <table id="dataTable" id="dataTable"  class="table">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -62,7 +63,7 @@
 
               </tr>
             </thead>
-            <tbody>
+            <tbody id="dataTable1">
               {% for i in images %}
 
               <tr>
@@ -99,6 +100,8 @@
 
             </tbody>
           </table>
+              {{ knp_pagination_render(images) }}
+
           <!-- End Default Table Example -->
         </div>
       </div>
@@ -115,7 +118,7 @@
 
 <!-- DataTables Initialization Script -->
 <script>
-  $(document).ready(function () {
+  /*$(document).ready(function () {
     $('#dataTable').DataTable({
       "initComplete": function (settings, json) {
         // Customize the search input field
@@ -124,7 +127,7 @@
         searchInput.attr('placeholder', 'Search...'); // Set placeholder text
       }
     });
-  });
+  });*/
 
 
   function refreshPopupContent(id) {
@@ -142,6 +145,82 @@
       }
     });
   }
+
+
+
+// Function to fetch filtered data from the server and update the table
+function fetchFilteredData(searchValue) {
+    $.ajax({
+        url: '/search', // Update with your server-side search API endpoint
+        method: 'GET',
+        data: { search: searchValue },
+        success: function(response) {
+            $('#dataTable1').html(response); // Update table with filtered data
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+            // Handle error
+        }
+    });
+}
+
+// Bind keyup event to the search input field
+$('#searchInput').on('input', function() {
+    var searchValue = $(this).val();
+    fetchFilteredData(searchValue); // Call function to fetch filtered data from server
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+// Function to filter table rows based on search input           it workkkks
+/*function filterTableRows(searchValue) {
+    searchValue = searchValue.toLowerCase();
+    $('#dataTable tbody tr').each(function() {
+        var row = $(this);
+        var bodyPart = row.find('td:nth-child(2)').text().toLowerCase();
+        var radiologist = row.find('td:nth-child(4)').text().toLowerCase();
+        var date = row.find('td:nth-child(3)').text().toLowerCase();
+        
+        // Check if any column contains the search value
+        if (bodyPart.indexOf(searchValue) !== -1 || radiologist.indexOf(searchValue) !== -1 || date.indexOf(searchValue) !== -1) {
+            row.show();
+        } else {
+            row.hide();
+        }
+    });
+}*/
+/*
+// Bind keyup event to the search input field
+$('#searchInput').on('input', function() {
+    var searchValue = $(this).val();
+    filterTableRows(searchValue);
+});
+*/
+
+
+
+
+
+
+
+
+
+
+
 
 </script>
 

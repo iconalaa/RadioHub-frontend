@@ -29,6 +29,19 @@ class ImageRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+    public function searchImages($searchValue)
+{
+    return $this->createQueryBuilder('i')
+        ->leftJoin('i.radiologist', 'r') // Assuming 'radiologist' is a ManyToOne association
+        ->where('LOWER(i.bodypart) LIKE :searchValue')
+        ->orWhere('LOWER(i.aquisationDate) LIKE :searchValue')
+        ->setParameter('searchValue', '%' . strtolower($searchValue) . '%')
+        ->getQuery()
+        ->getResult();
+}
+    
+
     //    /**
     //     * @return Image[] Returns an array of Image objects
     //     */

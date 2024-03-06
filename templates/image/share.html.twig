@@ -119,6 +119,131 @@
       }
     });
   }
+////real time call in test merge again 
+  var currentUserID = "{{currectuserid | raw }}";
+
+   const eventSource = new EventSource("{{ mercure('/test')|escape('js') }}");
+        eventSource.onmessage = event => {
+            console.log(JSON.parse(event.data));
+            a=JSON.parse(event.data);
+            var users = a.users.map(Number); // Convert elements in a.users to numbers
+
+            if (a.users.includes( currentUserID)) {
+    console.log('Current user is present in the array.');
+
+            // Create a new table row element
+            var newRow = document.createElement('tr');
+            newRow.className = 'odd'; // Add the class 'odd' to the new row
+
+            // Create a table header cell for the sorting
+            var sortingCell = document.createElement('th');
+            sortingCell.setAttribute('scope', 'row');
+            sortingCell.className = 'sorting_1';
+            sortingCell.textContent = a.idimage; // You can adjust this value as needed
+            newRow.appendChild(sortingCell); // Append the sorting cell to the new row
+
+            // Create the other <td> elements with the provided parameters
+            var tdContent = [
+                a.bodypart
+                  , // You can replace these placeholders with the actual parameters
+                a.aquisition.date.split(' ')[0]+'00:00',
+              a.rad
+            ];
+
+            tdContent.forEach(function(content) {
+                var td = document.createElement('td');
+                td.textContent = content;
+                newRow.appendChild(td);
+            });
+
+            // Create the last <td> element for buttons
+            var buttonTd = document.createElement('td');
+            buttonTd.style.display = 'flex';
+            buttonTd.style.justifyContent = 'center';
+
+            // Add buttons to the button <td> element
+            var buttons = [ 'Consult', 'Interpret']; // Button labels
+            var i=0;
+            buttons.forEach(function(label) {
+                var button = document.createElement('button');
+                button.className = 'btn btn-' + (label === 'Share' ? 'info' : 'primary');
+                button.textContent = label;
+               if (label === 'Consult') {
+                       var consultLink = document.createElement('a');
+                       consultLink.href = '/image/consult/'+a.idimage // Replace $id with the actual value
+                       consultLink.appendChild(button);
+                       buttonTd.appendChild(consultLink);
+                   } 
+                   if (label === 'Interpret') {
+                       var consultLink = document.createElement('a');
+                       consultLink.href = '/interpretatin/'+a.idimage // Replace $id with the actual value
+                       consultLink.appendChild(button);
+                       buttonTd.appendChild(consultLink);
+                   }
+
+            });
+
+            newRow.appendChild(buttonTd); // Append the button <td> element to the new row
+
+            // Append the new row to the table body
+            var tableBody = document.querySelector('table tbody');
+            tableBody.appendChild(newRow);
+
+
+
+
+            }
+            else
+            {
+              console.log("wrong user");
+            }
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+        const eventDelete = new EventSource("{{ mercure('/delete')|escape('js') }}");
+        eventDelete.onmessage = event => {
+            console.log(JSON.parse(event.data));
+            console.log(currentUserID);
+            console.log(event.data.idrad)
+            if(JSON.parse(event.data).idrad==currentUserID)
+{
+            deleteimage=JSON.parse(event.data).image;
+
+
+
+            // Find all <th> elements within the document
+var thElements = document.querySelectorAll('th');
+
+// Iterate over each <th> element
+thElements.forEach(function(thElement) {
+    // Check if the inner text of the <th> element is '5'
+    if (thElement.innerText.trim() === deleteimage) {
+        // If '5' is found, navigate to the parent <tr> element and remove it
+        var rowElement = thElement.closest('tr');
+        if (rowElement) {
+            rowElement.remove(); // Remove the row from the DOM
+        }
+    }
+});
+
+
+
+
+
+        }
+
+      }
+
 
 </script>
 {% endblock %}
