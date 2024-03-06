@@ -109,12 +109,13 @@ $(function () {
   var chart = new ApexCharts(document.querySelector("#chart"), chart);
   chart.render();
 
-  // =====================================
-  // Breakup
-  // =====================================
+  // !=====================================
+  // !Breakup
+  // !=====================================
   var patient = document.querySelector("#numPatient");
   var doctor = document.querySelector("#numDoctor");
   var radiologist = document.querySelector("#numRadiologist");
+  
   patient = parseInt(patient.innerHTML);
   doctor = parseInt(doctor.innerHTML);
   radiologist = parseInt(radiologist.innerHTML);
