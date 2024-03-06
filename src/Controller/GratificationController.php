@@ -24,7 +24,7 @@ use Stripe\Stripe;
 #[Route('/gratification')]
 class GratificationController extends AbstractController
 {
-    #[Route('/', name: 'app_gratification_index', methods: ['GET'])]
+    #[Route('/admin', name: 'app_gratification_index', methods: ['GET'])]
     public function index(PaginatorInterface $paginator,Request $req, GratificationRepository $gratificationRepository): Response
     {
         $gratification = $gratificationRepository->findAll();
@@ -39,7 +39,7 @@ class GratificationController extends AbstractController
         ]);
     }
 
-    #[Route('/search', name: 'search', methods: ['GET'])]
+    #[Route('admin/search', name: 'search', methods: ['GET'])]
     public function search(Request $request, GratificationRepository $gratificationRepository): JsonResponse
     {
         $searchTerm = $request->query->get('search');
@@ -53,8 +53,8 @@ class GratificationController extends AbstractController
                 'title' => $gratification->getTitreGrat(),
                 'Description' => $gratification->getDescGrat(),
                 'Type' => $gratification->getTypeGrat(),
-                'Montant'=> $gratification->getMontant(),
-                'Donateur'=> $gratification->getIDDonateur(),
+                //'Montant'=> $gratification->getMontant(),
+                //'Donateur'=> $gratification->getIDDonateur(),
             ];
         }
 
@@ -169,7 +169,7 @@ class GratificationController extends AbstractController
     
 
 
-    #[Route('/{id}', name: 'app_gratification_show', methods: ['GET'])]
+    #[Route('/admin/{id}', name: 'app_gratification_show', methods: ['GET'])]
     public function show(Gratification $gratification): Response
     {
         return $this->render('gratification/show.html.twig', [
@@ -177,7 +177,7 @@ class GratificationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_gratification_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/{id}/edit', name: 'app_gratification_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Gratification $gratification, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(Gratification1Type::class, $gratification);
@@ -195,7 +195,7 @@ class GratificationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_gratification_delete', methods: ['POST'])]
+    #[Route('/admin/{id}', name: 'app_gratification_delete', methods: ['POST'])]
     public function delete(Request $request, Gratification $gratification, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$gratification->getId(), $request->request->get('_token'))) {

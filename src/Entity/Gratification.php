@@ -35,6 +35,7 @@ class Gratification
     private ?string $Type_Grat = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(message:'Veuillez saisir le montant')]
     private ?int $Montant = null;
 
     #[ORM\Column(length: 255, nullable: true)]

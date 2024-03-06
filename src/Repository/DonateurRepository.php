@@ -26,8 +26,8 @@ class DonateurRepository extends ServiceEntityRepository
     public function sms(String $num) : void
     {
         // Your Account SID and Auth Token from twilio.com/console
-        $sid = 'ACe1c72f1ecdb0a7c816847cf580845632';
-        $auth_token = '9f87bfd3732f652d16896de2930d7d16';
+        $sid = $_ENV["TWILIO_SID"]; //= 'ACe1c72f1ecdb0a7c816847cf580845632';
+        $auth_token = $_ENV["TWILIO_AT"]; //= '9f87bfd3732f652d16896de2930d7d16';
         // In production, these should be environment variables. E.g.:
         // $auth_token = $_ENV["TWILIO_AUTH_TOKEN"]
         // A Twilio number you own with SMS capabilities
@@ -49,18 +49,30 @@ class DonateurRepository extends ServiceEntityRepository
 
 //    /**
 //     * @return Donateur[] Returns an array of Donateur objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('d.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+  
+    //public function findByExampleField($value): array
+   // {
+   //     return $this->createQueryBuilder('d')
+   //         ->andWhere('d.exampleField = :val')
+     //       ->setParameter('val', $value)
+     //       ->orderBy('d.id', 'ASC')
+     //      ->setMaxResults(10)
+    //        ->getQuery()
+    //       ->getResult()
+    //    ;
+   //}
+   public function findBySearchTerm($searchTerm)
+   {
+       if (!$searchTerm) {
+           return []; // Return an empty array if $searchTerm is null or empty
+       }
+   
+       return $this->createQueryBuilder('g')
+           ->andWhere('g.Nom_Donateur LIKE :searchTerm OR g.Prenom_Donateur LIKE :searchTerm OR g.Type_Donateur LIKE :searchTerm OR g.Email LIKE :searchTerm OR g.Telephone LIKE :searchTerm')
+           ->setParameter('searchTerm', '%' . $searchTerm . '%')
+           ->getQuery()
+           ->getResult();
+   }
 
 //    public function findOneBySomeField($value): ?Donateur
 //    {

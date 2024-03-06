@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Donateur;
 use App\Form\Donateur1Type;
 use App\Repository\DonateurRepository;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/donateur')]
 class DonateurController extends AbstractController
 {
-    #[Route('/', name: 'app_donateur_index', methods: ['GET'])]
+    #[Route('/admin/', name: 'app_donateur_index', methods: ['GET'])]
     public function index(DonateurRepository $donateurRepository,PaginatorInterface $paginator,Request $req): Response
     {
         $donateurs = $donateurRepository->findAll();
@@ -51,7 +52,28 @@ class DonateurController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_donateur_show', methods: ['GET'])]
+    #[Route('admin/search', name: 'app_donateur_search', methods: ['GET'])]
+    public function search(Request $request, DonateurRepository $donateurRepository): JsonResponse
+    {
+        $searchTerm = $request->query->get('search');
+        $donateurs = $donateurRepository->findBySearchTerm($searchTerm);
+
+        $data = [];
+        foreach ($donateurs as $donateur) {
+            $data[] = [
+                'id' => $donateur->getId(),
+                'nom' => $donateur->getNomDonateur(),
+                'prenom' => $donateur->getPrenomDonateur(),
+                'type' => $donateur->getTypeDonateur(),
+                'email' => $donateur->getEmail(),
+                'telephone'=> $donateur->getTelephone(),
+            ];
+        }
+
+        return new JsonResponse(['donateurs' => $data]);
+    }
+
+    #[Route('/admin/{id}', name: 'app_donateur_show', methods: ['GET'])]
     public function show(Donateur $donateur): Response
     {
         return $this->render('donateur/show.html.twig', [
@@ -59,7 +81,7 @@ class DonateurController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_donateur_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/{id}/edit', name: 'app_donateur_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Donateur $donateur, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(Donateur1Type::class, $donateur);
@@ -77,7 +99,7 @@ class DonateurController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_donateur_delete', methods: ['POST'])]
+    #[Route('/admin/{id}', name: 'app_donateur_delete', methods: ['POST'])]
     public function delete(Request $request, Donateur $donateur, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$donateur->getId(), $request->request->get('_token'))) {

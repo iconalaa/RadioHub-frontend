@@ -53,6 +53,59 @@
 </div>
     <a href="{{ path('app_gratification_new') }}">Create new</a>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('js/search.js') }}"></script>
+
+
+
+    <script>
+$(document).ready(function() {
+    $('#searchForm').submit(function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        var searchTerm = $('#searchInput').val();
+
+        $.ajax({
+            url: "{{ path('search')}}",
+            method: 'GET',
+            data: { search: searchTerm },
+            success: function(response) {
+                $('#gratificationTable tbody').empty(); // Clear previous results
+                
+                response.gratifications.forEach(function(gratification) {
+                    var row = '<tr>' +
+                              '<td>' + gratification.id + '</td>' +
+                              '<td>' + gratification.date + '</td>' +
+                              '<td>' + gratification.title + '</td>' +
+                              '<td>' + gratification.Description + '</td>' +
+                              '<td>' + gratification.Type + '</td>' +
+                            //  '<td>' + gratification.montant + '</td>' +
+                            //  '<td>' + gratification.iddonateur + '</td>' +
+                              '<td>' +
+                              '<a href="/gratification/' + gratification.id + '" class="btn btn-primary">Show</a>' +
+                              '<a href="/gratification/' + gratification.id + '/edit" class="btn btn-secondary">Edit</a>' +
+                          '</td>' +
+                          '</tr>';
+                              
+                              '</tr>';
+                    $('#gratificationTable tbody').append(row);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(error); // Handle errors
+            }
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+    </script>
 
 {% endblock %}
