@@ -42,7 +42,7 @@ class RadioRenduController extends AbstractController
             $entityManager->persist($compteRendu);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_radio');
+            return $this->redirectToRoute('app_image');
         }
 
         $medecins = $medrepo->findAll();

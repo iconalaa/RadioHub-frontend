@@ -32,13 +32,13 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="{{ path('app_image') }}">/Image</a></li>
-     
+
 
         </ol>
       </nav>
       <div id="up" class="mb-2"> <a href="{{path('image_upload')}}"> <button class="btn"
             style="background-color:#64748b;color:white">Upload</button></a>
-          </div>
+      </div>
     </div>
 
   </div><!-- End Page Title -->
@@ -87,17 +87,13 @@
 
                     <button class="btn " style="margin-right:5px;color:white ;background-color:#088af1ba">
                       share</button>
-
                   </a>
-
+                  <a href="{{ path('app_radio') }}">
+                    <button class="btn btn-success " style="margin-right:5px">Add to</button>
+                  </a>
                 </td>
-
-
               </tr>
-
               {%endfor%}
-
-
             </tbody>
           </table>
               {{ knp_pagination_render(images) }}
