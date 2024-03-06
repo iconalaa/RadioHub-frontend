@@ -1,0 +1,13 @@
+{% extends 'back.html.twig' %}
+
+{% block title %} RadioHub - Update Donations {% endblock %} 
+
+{% block body %}
+    <h1>Edit Gratification</h1>
+
+    {{ include('gratification/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_gratification_index') }}">back to list</a>
+
+    {{ include('gratification/_delete_form.html.twig') }}
+{% endblock %}

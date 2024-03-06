@@ -1,0 +1,95 @@
+{% extends 'back.html.twig' %}
+
+{% block title %} RadioHub - Our Donors {% endblock %} 
+
+{% block body %}
+    <h1>Donateur index</h1>
+
+    <form id="searchForm"  style="margin-top: 50px;">
+        <input type="text" id="searchInput" name="query" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
+    <table class="table" id="donateurTable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom_Donateur</th>
+                <th>Prenom_Donateur</th>
+                <th>Type_Donateur</th>
+                <th>Email</th>
+                <th>Telephone</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for donateur in donateurs %}
+            <tr>
+                <td>{{ donateur.id }}</td>
+                <td>{{ donateur.NomDonateur }}</td>
+                <td>{{ donateur.PrenomDonateur }}</td>
+                <td>{{ donateur.TypeDonateur }}</td>
+                <td>{{ donateur.Email }}</td>
+                <td>{{ donateur.Telephone }}</td>
+                <td>
+                    <a href="{{ path('app_donateur_show', {'id': donateur.id}) }}" class="btn btn-primary">Show</a>
+                    <a href="{{ path('app_donateur_edit', {'id': donateur.id}) }}" class="btn btn-secondary">Edit</a>
+                </td>
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div>{{ knp_pagination_render(donateurs, 'pagination.html.twig' )}}</div>
+
+    <a href="{{ path('app_donateur_new') }}">Create new</a>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+    <script>
+$(document).ready(function() {
+    $('#searchForm').submit(function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        var searchTerm = $('#searchInput').val();
+
+        $.ajax({
+            url: "{{ path('app_donateur_search')}}",
+            method: 'GET',
+            data: { search: searchTerm },
+            success: function(response) {
+                $('#donateurTable tbody').empty(); // Clear previous results
+                
+                response.donateurs.forEach(function(donateur) {
+                    var row = '<tr>' +
+                              '<td>' + donateur.id + '</td>' +
+                              '<td>' + donateur.nom + '</td>' +
+                              '<td>' + donateur.prenom + '</td>' +
+                              '<td>' + donateur.type + '</td>' +
+                              '<td>' + donateur.email + '</td>' +
+                              '<td>' + donateur.telephone + '</td>' +
+                              '<td>' +
+                              '<a href="/gratification/' + donateur.id + '" class="btn btn-primary">Show</a>' +
+                              '<a href="/gratification/' + donateur.id + '/edit" class="btn btn-secondary">Edit</a>' +
+                          '</td>' +
+                          '</tr>';
+                              
+                              '</tr>';
+                    $('#donateurTable tbody').append(row);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(error); // Handle errors
+            }
+        });
+    });
+});
+
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'back.html.twig' %}
+
+{% block title %} RadioHub - Donor {% endblock %} 
+
+{% block body %}
+    <h1>Donateur</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ donateur.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom_Donateur</th>
+                <td>{{ donateur.NomDonateur }}</td>
+            </tr>
+            <tr>
+                <th>Prenom_Donateur</th>
+                <td>{{ donateur.PrenomDonateur }}</td>
+            </tr>
+            <tr>
+                <th>Type_Donateur</th>
+                <td>{{ donateur.TypeDonateur }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ donateur.Email }}</td>
+            </tr>
+            <tr>
+                <th>Téléphone</th>
+                <td>{{ donateur.Telephone }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_donateur_index') }}">back to list</a>
+
+    <a href="{{ path('app_donateur_edit', {'id': donateur.id}) }}">edit</a>
+
+    {{ include('donateur/_delete_form.html.twig') }}
+{% endblock %}
