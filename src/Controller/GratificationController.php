@@ -111,6 +111,16 @@ class GratificationController extends AbstractController
     #[Route('/success-url', name: 'success_url')]
     public function successUrl(Request $req, EntityManagerInterface $entityManager): Response
     {
+        $logoPath = $this->getParameter('kernel.project_dir') . '/public/image/Cachet.png';
+
+        // Check if the logo image exists
+        if (file_exists($logoPath)) {
+            // Get the logo image as base64 encoded string
+            $logoData = base64_encode(file_get_contents($logoPath));
+        } else {
+            // Provide a fallback image or handle the case where the logo image is missing
+            $logoData = '';
+        }
         
         $donorId = $req->query->getInt('donorId');
         $gratificationId = $req->query->getInt('gratificationId');
@@ -124,6 +134,7 @@ class GratificationController extends AbstractController
         $html = $this->renderView('gratification/gratpdf.html.twig', [
             'donor' => $donor,
             'gratification' => $gratification,
+            'logodata' => $logoData,
         ]);
     
         $options = new Options();
