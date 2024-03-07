@@ -12,10 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use App\Services\MailService;
 
 #[Route('/rendezVous')]
@@ -62,7 +58,7 @@ class RendezVousController extends AbstractController
             $mailService->sendEmail();
 
 
-            return $this->redirectToRoute('app_rendez_vous_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_booked_appointment');
         }
 
         return $this->renderForm('rendez_vous/new.html.twig', [
