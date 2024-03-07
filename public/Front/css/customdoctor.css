@@ -1,90 +1,62 @@
 .page-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    /* Adjust alignment */
-    min-height: 100vh;
-    /* Use min-height instead of height */
-    margin-top: 20px;
-    /* Adjust margin */
-
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  margin-top: 20px;
 }
 
 .content-container {
-    width: 80%;
-    /* Adjust width */
-    text-align: center;
-    border: 1px solid blue;
-    /* Change border color to blue */
-    border-radius: 20px;
-    /* Apply border radius */
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(115, 28, 85, 0.547);
+  width: 80%;
+  text-align: center;
+  border: 1px solid blue;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(115, 28, 85, 0.547);
 }
 
 .content-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    /* Adjust alignment */
-
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .content-column {
-    width: calc(50% - 10px);
-    /* Adjusted width to accommodate the line */
-    padding: 10px;
+  width: calc(50% - 10px);
+  padding: 10px;
 }
 
 .item {
-    border: 1px solid #ccc;
-    ;
-    /* Change border color to blue */
-    border-radius: 10px;
-    /* Apply border radius */
-    padding: 10px;
-    margin-bottom: 10px;
-    box-shadow: 0 0 10px rgba(115, 28, 85, 0.547);
-    font-family: 'Courier New', monospace;
-
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 10px rgba(115, 28, 85, 0.547);
 }
 
 .button {
-    display: inline-block;
-    background-color: #007bff;
-    padding: 8px 16px;
-    text-decoration: dashed !important;
-    border-radius: 4px;
-    color: black !important;
-    font-weight: bold;
-    margin-top: 20px;
-
-
+  display: inline-block;
+  background-color: #007bff;
+  padding: 8px 16px;
+  text-decoration: dashed !important;
+  border-radius: 4px;
+  color: black !important;
+  font-weight: bold;
+  margin-top: 20px;
 }
 
 p {
-    color: #808080 !important;
-    font-weight: bold;
-
+  color: #808080 !important;
+  font-weight: bold;
 }
 
-
-
-h2,
-h3 {
-    font-family: 'Your Custom Font', sans-serif;
-    /* Apply custom font */
-    /* Add other font styles as needed */
+.item_title {
+  text-decoration-line: underline;
+  text-decoration-thickness: 3px;
+  color: #103256 !important;
 }
-.item_title{
-    text-decoration-line: underline;
-     text-decoration-thickness: 3px;
-      color: #103256!important;
-
-}
-.item_interpretation{
-    margin-top: 10px;
-     text-align: left!important;
-      color: #103256!important;
-
+.item_interpretation {
+  margin-top: 10px;
+  text-align: left !important;
+  color: #103256 !important;
 }

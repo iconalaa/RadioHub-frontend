@@ -1,46 +1,46 @@
 <style>
-  ul li {
-    color: red;
-  }
-  form {
-    width: 70%;
-  }
+	ul li {
+		color: red;
+	}
+	form {
+		width: 70%;
+	}
 </style>
 
-{{ form_start(form, {'attr': {'novalidate': 'novalidate','class': ' mx-auto'
+{{ form_start(form, {'attr': {'novalidate': 'novalidate','class': ' mx-auto d-flex flex-column gap-3'
 
 
 
 }}) }}
 
 <div class="d-flex gap-3">
-  <div class="d-flex flex-column w-100 gap-1">
-    {{ form_widget(form.Prenom_Donateur,{'attr':{'class':'form-control p-2'}})
-    }}
-    {{ form_errors(form.Prenom_Donateur) }}
-  </div>
-  <div class="d-flex flex-column w-100 gap-1">
-    {{ form_widget(form.Nom_Donateur,{'attr':{'class':'form-control p-2'}}) }}
-    {{ form_errors(form.Nom_Donateur) }}
-  </div>
+	<div class="d-flex flex-column w-100 gap-1">
+		{{ form_widget(form.Prenom_Donateur,{'attr':{'class':'form-control p-2'}})
+		    }}
+		{{ form_errors(form.Prenom_Donateur) }}
+	</div>
+	<div class="d-flex flex-column w-100 gap-1">
+		{{ form_widget(form.Nom_Donateur,{'attr':{'class':'form-control p-2'}}) }}
+		{{ form_errors(form.Nom_Donateur) }}
+	</div>
 </div>
 <div class="d-flex gap-3">
-  <div class="d-flex flex-column w-100 gap-1">
-    {{ form_widget(form.Email,{'attr':{'class':'form-control p-2'}}) }}
-    {{ form_errors(form.Email) }}
-  </div>
+	<div class="d-flex flex-column w-100 gap-1">
+		{{ form_widget(form.Email,{'attr':{'class':'form-control p-2'}}) }}
+		{{ form_errors(form.Email) }}
+	</div>
 
-  <div class="d-flex flex-column w-100 gap-1">
-    {{ form_widget(form.Telephone,{'attr':{'class':'form-control p-2'}}) }}
-    {{ form_errors(form.Telephone) }}
-  </div>
+	<div class="d-flex flex-column w-100 gap-1">
+		{{ form_widget(form.Telephone,{'attr':{'class':'form-control p-2'}}) }}
+		{{ form_errors(form.Telephone) }}
+	</div>
 </div>
 <div class="d-flex flex-column w-100 gap-1">
-  {{ form_widget(form.Type_Donateur,{'attr':{'class':'form-control p-2'}}) }}
-  {{ form_errors(form.Type_Donateur) }}
+	{{ form_widget(form.Type_Donateur,{'attr':{'class':'form-control p-2'}}) }}
+	{{ form_errors(form.Type_Donateur) }}
 </div>
 <center>
-  <button type="submit" class="btn btn-primary w-25 mt-3 mb-5">Submit</button>
+	<button type="submit" class="btn btn-primary w-25 mt-3 mb-5">Submit</button>
 </center>
 
 {{ form_end(form) }}
