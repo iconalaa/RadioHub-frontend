@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class MedType extends AbstractType
 {
@@ -26,13 +27,11 @@ class MedType extends AbstractType
                 'rows' => 5, // Set the number of visible rows for the textarea
             ],
         ])
-            ->add('date', TextType::class, [
-                'constraints' => [
-                    new NotBlank(['message' => 'Please add the date']),
-                    new DateTime(['format' => 'Y-m-d', 'message' => 'Invalid date format. Please use YYYY-MM-DD.']),
-                ],
-                'invalid_message' => 'Custom error message for date field',
-            ]);
+        ->add('date',DateType::class,[
+            'widget'=>'single_text',]);
+            
+            
+            
     }
 
     public function configureOptions(OptionsResolver $resolver)
