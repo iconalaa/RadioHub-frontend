@@ -18,28 +18,29 @@ class Donateur
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:'Veuillez saisir votre nom')]
+    #[Assert\NotBlank(message: 'Veuillez saisir votre nom')]
     private ?string $Nom_Donateur = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:'Veuillez saisir votre prénom')]
+    #[Assert\NotBlank(message: 'Veuillez saisir votre prénom')]
     private ?string $Prenom_Donateur = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'ce champ est obligatoire')]
     private ?string $Type_Donateur = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:'L"adresse du courriel éléctronique  est obligatoire')]
-    #[Assert\Email(message:'Veillez insérer une adresse email valide')]
+    #[Assert\NotBlank(message: 'L"adresse du courriel éléctronique  est obligatoire')]
+    #[Assert\Email(message: 'Veillez insérer une adresse email valide')]
     private ?string $Email = null;
 
     #[ORM\Column(type: Types::BIGINT)]
-    #[Assert\NotBlank(message:'Le numéro de téléphone est nécéssaire pour votre inscri')] 
-    #[Assert\Length(min:8,max:8,minMessage:('Veuillez Inserez un nombre adéquat'),maxMessage:('Vous avez dépassé le nombre de chiffres permis'))]
+    #[Assert\NotBlank(message: 'Le numéro de téléphone est nécéssaire pour votre inscri')]
+    #[Assert\Length(min: 8, max: 8, minMessage: ('Veuillez Inserez un nombre adéquat'), maxMessage: ('Vous avez dépassé le nombre de chiffres permis'))]
 
     private ?string $Telephone = null;
 
-    #[ORM\OneToMany(mappedBy: 'ID_Donateur', targetEntity: Gratification::class, orphanRemoval:true)]
+    #[ORM\OneToMany(mappedBy: 'ID_Donateur', targetEntity: Gratification::class, orphanRemoval: true)]
     private Collection $gratifications;
 
     public function __construct()
@@ -57,8 +58,7 @@ class Donateur
         return $this->Nom_Donateur;
     }
 
-    public function setNomDonateur(?
-    string $Nom_Donateur): static
+    public function setNomDonateur(?string $Nom_Donateur): static
     {
         $this->Nom_Donateur = $Nom_Donateur;
 
