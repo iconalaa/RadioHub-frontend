@@ -32,7 +32,7 @@ class ImageController extends AbstractController
     {
         $user = $security->getUser();
         $rad = $reprad->findOneBy(['user' => $user]);
-        $imagesQuery = $rep->findBy(['radiologist' => $rad]);
+        $imagesQuery = $rep->findBy(['radiologist' => $rad], ['id' => 'DESC']);
     
         // Paginate the query
         $images = $paginator->paginate(
@@ -68,6 +68,8 @@ class ImageController extends AbstractController
             $rad=$reprad->findOneBy(['user'=> $user]);
             $product->setRadiologist($rad);
             $product->setFilename("changed");
+            $currentDate = new \DateTime();
+            $product->setDateajout($currentDate);
             $entityManager->getManager()->persist($product);
             $entityManager->getManager()->flush();
             /** @var UploadedFile $brochureFile */
@@ -95,6 +97,7 @@ class ImageController extends AbstractController
 
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
+             
                 $product->setFilename($originalFilename.".dcm");
             }
 

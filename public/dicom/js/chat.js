@@ -113,6 +113,33 @@ downloadLink.click();*/
     // Optionally, you can use the PNG data URI as needed, such as sending it to the server or performing further processing
 }
 
+function downloadpngimage()
+{
+ // Get the loaded image
+ var enabledElement = cornerstone.getEnabledElement(element);
+ var image = enabledElement.image;
+
+ // Create a virtual canvas to perform conversion
+ var virtualCanvas = document.createElement('canvas');
+ virtualCanvas.width = image.width;
+ virtualCanvas.height = image.height;
+ var virtualContext = virtualCanvas.getContext('2d');
+
+ // Draw the DICOM image onto the virtual canvas
+ cornerstone.renderToCanvas(virtualCanvas, image);
+
+ // Convert the virtual canvas to PNG
+ var imageData = virtualCanvas.toDataURL('image/png');
+// Create a download link for the PNG image
+var downloadLink = document.createElement('a');
+downloadLink.href = imageData;
+downloadLink.download = imagetwig+'.png';
+downloadLink.textContent = 'Download PNG';
+document.body.appendChild(downloadLink);
+downloadLink.click();
+}
+
+
 function saveImageData(imageData) {
     // Create a new XMLHttpRequest
     var xhr = new XMLHttpRequest();
@@ -368,3 +395,78 @@ $(document).ready(function() {
         convertDicomToPNG();
     }, 3000); // 3000 milliseconds = 3 seconds
 });
+
+
+function brain() {
+    // Get the DICOM image name from the input field
+    var imageTwig = document.getElementById('image-twig').value;
+
+    // Construct the path to the PNG image by replacing ".dcm" with ".png"
+    var imagePath = "http://127.0.0.1:8000/uploads/images/" + imageTwig + ".png";
+
+    // Create a new Image element
+    const img = new Image();
+
+    // Set the source of the image to the PNG image path
+    img.src = imagePath;
+
+    // Wait for the image to load
+    img.onload = () => {
+        // Create a canvas element
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+
+        // Draw the image on the canvas
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        // Convert the canvas to a base64 string
+        const imageData = canvas.toDataURL('image/png').replace(/^data:.+;base64,/, '');
+
+        // Make the API call with the converted image
+        axios({
+            method: "POST",
+            url: "https://detect.roboflow.com/brain-tumors-detection/1",
+            params: {
+                api_key: "GtgMJ3TF9bBauIJotXXs"
+            },
+            data: imageData,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        })
+        .then(response => {
+            widthimage=response.data.image.width;
+            heightimage=response.data.image.height;
+            const x = response.data.predictions[0].x-20;
+            const y = response.data.predictions[0].y-20;
+            const width = response.data.predictions[0].width;
+            const height = response.data.predictions[0].height;
+
+            console.log(x, y);
+            console.log(response);
+
+            // Create a popup window
+            const popupWindow = window.open("", "Popup", "width=600,height=600");
+
+            // Adjust the width and height of the image according to the response
+            const imageWidth = width; // Width obtained from the response
+            const imageHeight = height; // Height obtained from the response
+
+            // Create an HTML structure inside the popup window to display the image and detected area
+            const popupContent = `
+                <div style="position: relative;">
+                    <img src="${imagePath}" style="width: ${widthimage}px; height: ${heightimage}px;">
+                    <div style="position: absolute; top: ${y}px; left: ${x}px; width: ${width}px; height: ${height}px; border: 1px solid green;"></div>
+                </div>
+            `;
+
+            // Write the HTML content to the popup window
+            popupWindow.document.write(popupContent);
+        })
+        .catch(error => {
+            console.log(error.message);
+        });
+    };
+}
