@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CompteRendu;
 use App\Form\RadType;
+use App\Repository\CompteRenduRepository;
 use App\Repository\DoctorRepository;
 use App\Repository\ImageRepository;
 use App\Repository\RadiologistRepository;
@@ -16,8 +17,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class RadioRenduController extends AbstractController
 {
-    #[Route('/radio', name: 'app_radio', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, DoctorRepository $medrepo, ImageRepository $imagesRepo, RadiologistRepository $repoRad): Response
+    #[Route('/radio/{id}', name: 'app_radio', methods: ['GET', 'POST'])]
+    public function new($id,Request $request, EntityManagerInterface $entityManager, DoctorRepository $medrepo, ImageRepository $imagesRepo, RadiologistRepository $repoRad,CompteRenduRepository $cm): Response
     {
 
         // Retrieve the currently logged-in user
@@ -34,11 +35,20 @@ class RadioRenduController extends AbstractController
         if (!$radiologist) {
             throw new \LogicException('Logged-in user is not associated with any doctor.');
         }
+
+
+        $o=$cm->findOneBy(["id_image"=> $id]);
+       if($o !=null)
+    {
+
+        return $this->render('radio/error.html.twig');
+    }
         $compteRendu = new CompteRendu();
         $form = $this->createForm(RadType::class, $compteRendu);
         $form->handleRequest($request);
-
+       $image= $imagesRepo->findOneBy(['id'=>$id]);
         if ($form->isSubmitted() && $form->isValid()) {
+            $compteRendu->setIdImage($image);
             $entityManager->persist($compteRendu);
             $entityManager->flush();
 
@@ -49,10 +59,9 @@ class RadioRenduController extends AbstractController
         $images = $imagesRepo->findImagesWithoutCompteRendu();
 
 
-
         return $this->render('radio/radio.html.twig', [
             'medecins' => $medecins,
-            'images' => $images,
+            'idimage' => $id,
             'form' => $form->createView(), // Pass the form to the template
         ]);
     }

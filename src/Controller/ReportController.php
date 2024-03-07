@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CompteRendu;
 use App\Form\CompteRenduType;
 use App\Repository\CompteRenduRepository;
+use App\Repository\PrescriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,9 +73,14 @@ class ReportController extends AbstractController
 
 
     #[Route('/{id}', name: 'app_compte_rendu_delete', methods: ['POST'])]
-    public function delete(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager ,PrescriptionRepository $pres): Response
     {
         if ($this->isCsrfTokenValid('delete' . $compteRendu->getId(), $request->request->get('_token'))) {
+           
+
+            $del_pres=$pres->findOneBy(["compterendu"=>$compteRendu]);
+            $entityManager->remove($del_pres);
+            $entityManager->flush();
             $entityManager->remove($compteRendu);
             $entityManager->flush();
         }

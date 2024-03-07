@@ -57,6 +57,7 @@
     /* Center the form */
     max-width: 400px;
     /* Set maximum form width */
+    zoom:80%;
   }
 
   .form-control {
@@ -94,20 +95,33 @@
   .go-back-link:hover {
     text-decoration: underline;
   }
+  body{
+    zoom:90% !important;
+    overflow-y:scroll;
+  }
+  #dimage
+  {
+    height: 300px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px gray;
+  }
 </style>
 {% endblock %}
 
 {% block body %}
 
-<div class="container">
+<div class="container" style="zoom:90%">
   <a class="go-back-link" href="{{ path('app_doctor') }}">← Go Back</a>
   <h2 class="text-center mt-5 mb-4">DOCTOR’S DECISION</h2>
-  
+
   <div class="row justify-content-center"> {# New container #}
     <div class="col-md-8"> {# Adjust the width as needed #}
       <form method="post" class="mt-4 custom-form" novalidate>
         {{ form_start(form) }}
+  <div>
+        <center><img src="{{ asset('uploads/images/' ~ idimage ~ '.png') }}" style="height:300px;border-radius:10px;box-shadow:2px 2px 2px gray" id="dimage" alt="Your Image"></center>
 
+  </div>
         <div class="form-group{% if form.interpretationMed.vars.errors|length > 0 %} has-error{% endif %}">
           {{ form_label(form.interpretationMed, 'Interpretation :') }}
           {{ form_widget(form.interpretationMed, {'attr': {'class': 'form-control'}}) }}
@@ -131,6 +145,7 @@
         <div class="form-group text-center">
           <button type="submit" class="btn btn-primary">Save</button>
         </div>
+
         {{ form_end(form) }}
       </form>
     </div>
