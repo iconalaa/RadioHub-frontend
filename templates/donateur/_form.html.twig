@@ -1,31 +1,46 @@
-{{ form_start(form, {'attr': {'novalidate': 'novalidate','class': 'd-flex gap-5 flex-column w-50 mx-auto my-5'}}) }}
-<div class="d-flex flex-row gap-3">
-    {{ form_widget(form.Prenom_Donateur,{'attr':{'class':'form-control p-2'}}) }}
-    <div class="form-error-message">{{ form_errors(form.Prenom_Donateur) }}</div>
-</div>
-    {{ form_widget(form.Nom_Donateur,{'attr':{'class':'form-control p-2'}}) }}
-    <div class="form-error-message">{{ form_errors(form.Nom_Donateur) }}</div>
-
-</div>
-
 <style>
-    .form-error-message {
-        color: red;
-        margin-top: 5px;
-        font-size: 14px;
-
-
-
-    }
+  ul li {
+    color: red;
+  }
+  form {
+    width: 70%;
+  }
 </style>
-<div class="d-flex flex-row">
-    {{ form_widget(form.Email,{'attr':{'class':'form-control p-2'}}) }}
-    <div class="form-error-message">{{ form_errors(form.Email) }}</div>
 
-    {{ form_widget(form.Telephone,{'attr':{'class':'form-control p-2'}}) }}
-    <div class="form-error-message">{{ form_errors(form.Telephone) }}</div>
+{{ form_start(form, {'attr': {'novalidate': 'novalidate','class': ' mx-auto'
 
+
+
+}}) }}
+
+<div class="d-flex gap-3">
+  <div class="d-flex flex-column w-100 gap-1">
+    {{ form_widget(form.Prenom_Donateur,{'attr':{'class':'form-control p-2'}})
+    }}
+    {{ form_errors(form.Prenom_Donateur) }}
+  </div>
+  <div class="d-flex flex-column w-100 gap-1">
+    {{ form_widget(form.Nom_Donateur,{'attr':{'class':'form-control p-2'}}) }}
+    {{ form_errors(form.Nom_Donateur) }}
+  </div>
 </div>
-{{ form_widget(form.Type_Donateur,{'attr':{'class':'form-control p-2'}}) }}
-<button class="btn w-25 mx-auto">{{ button_label|default('Save') }}</button>
+<div class="d-flex gap-3">
+  <div class="d-flex flex-column w-100 gap-1">
+    {{ form_widget(form.Email,{'attr':{'class':'form-control p-2'}}) }}
+    {{ form_errors(form.Email) }}
+  </div>
+
+  <div class="d-flex flex-column w-100 gap-1">
+    {{ form_widget(form.Telephone,{'attr':{'class':'form-control p-2'}}) }}
+    {{ form_errors(form.Telephone) }}
+  </div>
+</div>
+<div class="d-flex flex-column w-100 gap-1">
+  {{ form_widget(form.Type_Donateur,{'attr':{'class':'form-control p-2'}}) }}
+  {{ form_errors(form.Type_Donateur) }}
+</div>
+<center>
+  <button type="submit" class="btn btn-primary w-25 mt-3 mb-5">Submit</button>
+</center>
+
 {{ form_end(form) }}
