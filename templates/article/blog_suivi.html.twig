@@ -1,0 +1,95 @@
+{% extends 'front.html.twig' %} {% block title %}Blog {% endblock %} {% block
+body %}
+<div class="container mt-4">
+  <a class="btn btn-primary mb-3" href="{{ path('app_blog') }}">Retour</a>
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card mb-4">
+        <img
+          src="{{ asset('articles/' ~ articles.image) }}"
+          class="card-img-top"
+          alt="{{ articles.title }}"
+          style="width: 100%"
+        />
+        <div class="card-body">
+          <h1 class="card-title">{{ articles.title }}</h1>
+          <p class="card-text">{{ articles.content }}</p>
+          <p class="card-text text-muted">
+            {{ articles.createdAt | date('Y-m-d') }}
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card mb-4">
+            <div class="card-body">
+              {{ form_start(comment) }}
+              {{
+                form_row(comment.content, {
+                  attr: { placeholder: "Saisir votre commentaire" },
+                  label: false
+                })
+              }}
+              <button type="submit" class="btn btn-primary mt-3">
+                Publier
+              </button>
+              {{ form_end(comment) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          {% if existingComments is not empty %}
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Commentaires</h5>
+              <ul class="list-unstyled">
+                {% for comment in existingComments %}
+                <li class="mb-3">
+                  <p class="mb-1">{{ comment.content }}</p>
+                  <small
+                    class="text-muted"
+                    >{{ comment.createdAt | date('Y-m-d H:i') }}</small
+                  >
+                  {% if replyForms[comment.id] is defined %}
+                  <div class="reply-form mt-3">
+                    {{ form_start(replyForms[comment.id]) }}
+                    {{
+                      form_row(replyForms[comment.id].content, {
+                        attr: { placeholder: "Votre réponse" },
+                        label: false
+                      })
+                    }}
+                    <button type="submit" class="btn btn-sm btn-primary">
+                      Reply
+                    </button>
+
+                    {% if comment.iduser.id == app.user.id %}
+                    <a
+                      href="{{
+                        path('app_comment_delete', { id: comment.id })
+                      }}"
+                      class="btn btn-sm btn-danger"
+                      >Delete</a
+                    >
+                    {% endif %}
+                    {{ form_end(replyForms[comment.id]) }}
+                  </div>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      {# ! ------------------------------- #}
+    </div>
+  </div>
+</div>
+{% endblock %}
