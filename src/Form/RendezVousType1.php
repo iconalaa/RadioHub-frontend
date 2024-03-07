@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
 //use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
 //use captcha\captchaBundle\Validator\constraints\validateCaptcha;
-class RendezVousType extends AbstractType
+class RendezVousType1 extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -107,19 +107,6 @@ class RendezVousType extends AbstractType
             ])
 
            
-            ->add('salle', EntityType::class, [
-                'class' => Salle::class,
-                'choice_label' => 'id', // Replace with the actual property you want to display
-                'query_builder' => function (SalleRepository $er) {
-                    return $er->createQueryBuilder('s')
-                        ->orderBy('s.id', 'ASC'); // Replace with the actual property you want to order by
-                },
-                'placeholder' => 'Select exam room ...',
-                'label' => false,
-                'attr' => ['placeholder' => 'room'],
-            ])
-
-         
                
         ;
     }

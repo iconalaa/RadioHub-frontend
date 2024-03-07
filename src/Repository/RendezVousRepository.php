@@ -21,6 +21,23 @@ class RendezVousRepository extends ServiceEntityRepository
         parent::__construct($registry, RendezVous::class);
     }
 
+    
+
+     ////////// search ////
+/*     public function findBySearchTerm($searchTerm)
+     {
+         if (!$searchTerm) {
+             return []; // Return an empty array if $searchTerm is null or empty
+         }
+     
+         return $this->createQueryBuilder('RDV')
+             ->andWhere('RDV.nomPatient LIKE :searchTerm OR RDV.prenomPatient LIKE :searchTerm ')
+             ->setParameter('searchTerm', '%' . $searchTerm . '%')
+             ->getQuery()
+             ->getResult();
+     }
+       /*
+
 //    /**
 //     * @return RendezVous[] Returns an array of RendezVous objects
 //     */

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Reponse;
 use App\Form\ReponseType;
+use App\Repository\ReclamationRepository;
 use App\Repository\ReponseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -31,7 +32,7 @@ class ReponseController extends AbstractController
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($request);
 
- 
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($reponse);
             $em->flush();
@@ -74,11 +75,38 @@ class ReponseController extends AbstractController
     #[Route('/{id}', name: 'app_reponse_delete', methods: ['POST'])]
     public function delete(Request $request, Reponse $reponse, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$reponse->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $reponse->getId(), $request->request->get('_token'))) {
             $entityManager->remove($reponse);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_reponse_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/create-response/{reclamationId}', name: 'create_response_for_reclamation', methods: ['GET', 'POST'])]
+    public function createResponseForReclamation(Request $request, EntityManagerInterface $entityManager, ReclamationRepository $reclamationRepository, int $reclamationId): Response
+    {
+        $reclamation = $reclamationRepository->find($reclamationId);
+
+        if (!$reclamation) {
+            throw $this->createNotFoundException('Reclamation not found');
+        }
+
+        $reponse = new Reponse();
+        $reponse->setReclamation($reclamation); // Set the Reclamation field directly
+
+        $form = $this->createForm(ReponseType::class, $reponse);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($reponse);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_reclamation_show', ['id' => $reclamation->getId()]);
+        }
+
+        return $this->renderForm('reponse/new.html.twig', [
+            'reponse' => $reponse,
+            'form' => $form,
+        ]);
     }
 }

@@ -14,7 +14,6 @@ block body %}
             <th>name</th>
             <th>lastname</th>
             <th>patient_mail</th>
-            <th>StateRV</th>
             <th>DateRV</th>
             <th>TypeExam</th>
 
@@ -41,7 +40,6 @@ block body %}
         
             
      
-            <td>{{ rendez_vou.statusRV }}</td>
      
             <td>
               {{ rendez_vou.dateRV ? rendez_vou.dateRV|date('Y-m-d') : '' }}
@@ -60,7 +58,7 @@ block body %}
               <a
                 class="btn btn-success"
                 href="{{ path('app_rendez_vous_edit', { id: rendez_vou.id }) }}"
-                >edit</a
+                >Affect Room</a
               >
             </td>
           </tr>
@@ -78,4 +76,8 @@ block body %}
     </div>
   </div>
 </div>
+{{ knp_pagination_render(rendez_vouses) }}  
+
+
+
 {% endblock %}

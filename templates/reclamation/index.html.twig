@@ -29,6 +29,37 @@
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">show</a>
                     <a class="btn btn-secondary" href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>
+
+                    
+                    
+                    
+                        {% if reponses == null %}
+                        <a class="btn btn-secondary" href="{{ path('create_response_for_reclamation', {'reclamationId': reclamation.id}) }}">Response</a>
+                        {% endif %}
+
+                    {%for reponses in reponses %}
+                    {% if reponses.reclamation.id != reclamation.id  %}
+                    <a class="btn btn-secondary" href="{{ path('create_response_for_reclamation', {'reclamationId': reclamation.id}) }}">Response</a>
+                    {%else%}
+                    {% endif %}
+                    {% endfor %}
+                    
+                    
+
+
+
+
+
+                    
+
+                 
+                 
+
+                  
+                
+                    
+                    
+
                 </td>
             </tr>
         {% else %}
@@ -40,4 +71,6 @@
     </table>
 
     <a class="btn btn-primary" href="{{ path('app_reclamation_new') }}">Create new</a>
+
+    {{ knp_pagination_render(reclamations) }}  
 {% endblock %}

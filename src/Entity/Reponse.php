@@ -22,6 +22,10 @@ class Reponse
     #[Assert\NotBlank (message:"Put date Please!")]
     private ?\DateTimeInterface $date_rep = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+   
+    private ?Reclamation $reclamation= null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +56,18 @@ class Reponse
     }
     public function __toString():string{
         return $this->getDescRep();
+    }
+
+    public function getReclamation(): ?Reclamation
+    {
+        return $this->reclamation;
+    }
+
+    public function setReclamation(?Reclamation $reclamation): static
+    {
+        $this->reclamation = $reclamation;
+
+        return $this;
     }
     
 }

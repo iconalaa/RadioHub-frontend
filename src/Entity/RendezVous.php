@@ -19,7 +19,7 @@ class RendezVous
     //#[Assert\NotBlank(message:"Put State Please!")]
     //private ?string $statusRV = null;
     #[ORM\Column]
-    #[Assert\NotBlank(message:"enter date Please!")]
+   
     private ?\DateTime $dateRV = null;
 
 
@@ -28,8 +28,8 @@ class RendezVous
     private ?string $typeExam = null;
 
     #[ORM\ManyToOne(inversedBy: 'rendezvous')]
-    #[Assert\NotBlank]
     private ?Salle $salle = null;
+
     #[Assert\NotBlank(message:"Put your name Please!")]
     #[ORM\Column(length: 255)]
     private ?string $nomPatient = null;
@@ -67,7 +67,7 @@ class RendezVous
         return $this->dateRV;
     }
 
-    public function setDateRV(\DateTimeInterface $dateRV): static
+    public function setDateRV(?\DateTimeInterface $dateRV): static
     {
         $this->dateRV = $dateRV;
 

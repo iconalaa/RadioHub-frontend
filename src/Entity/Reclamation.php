@@ -6,7 +6,7 @@ use App\Repository\ReclamationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo ;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 
 #[ORM\Entity(repositoryClass: ReclamationRepository::class)]
@@ -22,25 +22,22 @@ class Reclamation
     private ?string $id_user = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message:"Put State Please!")]
-    private ?bool $etat_rec = null;
+    #[Assert\NotBlank(message: "Put State Please!")]
+    private ?bool $etat_rec = false;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     //#[Gedmo\Timestampable(on: "create")]
     private ?\DateTimeInterface $date_rec = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:"Put Desc_Rec Please!")]
+    #[Assert\NotBlank(message: "Put Desc_Rec Please!")]
     private ?string $desc_rec = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:"Put Type Please!")]
+    #[Assert\NotBlank(message: "Put Type Please!")]
 
     private ?string $type_rec = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-   
-    private ?Reponse $reponse = null;
 
     public function getId(): ?int
     {
@@ -106,16 +103,8 @@ class Reclamation
 
         return $this;
     }
-
-    public function getReponse(): ?Reponse
+    public function __construct()
     {
-        return $this->reponse;
-    }
-
-    public function setReponse(?Reponse $reponse): static
-    {
-        $this->reponse = $reponse;
-
-        return $this;
+        $this->etat_rec = false;
     }
 }

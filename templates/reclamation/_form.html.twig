@@ -20,10 +20,7 @@
       {{ form_widget(form.id_user, {'attr': {'class': 'form-control' }}) }}
       {{ form_errors(form.id_user,{'attr':{'class':'text-danger'}}) }}
     </div>
-   <div class="d-flex flex-column w-100">
-       {{ form_widget(form.etat_rec, {'attr': {'class': 'form-control'   }}) }}
-            {{ form_errors(form.etat_rec,{'attr':{'class':'text-danger'}}) }}
-          </div>     
+    
   </div>
   <div class="d-flex" style="gap: .5rem;">
     <div class="d-flex flex-column w-100">
@@ -40,10 +37,7 @@
       {{ form_widget(form.type_rec, {'attr': {'class': 'form-control'   }}) }}
       {{ form_errors(form.type_rec,{'attr':{'class':'text-danger'}}) }}
     </div>
-    <div class="d-none flex-column w-100">
-      {{ form_widget(form.reponse, {'attr': {'class': 'form-control'}}) }}
-      {{ form_errors(form.reponse,{'attr':{'class':'text-danger'}}) }}
-    </div> 
+    
   </div>
   <button type="submit" class="btn btn-primary mx-auto w-25">Send</button>
 </div>

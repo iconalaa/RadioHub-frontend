@@ -49,13 +49,7 @@ endblock %} {% block body %}
         {{ form_errors(form.typeExam,{'attr':{'class':'text-danger'}}) }}
       </div>
     </div>
-    <div class="d-flex" style="gap: 0.5rem">
-      <div class="d-flex flex-column w-100">
-        {{ form_widget(form.salle, {'attr': {'class': 'd-flex',   }}) }}
-        {{ form_errors(form.salle,{'attr':{'class':'text-danger'}}) }}
-      </div>
-      <hr />
-    </div>
+    
 
     <a href="{{ path('app_booked_appointment') }}"
       ><button type="submit" class="btn btn-primary mx-auto w-25">

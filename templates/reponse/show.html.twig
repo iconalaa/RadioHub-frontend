@@ -4,8 +4,9 @@
 
 {% block body %}
     <h1>Reponse</h1>
-
+    <div style="justify-content: center!important; ">
     <table class="table">
+       
         <tbody>
             <tr>
                 <th>Id</th>
@@ -20,8 +21,9 @@
                 <td>{{ reponse.dateRep ? reponse.dateRep|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
-    </table>
 
+    </table>
+</div>
     <a href="{{ path('app_reponse_index') }}">back to list</a>
 
     <a href="{{ path('app_reponse_edit', {'id': reponse.id}) }}">edit</a>

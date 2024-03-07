@@ -23,14 +23,7 @@ class ReclamationType extends AbstractType
 
                 
             ])
-            ->add('etat_rec', ChoiceType::class, [
-                'choices' => [
-                    'Traitée' => 'Traitée',
-                    'NonTraitée' => 'NonTraitée',
-                  
-                ],
-                'label' => false,
-            ])
+        
             ->add('date_rec', DateType::class,
             [
                 'label' => false,
@@ -56,7 +49,7 @@ class ReclamationType extends AbstractType
                 ],
                 'label' => false,
             ])
-            ->add('reponse')
+        
           
         ;
     }
