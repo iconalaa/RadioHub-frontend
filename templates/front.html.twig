@@ -106,30 +106,34 @@
 									<!-- Main Menu -->
 									<div class="main-menu">
 										<nav class="navigation">
-											<ul class="nav menu">
+											<ul class="nav menu justify-content-center">
 												{% block links%}
 													<li>
 														<a href="{{ path('app_home') }}">Home</a>
 													</li>
+													{% if is_granted('ROLE_RADIOLOGIST') %}
+													<li>
+														<a href="{{ path('app_image') }}">Images
+														</a>
+													</li>
+													{% endif %}
 													<li>
 														<a href="#">Doctors
 														</a>
 													</li>
 													<li>
-														<a href="#">Reclamation
-														</a>
-													</li>
-													<li>
-														<a href="#">Dons
+														<a href="{{ path('app_donateur_new') }}">Dons
 														</a>
 													</li>
 													<li>
 														<a href="#">Blog
 														</a>
-													</li>
 													<li>
-														<a href="#">Contact Us</a>
+														<a href="#">Reclamation
+														</a>
 													</li>
+													</li>
+
 												{% endblock %}
 											</ul>
 										</nav>
@@ -150,38 +154,37 @@
 															<div class="message-body">
 																<a href="{{ path('app_home') }}" class="d-flex align-items-center gap-2 dropdown-item">
 																	<i style="
-																		                                  filter: invert(67%) sepia(6%) saturate(8%)
-																		                                    hue-rotate(329deg) brightness(78%)
-																		                                    contrast(81%);
-																		                                " class="fa-solid fa-home"></i>
+																	filter: invert(67%) sepia(6%) saturate(8%)
+																	hue-rotate(329deg) brightness(78%)
+																	contrast(81%);
+																" class="fa-solid fa-home"></i>
 																	<p class="mb-0 fs-3">Home</p>
 																</a>
 																<a href="{{ path('app_profile') }}" class="d-flex align-items-center gap-2 dropdown-item">
 																	<i style="
-																		                                  filter: invert(67%) sepia(6%) saturate(8%)
-																		                                    hue-rotate(329deg) brightness(78%)
-																		                                    contrast(81%);
-																		                                " class="fa-solid fa-user"></i>
+																																				                                  filter: invert(67%) sepia(6%) saturate(8%)
+																																				                                    hue-rotate(329deg) brightness(78%)
+																																				                                    contrast(81%);
+																																				                                " class="fa-solid fa-user"></i>
 																	<p class="mb-0 fs-3">
-																		<span style="text-transform: capitalize">{{ app.user.name }}
-																			Profile</span>
+																		<span style="text-transform: capitalize">Profile</span>
 																	</p>
 																</a>
 																<a href="{{ path('app_settings', { id: app.user.id }) }}" class="d-flex align-items-center gap-2 dropdown-item">
 																	<i style="
-																		                                  filter: invert(67%) sepia(6%) saturate(8%)
-																		                                    hue-rotate(329deg) brightness(78%)
-																		                                    contrast(81%);
-																		                                " class="fa-solid fa-gear"></i>
+																	filter: invert(67%) sepia(6%) saturate(8%)
+																	hue-rotate(329deg) brightness(78%)
+																	contrast(81%);
+																" class="fa-solid fa-gear"></i>
 																	<p class="mb-0 fs-3">Settings</p>
 																</a>
 																{% if is_granted('ROLE_ADMIN') %}
 																	<a href="{{ path('app_admin') }}" class="d-flex align-items-center gap-2 dropdown-item">
 																		<i style="
-																			                                  filter: invert(67%) sepia(6%) saturate(8%)
-																			                                    hue-rotate(329deg) brightness(78%)
-																			                                    contrast(81%);
-																			                                " class="fa-solid fa-lock"></i>
+																																						                                  filter: invert(67%) sepia(6%) saturate(8%)
+																																						                                    hue-rotate(329deg) brightness(78%)
+																																						                                    contrast(81%);
+																																						                                " class="fa-solid fa-lock"></i>
 																		<p class="mb-0 fs-3">Dashboard</p>
 																	</a>
 																{% endif %}
@@ -226,8 +229,8 @@
 										</h1>
 										<p>
 											Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-											                    Mauris sed nisl pellentesque, faucibus libero eu, gravida
-											                    quam.
+																						                    Mauris sed nisl pellentesque, faucibus libero eu, gravida
+																						                    quam.
 										</p>
 										<div class="button">
 											<a href="#" class="btn">Get Appointment</a>
@@ -253,8 +256,8 @@
 										</h1>
 										<p>
 											Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-											                    Mauris sed nisl pellentesque, faucibus libero eu, gravida
-											                    quam.
+																						                    Mauris sed nisl pellentesque, faucibus libero eu, gravida
+																						                    quam.
 										</p>
 										<div class="button">
 											<a href="#" class="btn">Get Appointment</a>
@@ -280,8 +283,8 @@
 										</h1>
 										<p>
 											Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-											                    Mauris sed nisl pellentesque, faucibus libero eu, gravida
-											                    quam.
+																						                    Mauris sed nisl pellentesque, faucibus libero eu, gravida
+																						                    quam.
 										</p>
 										<div class="button">
 											<a href="#" class="btn">Get Appointment</a>
@@ -315,7 +318,7 @@
 											<h4>Emergency Cases</h4>
 											<p>
 												Lorem ipsum sit amet consectetur adipiscing elit. Vivamus
-												                      et erat in lacus convallis sodales.
+																								                      et erat in lacus convallis sodales.
 											</p>
 											<a href="#">LEARN MORE<i class="fa fa-long-arrow-right"></i>
 											</a>
@@ -336,7 +339,7 @@
 											<h4>Doctors Timetable</h4>
 											<p>
 												Lorem ipsum sit amet consectetur adipiscing elit. Vivamus
-												                      et erat in lacus convallis sodales.
+																								                      et erat in lacus convallis sodales.
 											</p>
 											<a href="#">LEARN MORE<i class="fa fa-long-arrow-right"></i>
 											</a>
@@ -360,7 +363,8 @@
 													Monday - Fridayp
 													<span>8.00-20.00</span>
 												</li>
-												<li class="day">Saturday
+												<li class="day">
+													Saturday
 													<span>9.00-18.30</span>
 												</li>
 												<li class="day">
@@ -390,7 +394,7 @@
 								<img src="front/img/section-img.png" alt="#"/>
 								<p>
 									Lorem ipsum dolor sit amet consectetur adipiscing elit praesent
-									                aliquet. pretiumts
+																		                aliquet. pretiumts
 								</p>
 							</div>
 						</div>
@@ -406,7 +410,7 @@
 								<h3>Emergency Help</h3>
 								<p>
 									Lorem ipsum sit, consectetur adipiscing elit. Maecenas mi quam
-									                vulputate.
+																		                vulputate.
 								</p>
 							</div>
 							<!-- End Single features -->
@@ -421,7 +425,7 @@
 								<h3>Enriched Pharmecy</h3>
 								<p>
 									Lorem ipsum sit, consectetur adipiscing elit. Maecenas mi quam
-									                vulputate.
+																		                vulputate.
 								</p>
 							</div>
 							<!-- End Single features -->
@@ -436,7 +440,7 @@
 								<h3>Medical Treatment</h3>
 								<p>
 									Lorem ipsum sit, consectetur adipiscing elit. Maecenas mi quam
-									                vulputate.
+																		                vulputate.
 								</p>
 							</div>
 							<!-- End Single features -->
@@ -513,7 +517,7 @@
 								<img src="front/img/section-img.png" alt="#"/>
 								<p>
 									Lorem ipsum dolor sit amet consectetur adipiscing elit praesent
-									                aliquet. pretiumts
+																		                aliquet. pretiumts
 								</p>
 							</div>
 						</div>
@@ -526,19 +530,19 @@
 								<h3>Who We Are</h3>
 								<p>
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									                Maecenas pharetra antege vel est lobortis, a commodo magna
-									                rhoncus. In quis nisi non emet quam pharetra commodo.
+																		                Maecenas pharetra antege vel est lobortis, a commodo magna
+																		                rhoncus. In quis nisi non emet quam pharetra commodo.
 								</p>
 								<p>
 									Class aptent taciti sociosqu ad litora torquent per conubia
-									                nostra, per inceptos himenaeos.
+																		                nostra, per inceptos himenaeos.
 								</p>
 								<div class="row">
 									<div class="col-lg-6">
 										<ul class="list">
 											<li>
 												<i class="fa fa-caret-right"></i>Maecenas vitae luctus
-													                      nibh.
+																										                      nibh.
 											</li>
 											<li>
 												<i class="fa fa-caret-right"></i>Duis massa massa.</li>
@@ -551,7 +555,7 @@
 										<ul class="list">
 											<li>
 												<i class="fa fa-caret-right"></i>Maecenas vitae luctus
-													                      nibh.
+																										                      nibh.
 											</li>
 											<li>
 												<i class="fa fa-caret-right"></i>Duis massa massa.</li>
@@ -600,7 +604,7 @@
 								<h2>Do you need Emergency Medical Care? Call @ 1234 56789</h2>
 								<p>
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-									                porttitor dictum turpis nec gravida.
+																		                porttitor dictum turpis nec gravida.
 								</p>
 								<div class="button">
 									<a href="#" class="btn">Contact Now</a>
@@ -624,7 +628,7 @@
 								<img src="front/img/section-img.png" alt="#"/>
 								<p>
 									Lorem ipsum dolor sit amet consectetur adipiscing elit praesent
-									                aliquet. pretiumts
+																		                aliquet. pretiumts
 								</p>
 							</div>
 						</div>
@@ -683,7 +687,7 @@
 								<img src="front/img/section-img.png" alt="#"/>
 								<p>
 									Lorem ipsum dolor sit amet consectetur adipiscing elit praesent
-									                aliquet. pretiumts
+																		                aliquet. pretiumts
 								</p>
 							</div>
 						</div>
@@ -699,7 +703,7 @@
 								</h4>
 								<p>
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-									                luctus dictum eros ut imperdiet.
+																		                luctus dictum eros ut imperdiet.
 								</p>
 							</div>
 							<!-- End Single Service -->
@@ -714,7 +718,7 @@
 								</h4>
 								<p>
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-									                luctus dictum eros ut imperdiet.
+																		                luctus dictum eros ut imperdiet.
 								</p>
 							</div>
 							<!-- End Single Service -->
@@ -729,7 +733,7 @@
 								</h4>
 								<p>
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-									                luctus dictum eros ut imperdiet.
+																		                luctus dictum eros ut imperdiet.
 								</p>
 							</div>
 							<!-- End Single Service -->
@@ -744,7 +748,7 @@
 								</h4>
 								<p>
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-									                luctus dictum eros ut imperdiet.
+																		                luctus dictum eros ut imperdiet.
 								</p>
 							</div>
 							<!-- End Single Service -->
@@ -759,7 +763,7 @@
 								</h4>
 								<p>
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-									                luctus dictum eros ut imperdiet.
+																		                luctus dictum eros ut imperdiet.
 								</p>
 							</div>
 							<!-- End Single Service -->
@@ -774,7 +778,7 @@
 								</h4>
 								<p>
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-									                luctus dictum eros ut imperdiet.
+																		                luctus dictum eros ut imperdiet.
 								</p>
 							</div>
 							<!-- End Single Service -->
@@ -794,7 +798,7 @@
 								<img src="front/img/section-img.png" alt="#"/>
 								<p>
 									Lorem ipsum dolor sit amet consectetur adipiscing elit praesent
-									                aliquet. pretiumts
+																		                aliquet. pretiumts
 								</p>
 							</div>
 						</div>
@@ -815,7 +819,7 @@
 										</h2>
 										<p class="text">
 											Lorem ipsum dolor a sit ameti, consectetur adipisicing elit,
-											                    sed do eiusmod tempor incididunt sed do incididunt sed.
+																						                    sed do eiusmod tempor incididunt sed do incididunt sed.
 										</p>
 									</div>
 								</div>
@@ -837,7 +841,7 @@
 										</h2>
 										<p class="text">
 											Lorem ipsum dolor a sit ameti, consectetur adipisicing elit,
-											                    sed do eiusmod tempor incididunt sed do incididunt sed.
+																						                    sed do eiusmod tempor incididunt sed do incididunt sed.
 										</p>
 									</div>
 								</div>
@@ -859,7 +863,7 @@
 										</h2>
 										<p class="text">
 											Lorem ipsum dolor a sit ameti, consectetur adipisicing elit,
-											                    sed do eiusmod tempor incididunt sed do incididunt sed.
+																						                    sed do eiusmod tempor incididunt sed do incididunt sed.
 										</p>
 									</div>
 								</div>
@@ -881,7 +885,7 @@
 								<img src="front/img/section-img.png" alt="#"/>
 								<p>
 									Lorem ipsum dolor sit amet consectetur adipiscing elit praesent
-									                aliquet. pretiumts
+																		                aliquet. pretiumts
 								</p>
 							</div>
 						</div>
@@ -1019,7 +1023,7 @@
 										<h2>About Us</h2>
 										<p>
 											Lorem ipsum dolor sit am consectetur adipisicing elit do
-											                  eiusmod tempor incididunt ut labore dolore magna.
+																						                  eiusmod tempor incididunt ut labore dolore magna.
 										</p>
 										<!-- Social -->
 										<ul class="social">
@@ -1082,16 +1086,19 @@
 										<h2>Open Hours</h2>
 										<p>
 											Lorem ipsum dolor sit ame consectetur adipisicing elit do
-											                  eiusmod tempor incididunt.
+																						                  eiusmod tempor incididunt.
 										</p>
 										<ul class="time-sidual">
-											<li class="day">Monday - Fridayp
+											<li class="day">
+												Monday - Fridayp
 												<span>8.00-20.00</span>
 											</li>
-											<li class="day">Saturday
+											<li class="day">
+												Saturday
 												<span>9.00-18.30</span>
 											</li>
-											<li class="day">Monday - Thusday
+											<li class="day">
+												Monday - Thusday
 												<span>9.00-15.00</span>
 											</li>
 										</ul>
@@ -1102,7 +1109,7 @@
 										<h2>Newsletter</h2>
 										<p>
 											subscribe to our newsletter to get allour news in your inbox..
-											                  Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+																						                  Lorem ipsum dolor sit amet, consectetur adipisicing elit,
 										</p>
 										<form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
 											<input name="email" placeholder="Email Address" class="common-input" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your email address'" required="" type="email"/>

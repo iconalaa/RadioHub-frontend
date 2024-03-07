@@ -1,22 +1,12 @@
 {% extends 'front.html.twig' %}
 
-{% block title %} RadioHub - Donation {% endblock %}
+{% block title %}
+	RadioHub - Donation
+{% endblock %}
 
 {% block body %}
-<style>
-    form {
-        gap: 1rem;
-    }
-
-    form .d-flex {
-        gap: 1rem;
-    }
-</style>
-<center>
-
-    <h1 class="mt-5">Create new Donateur</h1>
-</center>
-
-{{ include('donateur/_form.html.twig') }}
+	<style></style>
+	<h1 class="mt-2 text-center mt-0 mb-5">Create new Donateur</h1>
+	{{ include('donateur/_form.html.twig') }}
 
 {% endblock %}
