@@ -21,6 +21,7 @@
 
 
 # Ignore uploaded files
+
 /public/uploads/
 /var/uploads/
 /public/uploads/pdp

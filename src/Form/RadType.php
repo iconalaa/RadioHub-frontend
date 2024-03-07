@@ -42,19 +42,7 @@ class RadType extends AbstractType
                 ],
                 'invalid_message' => 'Custom error message for interpretation_rad field',
             ])
-            ->add('id_image', EntityType::class, [
-                'class' => 'App\Entity\Image',
-                'choices' => $this->imagesRepository->findImagesWithoutCompteRendu(),
-                'choice_label' => function($image) {
-                    return $image->getpatient();
-                },
-                'attr' => ['class' => 'form-control'],
-                'placeholder' => '', // Set the placeholder to an empty string
-                'constraints' => [
-                    new NotBlank(['message' => 'Assign an image to the patient']),
-                ],
-                'invalid_message' => 'Custom error message for interpretation_rad field',
-            ]);
+          ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -28,6 +28,8 @@
 <script src="https://unpkg.com/cornerstone-tools@4.22.1/dist/cornerstoneTools.js"></script>
 <script
     src="~/node_modules/cornerstone-tools-rotated-elliptical-roi-tool/dist/rotated-elliptical-roi-tool.umd.js"></script>
+    <script src="https://kit.fontawesome.com/ff32a6ce5d.js" crossorigin="anonymous"></script>
+
 <style>
     .modal {
         display: none;
@@ -236,8 +238,19 @@
                               </a>
                               </center>
                             {%endif%}
+                             {%if droit == "owner" %}
+
+                             <center><a href="{{ path('app_radio', {'id': id}) }}">
+
+                                <button class="btn btn-primary" style="margin-right:5px"> Compte</button>
+            
+            
+                              </a>
+                              </center>
+
+                            {%endif%}
+
                         </div>
-                        <image src="/uploads/images/6.png">
 
                         <div class="body-message" id="interpretation-container">
 

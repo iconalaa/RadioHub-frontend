@@ -88,6 +88,8 @@
             <h1>Medical Report</h1>
         </div>
         <div class="details">
+
+        
             
             <p><strong>Patient:</strong>{{ compteRendu.idImage.patient.user.name }} {{ compteRendu.idImage.patient.user.lastname }}</p>
             <p><strong>Medical Insurance Code:</strong>{{ compteRendu.idImage.patient.NumAssurance}} </p>
@@ -107,6 +109,7 @@
             <p>{{ compteRendu.date|date('Y-m-d') }}</p>
         </div>
     </div>
+    <center><img src="data:image/png;base64,{{ imageData }}" alt="Logo" style="max-width: 300px; height: 300px;"></center>
     <div class="footer">
         
     </div>

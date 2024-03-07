@@ -28,7 +28,7 @@ class CompteRendu
     private ?Doctor $id_doctor = null;
 
 
-
+ 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Image $id_image = null;
 
