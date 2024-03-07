@@ -10,13 +10,7 @@ services:
   _defaults:
     autowire: true # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-  translator.default:
-    class: Symfony\Component\Translation\Translator
-    arguments:
-      - '@Symfony\Component\Translation\Loader\FileLoader' # Chargeur de fichiers par défaut
-      - ['%locale%'] # Locale par défaut, vous pouvez remplacer %locale% par la locale de votre choix
-    tags:
-      - { name: translator.default }
+  
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name

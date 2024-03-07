@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,118 +53,108 @@ class HomeController extends AbstractController
             'f' => $form
         ]);
     }
-       
+
     #[Route('/blogSuivi/{id}', name: 'app_blog_suivi')]
-public function show_blog($id, ArticleRepository $ripo, CommentRepository $commentRepository, Request $request, TranslatorInterface $translator,
-EntityManagerInterface $entityManager )
-{
-    $article = $ripo->findOneBy(['id'=>$id]);
+    public function show_blog($id, ArticleRepository $ripo, CommentRepository $commentRepository, Request $request, EntityManagerInterface $entityManager)
+    {
+        $article = $ripo->findOneBy(['id' => $id]);
 
 
-    $comment = new Comment();
-    $form = $this->createForm(CommentType::class, $comment);
-    $form->handleRequest($request);
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $comment->setArticle($article);
-        $entityManager->persist($comment);
-        $entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setArticle($article);
+            $currentDate = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+            $comment->setCreatedAt($currentDate);
 
-        return $this->redirectToRoute('app_blog_suivi', ['id' => $id]); // Redirection vers la même page pour rafraîchir les commentaires
-    }
-    
-    // Récupérer les commentaires existants pour l'article
-    $existingComments = $commentRepository->findBy(['article' => $article]);
+            $entityManager->persist($comment);
+            $entityManager->flush();
 
-    // Créer un formulaire de réponse pour chaque commentaire
-    $replyForms = [];
-    foreach ($existingComments as $existingComment) {
-        // Créer un formulaire de réponse distinct pour chaque commentaire
-        $replyComment = new Comment();
-        $replyForm = $this->createForm(CommentType::class, $replyComment);
-        $replyForms[$existingComment->getId()] = $replyForm->createView();
-    }
-    
-    return $this->renderForm('article/blog_suivi.html.twig', [
-        'comment' => $form,
-        'articles' => $article,
-        'existingComments' => $existingComments,
-        'replyForms' => $replyForms,
-        'translations' => [
-            'commentPlaceholder' => $translator->trans('Enter your comment'),
-            'publishButton' => $translator->trans('Publish'),
-            'translateButton' => $translator->trans('Translate'),
-            // Ajoutez d'autres traductions ici au besoin
-        ],
-    ]);
-}
+            return $this->redirectToRoute('app_blog_suivi', ['id' => $id]); // Redirection vers la même page pour rafraîchir les commentaires
+        }
 
+        // Récupérer les commentaires existants pour l'article
+        $existingComments = $commentRepository->findBy(['article' => $article]);
 
-#[Route('/blog', name: 'app_blog')]
-public function showBlog(
-    ArticleRepository $articleRepository,
-    PaginatorInterface $paginator,
-    Request $request,
-    SessionInterface $session,
-    EntityManagerInterface $entityManager
+        // Créer un formulaire de réponse pour chaque commentaire
+        $replyForms = [];
+        foreach ($existingComments as $existingComment) {
+            // Créer un formulaire de réponse distinct pour chaque commentaire
+            $replyComment = new Comment();
+            $replyForm = $this->createForm(CommentType::class, $replyComment);
+            $replyForms[$existingComment->getId()] = $replyForm->createView();
+        }
 
-) {
-    $queryBuilder = $articleRepository->createQueryBuilder('a')
-        ->orderBy('a.createdAt', 'DESC');
+        return $this->renderForm('article/blog_suivi.html.twig', [
+            'comment' => $form,
+            'articles' => $article,
+            'existingComments' => $existingComments,
+            'replyForms' => $replyForms,
 
-    $searchTerm = $request->query->get('q');
-    if ($searchTerm) {
-        $queryBuilder
-            ->where('a.title LIKE :term')
-            ->setParameter('term', '%' . $searchTerm . '%');
+        ]);
     }
 
-    $query = $queryBuilder->getQuery();
 
-    $articles = $paginator->paginate(
-        $query,
-        $request->query->getInt('page', 1),
-        2
-    );
+    #[Route('/blog', name: 'app_blog')]
+    public function showBlog(ArticleRepository $articleRepository, PaginatorInterface $paginator, Request $request, SessionInterface $session,)
+    {
+        $queryBuilder = $articleRepository->createQueryBuilder('a')
+            ->orderBy('a.createdAt', 'DESC');
+
+        $searchTerm = $request->query->get('q');
+        if ($searchTerm) {
+            $queryBuilder
+                ->where('a.title LIKE :term')
+                ->setParameter('term', '%' . $searchTerm . '%');
+        }
+
+        $query = $queryBuilder->getQuery();
+
+        $articles = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            2
+        );
 
 
-    $comment = new Comment();
-    $form = $this->createForm(CommentType::class, $comment);
-    $form->handleRequest($request);
-    if ($form->isSubmitted() && $form->isValid()) {
-        $entityManager->persist($comment);
-        $entityManager->flush();
+        // Get the favorites from session
+        $favorites = $session->get('favorites', []);
 
-        return $this->redirectToRoute('app_blog');
+        // Get total likes
+        $totalLikes = count($favorites);
+
+        return $this->render('article/blog.html.twig', [
+            'articles' => $articles,
+            'favorites' => $favorites,
+            'totalLikes' => $totalLikes, // Pass total likes to the template
+        ]);
     }
 
-    return $this->render('article/blog.html.twig', [
-        'articles' => $articles,
-        'favorites' => $session->get('favorites', []),
-        'comment' => $form->createView(),
+    #[Route('/toggle-favorite/{id}', name: 'toggle_favorite')]
+    public function toggleFavorite($id, SessionInterface $session)
+    {
+        $articleId = (int) $id;
+        $favorites = $session->get('favorites', []);
 
-    ]);
-}
-#[Route('/toggle-favorite/{id}', name: 'toggle_favorite')]
-public function toggleFavorite($id, SessionInterface $session)
-{
-    $articleId = (int) $id;
-    $favorites = $session->get('favorites', []);
+        // Get the total likes before toggling
+        $totalLikes = count($favorites);
 
-    // Vérifie si l'article est déjà dans les favoris
-    $index = array_search($articleId, $favorites);
+        // Check if the article is already in favorites
+        $index = array_search($articleId, $favorites);
 
-    // Ajoute ou supprime l'article de la liste des favoris
-    if ($index !== false) {
-        unset($favorites[$index]);
-    } else {
-        $favorites[] = $articleId;
+        // Add or remove the article from the favorites list
+        if ($index !== false) {
+            unset($favorites[$index]);
+        } else {
+            $favorites[] = $articleId;
+        }
+
+        // Update the favorites list in the session
+        $session->set('favorites', $favorites);
+
+        // Return the total likes before toggling
+        return $this->redirectToRoute('app_blog', ['totalLikes' => $totalLikes]);
     }
-
-    // Met à jour la liste des favoris dans la session
-    $session->set('favorites', $favorites);
-
-    return $this->redirectToRoute('app_blog');
-}
-
 }

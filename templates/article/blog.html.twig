@@ -56,24 +56,20 @@
         <p class="card-text over">{{ article.content }}</p>
         <a href="{{ path('app_blog_suivi', {'id': article.id}) }}">lire la suite</a>
         <p class="card-text text-muted">{{ article.createdAt | date('Y-m-d') }}</p>
+         <p> Likes: {{ totalLikes }}</p>
         {% if article.id in favorites %}
-                <a href="{{ path('toggle_favorite', {'id': article.id}) }}" class="btn btn-danger">Retirer des favoris</a>
-            {% else %}
-                <a href="{{ path('toggle_favorite', {'id': article.id}) }}" class="btn btn-primary">Ajouter aux favoris</a>
-            {% endif %}
+            <a href="{{ path('toggle_favorite', {'id': article.id}) }}" class="btn btn-danger">Retirer des favoris</a>
+        {% else %}
+            <a href="{{ path('toggle_favorite', {'id': article.id}) }}" class="btn btn-primary">Ajouter aux favoris</a>
+        {% endif %}
     </div>
     {% endfor %}
     {{ knp_pagination_render(articles) }}
+    <!-- Display total likes -->
+   
 </div>
 
-<div class="col-md-8 offset-md-2">
-    {{ form_start(comment) }}
-    {{ form_row(comment.content, {"attr": {"placeholder": "Saisir votre commentaire"}, "label": false}) }}
-    <div class="d-none">
-        {{ form_rest(comment) }}
-    </div>
-    <button type="submit" class="btn btn-secondary mt-3">Valider</button>
-    {{ form_end(comment) }}
-</div>
+
+
 
 {% endblock %}
