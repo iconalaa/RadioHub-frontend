@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CompteRendu;
+use App\Entity\User;
 use App\Form\CompteRenduType;
 use App\Repository\CompteRenduRepository;
 use App\Repository\PrescriptionRepository;
@@ -11,6 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 class ReportController extends AbstractController
 {
@@ -73,12 +77,12 @@ class ReportController extends AbstractController
 
 
     #[Route('/{id}', name: 'app_compte_rendu_delete', methods: ['POST'])]
-    public function delete(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager ,PrescriptionRepository $pres): Response
+    public function delete(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager, PrescriptionRepository $pres): Response
     {
         if ($this->isCsrfTokenValid('delete' . $compteRendu->getId(), $request->request->get('_token'))) {
-           
 
-            $del_pres=$pres->findOneBy(["compterendu"=>$compteRendu]);
+
+            $del_pres = $pres->findOneBy(["compterendu" => $compteRendu]);
             $entityManager->remove($del_pres);
             $entityManager->flush();
             $entityManager->remove($compteRendu);
@@ -86,5 +90,60 @@ class ReportController extends AbstractController
         }
 
         return $this->redirectToRoute('app_admin_report', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/export/gg', name: 'app_export_excel')]
+    public function export(CompteRenduRepository $compteRenduRepository): Response
+    {
+        // Fetch data from the CompteRendu entity
+        $compteRendus = $compteRenduRepository->findBy(['isEdited' => true]);
+
+        // Create a new PhpSpreadsheet instance
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set column headers
+        $sheet->setCellValue('A1', 'ID')
+            ->setCellValue('B1', 'Interpretation Med')
+            ->setCellValue('C1', 'Interpretation Rad')
+            ->setCellValue('D1', 'Doctor Name')
+            ->setCellValue('E1', 'Date');
+
+        // Populate data rows
+        $row = 2;
+        foreach ($compteRendus as $compteRendu) {
+            // Retrieve the associated Doctor entity
+            $doctor = $compteRendu->getIdDoctor();
+            // Get the user associated with the doctor to access the name
+            $user = $doctor ? $doctor->getUser() : null;
+            // Get the doctor's name
+            $doctorName = $user ? $user->getName() : '';
+
+            $sheet->setCellValue('A' . $row, $compteRendu->getId())
+                ->setCellValue('B' . $row, $compteRendu->getInterpretationMed())
+                ->setCellValue('C' . $row, $compteRendu->getInterpretationRad())
+                ->setCellValue('D' . $row, $doctorName)
+                ->setCellValue('E' . $row, $compteRendu->getDate() ? $compteRendu->getDate()->format('Y-m-d') : ''); // Assuming Date is a DateTime object
+            $row++;
+        }
+
+        // Create a writer and save the spreadsheet
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'compte_rendus.xlsx';
+        $writer->save($filename);
+
+        // Set headers for Excel file download
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . $filename . '"');
+        $response->headers->set('Cache-Control', 'max-age=0');
+
+        // Send the file as response
+        $response->setContent(file_get_contents($filename));
+
+        // Delete the file after sending
+        unlink($filename);
+
+        return $response;
     }
 }
