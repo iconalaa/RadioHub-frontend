@@ -10,6 +10,7 @@ use App\Form\ImageType;
 use App\Form\ImageTypeEdit;
 use App\Repository\DroitRepository;
 use App\Repository\ImageRepository;
+use App\Repository\PrescriptionRepository;
 use App\Repository\RadiologistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Security\Core\Security;
 use Knp\Component\Pager\PaginatorInterface;
-
+use App\Repository\CompteRenduRepository;
 class ImageController extends AbstractController
 {
     #[Route('/image', name: 'app_image')]
@@ -166,10 +167,27 @@ class ImageController extends AbstractController
 
 
     #[Route('/image/delete/{id}', name: 'delete', methods: ['GET', 'POST'])]
-    public function delete(Request $request,ImageRepository $rep,$id,ManagerRegistry $man)
+    public function delete(Request $request,ImageRepository $rep,$id,ManagerRegistry $man, CompteRenduRepository $repcm,PrescriptionRepository $pres)
     {
+
 // Get the entity manager
         $entityManager = $man->getManager();
+        $image = $entityManager->getRepository(Image::class)->find($id);
+        $delcm=$repcm->findOneBy(["id_image"=>$image]);
+        if($delcm!=null)
+        {
+        $presr=$pres->findOneBy(["compterendu"=>$delcm]);
+        if($presr!=null)
+        {
+            $man->getManager()->remove($presr);
+            $man->getManager()->remove($delcm);
+         }
+        else
+        {
+            $man->getManager()->remove($delcm);
+        }
+        }
+
 
         // Find the image by ID
         $image = $entityManager->getRepository(Image::class)->find($id);

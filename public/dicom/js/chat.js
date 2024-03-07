@@ -82,6 +82,7 @@ cornerstoneTools.init({ showSVGCursors: true });
 // Enable Cornerstone on the DICOM image element
 var element = document.getElementById('dicomImage');
 cornerstone.enable(element);
+
 function convertDicomToPNG() {
     // Get the loaded image
     var enabledElement = cornerstone.getEnabledElement(element);
@@ -99,55 +100,41 @@ function convertDicomToPNG() {
     // Convert the virtual canvas to PNG
     var imageData = virtualCanvas.toDataURL('image/png');
 // Create a download link for the PNG image
-var downloadLink = document.createElement('a');
+/*var downloadLink = document.createElement('a');
 downloadLink.href = imageData;
 downloadLink.download = imagetwig+'.png';
 downloadLink.textContent = 'Download PNG';
 document.body.appendChild(downloadLink);
-downloadLink.click();
+downloadLink.click();*/
     // Output the PNG data URI
     console.log(imageData);
+    saveImageData(imageData);
 
     // Optionally, you can use the PNG data URI as needed, such as sending it to the server or performing further processing
 }
 
-function convertDicomToPNGAndSendToAPI() {
-    // Get the loaded image
-    var enabledElement = cornerstone.getEnabledElement(element);
-    var image = enabledElement.image;
-
-    // Create a virtual canvas to perform conversion
-    var virtualCanvas = document.createElement('canvas');
-    virtualCanvas.width = image.width;
-    virtualCanvas.height = image.height;
-    var virtualContext = virtualCanvas.getContext('2d');
-
-    // Draw the DICOM image onto the virtual canvas
-    cornerstone.renderToCanvas(virtualCanvas, image);
-
-    // Convert the virtual canvas to PNG
-    var imageData = virtualCanvas.toDataURL('image/png');
-
-    // Send the PNG image to the API using Axios
-    axios({
-        method: "POST",
-        url: "https://detect.roboflow.com/br35h-::-brain-tumor-detection-2020/2",
-        params: {
-            api_key: "ptVbmxwL8SjVfJSpuj6k"
-        },
-        data: imageData,
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+function saveImageData(imageData) {
+    // Create a new XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/save-image.php'); // Replace with the path to your PHP script
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log('Image saved successfully.');
+        } else {
+            console.log('Error saving image:', xhr.statusText);
         }
-    })
-    .then(function(response) {
-        console.log(response.data);
-    })
-    .catch(function(error) {
-        console.log(error.message);
-    });
-}
+    };
+    xhr.onerror = function() {
+        console.error('Error saving image.');
+    };
 
+    // Get the image name from the input field
+    var imagetwig = document.getElementById('image-twig').value;
+
+    // Send the image data and image name to the server for saving
+    xhr.send('imageData=' + encodeURIComponent(imageData) + '&imageName=' + encodeURIComponent(imagetwig + '.png'));
+}
 
 ///
 // Load and display the DICOM image
@@ -371,3 +358,13 @@ ScaleOverlayTool = cornerstoneTools.ScaleOverlayTool;
 
 cornerstoneTools.addTool(ScaleOverlayTool)
 cornerstoneTools.setToolActive('ScaleOverlay', { mouseButtonMask: 1 })
+
+
+
+$(document).ready(function() {
+    console.log('Page fully loaded');
+    setTimeout(function() {
+        console.log('3 seconds have passed');
+        convertDicomToPNG();
+    }, 3000); // 3000 milliseconds = 3 seconds
+});

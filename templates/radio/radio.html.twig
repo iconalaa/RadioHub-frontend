@@ -59,7 +59,6 @@
 {% endif %} {% endblock %}
 
 {% block body %}
-
 <div class="container">
   <br><br>
   <div class="row justify-content-center mt-5">
@@ -90,19 +89,12 @@
           {% endif %}
         </div>
 
-        <div class="d-flex flex-column">
-          <label class="inputs" for="{{ form.id_image.vars.id }}" class="">Medical Image of:</label>
-          {{ form_widget(form.id_image, {'attr': {'class': 'form-control select2 w-100'}}) }}
-          {% if form_errors(form.id_image) %}
-            <div class="text-danger">
-                {{ form_errors(form.id_image) }}
-            </div>
-          {% endif %}
-        </div>
-      </div>
+        
 
       <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-submit mt-3">Save</button>
+      <br>
+        <button type="submit" class="btn btn-primary btn-submit mt-3 w-100">Save</button>
+        </br>
       </div>
 
       {{ form_end(form) }}

@@ -36,15 +36,16 @@ class DocRenduController extends AbstractController
             throw new \LogicException('Logged-in user is not associated with any doctor.');
         }
 
+
         $form = $this->createForm(MedType::class, $compteRendu);
         $form->handleRequest($request);
+        $idimage=$compteRendu->getIdImage()->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Convert string date to DateTime object
             $dateString = $form->get('date')->getData();
             $date = \DateTime::createFromFormat('Y-m-d', $dateString);
             $compteRendu->setDate($date);
-
             $compteRendu->setIsEdited(true); // Mark the compte rendu as edited
             $entityManager->flush();
 
@@ -54,6 +55,7 @@ class DocRenduController extends AbstractController
 
         return $this->render('med/update.html.twig', [
             'form' => $form->createView(),
+            'idimage'=>$idimage,
         ]);
     }
 
@@ -103,32 +105,47 @@ class DocRenduController extends AbstractController
 
 
     #[Route('/generate-pdf/{id}', name: 'generate_pdf')]
-    public function generatePdfAction(CompteRendu $compteRendu): Response
-    {
-        // Render the PDF template with the CompteRendu data
-        $html = $this->renderView('pdf/report_template.html.twig', [
-            'compteRendu' => $compteRendu,
-        ]);
+public function generatePdfAction(CompteRendu $compteRendu): Response
+{
+    // Get absolute file path to the logo image
+    $idimage = $compteRendu->getIdImage()->getId();
+    $imagePath = $this->getParameter('kernel.project_dir') . '/public/uploads/images/' . $idimage . '.png';
 
-        // Instantiate Dompdf
-        $dompdf = new Dompdf();
-
-        // Load HTML content
-        $dompdf->loadHtml($html);
-
-        // Set paper size and orientation (optional)
-        $dompdf->setPaper('A4', 'portrait');
-
-        // Render the HTML as PDF
-        $dompdf->render();
-
-        // Generate PDF file name (optional)
-        $pdfFileName = sprintf('compte_rendu_%s.pdf', $compteRendu->getId());
-
-        // Stream the PDF to the client
-        return new Response($dompdf->output(), Response::HTTP_OK, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $pdfFileName . '"',
-        ]);
+    // Check if the logo image exists
+    if (file_exists($imagePath)) {
+        // Get the logo image as base64 encoded string
+        $imageData = base64_encode(file_get_contents($imagePath));
+    } else {
+        // Provide a fallback image or handle the case where the logo image is missing
+        $imageData = ''; // You may set a default image here if needed
     }
+
+    // Render the PDF template with the CompteRendu data
+    $html = $this->renderView('pdf/report_template.html.twig', [
+        'compteRendu' => $compteRendu,
+        'imageData' => $imageData, // Pass the base64-encoded image data to the template
+    ]);
+
+    // Instantiate Dompdf
+    $dompdf = new Dompdf();
+
+    // Load HTML content
+    $dompdf->loadHtml($html);
+
+    // Set paper size and orientation (optional)
+    $dompdf->setPaper('A4', 'portrait');
+
+    // Render the HTML as PDF
+    $dompdf->render();
+
+    // Generate PDF file name (optional)
+    $pdfFileName = sprintf('compte_rendu_%s.pdf', $compteRendu->getId());
+
+    // Stream the PDF to the client
+    return new Response($dompdf->output(), Response::HTTP_OK, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="' . $pdfFileName . '"',
+    ]);
+}
+    
 }
