@@ -35,7 +35,7 @@ class HomeController extends AbstractController
         return $this->render('back.html.twig', []);
     }
 
-    #[Route('/home', name: 'app_home')]
+    #[Route('/', name: 'app_home')]
     public function frontOffice(): Response
     {
         return $this->render('home/home.html.twig', []);
@@ -231,5 +231,15 @@ class HomeController extends AbstractController
 
         // Return the total likes before toggling
         return $this->redirectToRoute('app_blog', ['totalLikes' => $totalLikes]);
+    }
+ 
+    #[Route('/{id}', name: 'app_comment_front_delete', methods: ['POST', 'GET'])]
+    public function deleteFrontComment($id, CommentRepository $commentRepo, EntityManagerInterface $entityManager): Response
+    {
+            $comment=$commentRepo->find($id);
+            $entityManager->remove($comment);
+            $entityManager->flush();
+        
+        return $this->redirectToRoute("app_blog");
     }
 }
