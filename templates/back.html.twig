@@ -18,6 +18,7 @@
 			<div
 				class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
 				<!-- Sidebar Start -->
+			
 				<aside
 					class="left-sidebar">
 					<!-- Sidebar scroll-->
@@ -56,18 +57,26 @@
 								</li>
 								<li class="sidebar-item">
 									<a class="sidebar-link" href="{{ path('app_admin_report') }}" aria-expanded="false">
-									  <span>
-										<i class="ti ti-clipboard-text"></i>
-									  </span>
-									  <span class="hide-menu">Diagnostic Management</span>
+										<span>
+											<i class="ti ti-clipboard-text"></i>
+										</span>
+										<span class="hide-menu">Diagnostic Management</span>
 									</a>
-								  </li>
+								</li>
 								<li class="sidebar-item">
-									<a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
+									<a class="sidebar-link" href="{{ path('app_donateur_index') }}" aria-expanded="false">
 										<span>
 											<i class="ti ti-heart-plus"></i>
 										</span>
-										<span class="hide-menu">Donations Management</span>
+										<span class="hide-menu">Doner Management</span>
+									</a>
+								</li>
+								<li class="sidebar-item">
+									<a class="sidebar-link" href="{{ path('app_gratification_index') }}" aria-expanded="false">
+										<span>
+											<i class="ti ti-heart-plus"></i>
+										</span>
+										<span class="hide-menu">Donation Management</span>
 									</a>
 								</li>
 								<li class="sidebar-item">
