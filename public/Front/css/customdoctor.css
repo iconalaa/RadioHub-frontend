@@ -7,12 +7,12 @@
 }
 
 .content-container {
-  width: 80%;
+  width: 70%;
+
   text-align: center;
-  border: 1px solid blue;
   border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 0 10px rgba(115, 28, 85, 0.547);
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);
 }
 
 .content-wrapper {

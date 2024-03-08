@@ -1,0 +1,52 @@
+{% extends "back.html.twig" %}
+
+{% block title %} RadioHub | rooms {% endblock %}
+
+{% block body %}
+
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+    <h1>Rooms</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NumSalle</th>
+                <th>NumDep</th>
+                <th>EtatSalle</th>
+                <th>TypeSalle</th>
+                <th colspan="2">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for salle in salles %}
+            <tr>
+                <td>{{ salle.id }}</td>
+                <td>{{ salle.numSalle }}</td>
+                <td>{{ salle.numDep }}</td>
+                <td>{{ salle.etatSalle }}</td>
+                <td>{{ salle.TypeSalle }}</td>
+                <td>
+                    <a class="btn btn-success" 
+                    href="{{ path('app_salle_show', {'id': salle.id}) }}">show</a>
+
+
+                    <a class="btn btn-success" 
+                    href="{{ path('app_salle_edit', {'id': salle.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_salle_new') }}">Create new</a>
+
+</div></div></div>
+{% endblock %}
