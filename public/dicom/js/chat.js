@@ -458,7 +458,7 @@ function brain() {
             const popupContent = `
                 <div style="position: relative;">
                     <img src="${imagePath}" style="width: ${widthimage}px; height: ${heightimage}px;">
-                    <div style="position: absolute; top: ${y}px; left: ${x}px; width: ${width}px; height: ${height}px; border: 1px solid green;"></div>
+                    <div style="position: absolute; top: ${y}px; left: ${x}px; width: ${width}px; height: ${height}px; border: 3px solid red;"></div>
                 </div>
             `;
 
