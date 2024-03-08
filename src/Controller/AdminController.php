@@ -28,29 +28,32 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use App\Repository\CompteRenduRepository;
 
 #[Route('/admin')]
 class AdminController extends AbstractController
 {
 
     #[Route('/', name: 'app_admin', methods: ['GET', 'POST'])]
-    public function admin(UserRepository $userRepo): Response
+    public function admin(UserRepository $userRepo, CompteRenduRepository $compteRenduRepository): Response
     {
         $users = $userRepo->findAll();
         $patient = $userRepo->countUsersByRole("ROLE_PATIENT");
         $doctor = $userRepo->countUsersByRole("ROLE_DOCTOR");
         $radiologist = $userRepo->countUsersByRole("ROLE_RADIOLOGIST");
 
+        $doneCount = $compteRenduRepository->countReportsByStatus(true);
+        $notDoneCount = $compteRenduRepository->countReportsByStatus(false);
+
         return $this->render('admin/dashboard.html.twig', [
             'patient' => $patient,
             'doctor' => $doctor,
             'radiologist' => $radiologist,
-            'allUsers' => $users
+            'allUsers' => $users,
+            'done' => $doneCount,
+            'notdone' => $notDoneCount,
         ]);
     }
-
-
-
 
     #[Route('/user', name: 'app_admin_user', methods: ['GET', 'POST'])]
     public function userDashboard(UserRepository $user, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SluggerInterface $slugger, PaginatorInterface $paginator): Response

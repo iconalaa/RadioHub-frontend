@@ -1,40 +1,145 @@
 {% extends 'back.html.twig' %}
+
 {% block body %}
-	<div class="container-fluid">
-		<div class="card">
-			<div class="card-body">
-				<div class="card  w-25 float-end">
-					<div class="card-body p-4">
-						<h5 class="card-title mb-9 fw-semibold text-center">
-							Users Statistics
-						</h5>
-						<div class="d-flex justify-content-center align-items-center flex-column">
-							<div id="breakup"></div>
-							<div class="d-flex align-items-center gap-3">
-								<div class="d-flex gap-2 align-items-center">
-									<span style="background-color: #0075db" class="round-8 rounded-circle d-inline-block"></span>
-									<span class="fs-2">Patient</span>
-								</div>
-								<div class="d-flex gap-2 align-items-center">
-									<span style="background-color: #78b9f2" class="round-8 rounded-circle d-inline-block"></span>
-									<span class="fs-2">Doctor</span>
-								</div>
-								<div class="d-flex gap-2 align-items-center">
-									<span style="background-color: #00315c" class="round-8 rounded-circle d-inline-block"></span>
-									<span class="fs-2">Radiologist</span>
-								</div>
+<div class="container-fluid">
+	<div class="card">
+		<div class="card-body">
+			<div class="card w-25 float-end">
+				<div class="card-body p-4">
+					<h5 class="card-title mb-9 fw-semibold text-center">
+						Users Statistics
+					</h5>
+					<div class="d-flex justify-content-center align-items-center flex-column">
+						<div id="breakup"></div>
+						<div class="d-flex align-items-center gap-3">
+							<div class="d-flex gap-2 align-items-center">
+								<span style="background-color: #0075db"
+									class="round-8 rounded-circle d-inline-block"></span>
+								<span class="fs-2">Patient</span>
+							</div>
+							<div class="d-flex gap-2 align-items-center">
+								<span style="background-color: #78b9f2"
+									class="round-8 rounded-circle d-inline-block"></span>
+								<span class="fs-2">Doctor</span>
+							</div>
+							<div class="d-flex gap-2 align-items-center">
+								<span style="background-color: #00315c"
+									class="round-8 rounded-circle d-inline-block"></span>
+								<span class="fs-2">Radiologist</span>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<div class="card w-50">
+				<div class="card-body">
+					<canvas id="userChart"></canvas>
+				</div>
+			</div>
+		</div>
+		<div id="cor">
+
+
+
 		</div>
 	</div>
-	<h1 id="numPatient" hidden>{{ patient }}</h1>
-	<h1 id="numDoctor" hidden>{{ doctor }}</h1>
-	<h1 id="numRadiologist" hidden>{{ radiologist }}</h1>
+</div>
+<h1 id="numPatient" hidden>{{ patient }}</h1>
+<h1 id="numDoctor" hidden>{{ doctor }}</h1>
+<h1 id="numRadiologist" hidden>{{ radiologist }}</h1>
+
+
 
 {% endblock %}
+
 {% block javascripts %}
-	<script src="../front/js/custom.js"></script>
+<h1 id="done" hidden>{{ done }}</h1>
+<h1 id="notdone" hidden>{{ notdone }}</h1>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+	var ctx = document.getElementById('userChart').getContext('2d');
+	var done = document.getElementById('done').innerText;
+	var notdone = document.getElementById('notdone').innerText;
+
+	var myChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: ['Done', 'Not Done'],
+			datasets: [{
+				label: 'Report Statistics',
+				data: [done, notdone],
+				backgroundColor: [
+					'rgba(255, 99, 132, 0.2)',
+					'rgba(54, 162, 235, 0.2)',
+					'rgba(255, 206, 86, 0.2)',
+				],
+				borderColor: [
+					'rgba(255, 99, 132, 1)',
+					'rgba(54, 162, 235, 1)',
+					'rgba(255, 206, 86, 1)',
+				],
+				borderWidth: 1
+			}]
+		},
+		options: {
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: true
+					}
+				}]
+			}
+		}
+	});
+
+
+
+
+
+
+	$.ajax({
+		url: 'https://coronavirus-smartable.p.rapidapi.com/stats/v1/US/',
+		type: 'GET',
+		headers: {
+			'X-RapidAPI-Key': 'cd1f14b40bmsh215c85ca6704580p16812ajsn3c22ffd8126f',
+			'X-RapidAPI-Host': 'coronavirus-smartable.p.rapidapi.com'
+		},
+		success: function (data) {
+			// Extracting data
+			var totalConfirmedCases = data.stats.totalConfirmedCases;
+			var totalDeaths = data.stats.totalDeaths;
+			var totalRecoveredCases = data.stats.totalRecoveredCases;
+
+			// Create HTML content with extracted data
+			var htmlContent = `
+            <div class="cor-data" style="text-align: center; border: 1px solid #ccc; padding: 20px; border-radius: 5px;">
+                <h3>CORONA VIRUS REAL LIFE DATA</h3>
+                <div class="cor-info">
+                    <h3>Total Confirmed Cases:</h3>
+                    <p>${totalConfirmedCases}</p>
+                </div>
+                <div class="cor-info">
+                    <h3>Total Deaths:</h3>
+                    <p>${totalDeaths}</p>
+                </div>
+                <div class="cor-info">
+                    <h3>Total Recovered Cases:</h3>
+                    <p>${totalRecoveredCases}</p>
+                </div>
+            </div>
+        `;
+
+			// Insert HTML content into the div with id "cor"
+			$('#cor').html(htmlContent);
+		},
+		error: function (xhr, status, error) {
+			// Handle error
+			console.error(status + ": " + error);
+		}
+	});
+
+
+
+</script>
+
 {% endblock %}

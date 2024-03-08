@@ -43,6 +43,16 @@ class CompteRenduRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function countReportsByStatus(bool $isEdited): int
+    {
+        return $this->createQueryBuilder('cr')
+            ->select('COUNT(cr.id)')
+            ->where('cr.isEdited = :isEdited')
+            ->setParameter('isEdited', $isEdited)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 
     //    /**
     //     * @return CompteRendu[] Returns an array of CompteRendu objects

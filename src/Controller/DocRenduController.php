@@ -147,4 +147,6 @@ class DocRenduController extends AbstractController
             'Content-Disposition' => 'inline; filename="' . $pdfFileName . '"',
         ]);
     }
+
+    
 }
