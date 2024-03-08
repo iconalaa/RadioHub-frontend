@@ -1,0 +1,49 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-center mt-3">
+    <h1>Article</h1>
+</div>
+<div class="album py-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>CreatedAt</th>
+                    <th>Image</th>
+                    <th>Comment Count</th> <!-- Nouvelle colonne pour le nombre de commentaires -->
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in articlesWithCommentCount %}
+                    <tr>
+                        <td>{{ item.article.id }}</td>
+                        <td>{{ item.article.title }}</td>
+                        <td>{{ item.article.content|striptags|slice(0,250) }}</td>
+                        <td>{{ item.article.createdAt ? item.article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <img src="{{ asset('articles/' ~ item.article.image) }}" class="card-img-top" alt="...">
+                        </td>
+                        <td>{{ item.commentCount }}</td> <!-- Affichez le nombre de commentaires -->
+                        <td>
+                            <a href="{{ path('app_article_show', {'id': item.article.id}) }}">show</a>
+                            <a href="{{ path('app_article_edit', {'id': item.article.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">no records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<a href="{{ path('app_article_new') }}">Create new</a>
+{% endblock %}

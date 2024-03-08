@@ -2,7 +2,7 @@
 
 {% block body %}
 <div style="display: flex; justify-content: center; padding: auto; padding-top: 150px">
-  <div class="col-lg-8 d-flex align-items-stretch">
+  <div class="col-lg-10 d-flex align-items-stretch">
     <div class="card w-100">
       <div class="card-body p-4">
         <h5 style="color:blue;" class="card-title fw-semibold mb-4">
@@ -11,7 +11,8 @@
         <div class="mb-3">
           <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for anything..">
         </div>
-        <div class="table-responsive">
+        <div class="table-responsive" style="overflow-x: auto;">
+          <a href="{{ path('app_export_excel') }}" class="btn btn-primary">Export Data</a>
           <table id="compteRenduTable" class="table text-nowrap mb-0 align-middle">
             <thead class="text-dark fs-4">
               <tr>

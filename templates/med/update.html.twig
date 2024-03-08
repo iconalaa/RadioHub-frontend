@@ -57,7 +57,7 @@
     /* Center the form */
     max-width: 400px;
     /* Set maximum form width */
-    zoom:80%;
+    
   }
 
   .form-control {
@@ -96,7 +96,7 @@
     text-decoration: underline;
   }
   body{
-    zoom:90% !important;
+    zoom:100% !important;
     overflow-y:scroll;
   }
   #dimage
@@ -153,16 +153,3 @@
 </div>
 {% endblock %}
 
-{% block javascripts %}
-{# Include jQuery and jQuery UI Datepicker JavaScript #}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-{# Initialize the Datepicker #}
-<script>
-  $(document).ready(function () {
-    $('.datepicker').datepicker({
-      dateFormat: 'yy-mm-dd'
-    });
-  });
-</script>
-{% endblock %}
