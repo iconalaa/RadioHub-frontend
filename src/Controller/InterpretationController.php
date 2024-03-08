@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Dompdf\Dompdf;
 
 class InterpretationController extends AbstractController
 {
@@ -144,4 +145,64 @@ class InterpretationController extends AbstractController
         return  $this->render('image/feeds.html.twig',['feeds'=>$feeds]);
 
     }
+
+
+
+
+
+
+
+    #[Route('/generate-pdfinter/{id}', name: 'generate_pdfinter')]
+    public function generatePdfinter($id,ImageRepository $im): Response
+    {  $image= $im->findOneBy(["id"=>$id]);
+        // Fetch interpretations related to the image ID from your database
+        $interpretations = $this->getDoctrine()->getRepository(Interpretation::class)->findBy(['image' => $image]);
+    
+        // Initialize an empty array to hold interpretation data
+        $interpretationData = [];
+    
+        // Loop through fetched interpretations and extract necessary data
+        foreach ($interpretations as $interpretation) {
+            // Extract data for each interpretation
+            $interpretationData[] = [
+                'id' => $interpretation->getId(),
+                'content' => $interpretation->getInterpretation(),
+                'desc'=> $interpretation->getDescription(),
+                // Add more fields as needed
+            ];
+        }
+        // Render the PDF template with the interpretation data
+        $html = $this->renderView('pdf/interpretation_list_template.html.twig', [
+            'interpretations' => $interpretationData,
+            'idimage'=>$id
+
+        ]);
+    
+        // Instantiate Dompdf
+        $dompdf = new Dompdf();
+    
+        // Load HTML content
+        $dompdf->loadHtml($html);
+    
+        // Set paper size and orientation (optional)
+        $dompdf->setPaper('A4', 'portrait');
+    
+        // Render the HTML as PDF
+        $dompdf->render();
+    
+        // Generate PDF file name (optional)
+        $pdfFileName = sprintf('interpretations_for_image_%s.pdf', $id);
+    
+        // Stream the PDF to the client
+        return new Response($dompdf->output(), Response::HTTP_OK, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $pdfFileName . '"',
+        ]);
+    }
+
+
+
+
+
+
 }
