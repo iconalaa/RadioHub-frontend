@@ -1,102 +1,92 @@
 {% extends 'back.html.twig' %}
 
-{% block title %} RadioHub - Our Donations {% endblock %} 
-
+{% block title %}
+	RadioHub - Our Donations
+{% endblock %}
 
 
 {% block body %}
-    
-    <h1>Gratification index </h1>
 
-    <form id="searchForm"  style="margin-top: 50px;">
-        <input type="text" id="searchInput" name="query" placeholder="Search...">
-        <button type="submit">Search</button>
-    </form>
-    <div id="searchResults"></div>
+	<h1>Gratification index
+	</h1>
 
-    <table class="table" id="gratificationTable">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Date_grat</th>
-                <th>Titre_Grat</th>
-                <th>Desc_Grat</th>
-                <th>Type_Grat</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for gratification in gratifications %}
-            <tr>
-                <td>{{ gratification.id }}</td>
-                <td>{{ gratification.DateGrat ? gratification.DateGrat|date('Y-m-d') : '' }}</td>
-                <td>{{ gratification.TitreGrat }}</td>
-                <td>{{ gratification.DescGrat }}</td>
-                <td>{{ gratification.TypeGrat }}</td>
-                <td>
-                    <a href="{{ path('app_gratification_show', {'id': gratification.id}) }}" class="btn btn-primary">Show</a>
-                    <a href="{{ path('app_gratification_edit', {'id': gratification.id}) }}" class="btn btn-secondary">Edit</a>
-                </td>
-                
-            </tr>
-            
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-   
-        <div>{{ knp_pagination_render(gratifications, 'pagination.html.twig' )}}</div>
-        <div></div>
+	<form id="searchForm" class="d-flex gap-3 w-75 mx-auto py-3" style="margin-top: 50px;">
+		<input type="text" class="form-control" id="searchInput" name="query" placeholder="Search...">
+		<button type="submit" class="btn btn-primary">Search</button>
+	</form>
+	<div id="searchResults"></div>
+
+	<table class="table" id="gratificationTable">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Date_grat</th>
+				<th>Titre_Grat</th>
+				<th>Desc_Grat</th>
+				<th>Type_Grat</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for gratification in gratifications %}
+				<tr>
+					<td>{{ gratification.id }}</td>
+					<td>{{ gratification.DateGrat ? gratification.DateGrat|date('Y-m-d') : '' }}</td>
+					<td>{{ gratification.TitreGrat }}</td>
+					<td>{{ gratification.DescGrat }}</td>
+					<td>{{ gratification.TypeGrat }}</td>
+					<td>
+						<a href="{{ path('app_gratification_show', {'id': gratification.id}) }}" class="btn btn-primary">Show</a>
+						<a href="{{ path('app_gratification_edit', {'id': gratification.id}) }}" class="btn btn-secondary">Edit</a>
+					</td>
+
+				</tr>
+
+			{% else %}
+				<tr>
+					<td colspan="6">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<div>{{ knp_pagination_render(gratifications, 'pagination.html.twig' )}}</div>
+	<a href="{{ path('app_gratification_new') }}" class="btn btn-primary mx-3">Create new</a>
 </div>
-    <a href="{{ path('app_gratification_new') }}">Create new</a>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-    <script>
-$(document).ready(function() {
-    $('#searchForm').submit(function(event) {
-        event.preventDefault(); // Prevent form submission
+<script>
+	$(document).ready(function () {
+$('#searchForm').submit(function (event) {
+event.preventDefault(); // Prevent form submission
 
-        var searchTerm = $('#searchInput').val();
+var searchTerm = $('#searchInput').val();
 
-        $.ajax({
-            url: "{{ path('search')}}",
-            method: 'GET',
-            data: { search: searchTerm },
-            success: function(response) {
-                $('#gratificationTable tbody').empty(); // Clear previous results
-              
-                response.gratifications.forEach(function(gratification) {
-                    var row = '<tr>' +
-                              '<td>' + gratification.id + '</td>' +
-                              '<td>' + gratification.date + '</td>' +
-                              '<td>' + gratification.title + '</td>' +
-                              '<td>' + gratification.Description + '</td>' +
-                              '<td>' + gratification.Type + '</td>' +
-                            //  '<td>' + gratification.montant + '</td>' +
-                            //  '<td>' + gratification.iddonateur + '</td>' +
-                              '<td>' +
-                              '<a href="/gratification/' + gratification.id + '" class="btn btn-primary">Show</a>' +
-                              '<a href="/gratification/' + gratification.id + '/edit" class="btn btn-secondary">Edit</a>' +
-                          '</td>' +
-                          '</tr>';
-                              
-                              '</tr>';
-                    $('#gratificationTable tbody').append(row);
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error(error); // Handle errors
-            }
-        });
-    });
+$.ajax({
+url: "{{ path('search') }}",
+method: 'GET',
+data: {
+search: searchTerm
+},
+success: function (response) {
+$('#gratificationTable tbody').empty(); // Clear previous results
+
+response.gratifications.forEach(function (gratification) {
+var row = '<tr>' + '<td>' + gratification.id + '</td>' + '<td>' + gratification.date + '</td>' + '<td>' + gratification.title + '</td>' + '<td>' + gratification.Description + '</td>' + '<td>' + gratification.Type + '</td>' +
+// '<td>' + gratification.montant + '</td>' +
+// '<td>' + gratification.iddonateur + '</td>' +
+'<td>' + '<a href="/gratification/' + gratification.id + '" class="btn btn-primary">Show</a>' + '<a href="/gratification/' + gratification.id + '/edit" class="btn btn-secondary">Edit</a>' + '</td>' + '</tr>';
+
+'</tr>';
+$('#gratificationTable tbody').append(row);
 });
-
-    </script>
-
-
-{% endblock %}
+},
+error: function (xhr, status, error) {
+console.error(error); // Handle errors
+}
+});
+});
+});
+</script>{% endblock %}

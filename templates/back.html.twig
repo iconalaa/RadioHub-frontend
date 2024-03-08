@@ -9,8 +9,8 @@
 				RadioHub | Dashboard
 			{% endblock %}
 		</title>
-		<link rel="shortcut icon" type="image/png" href="../../back/assets/images/logos/favicon.png"/>
-		<link rel="stylesheet" href="../../back/assets/css/styles.min.css"/> {% block stylesheet %}{% endblock %}
+		<link rel="shortcut icon" type="image/png" href="../../../../back/assets/images/logos/favicon.png"/>
+		<link rel="stylesheet" href="../../../../back/assets/css/styles.min.css"/> {% block stylesheet %}{% endblock %}
 		</head>
 
 		<body>
@@ -18,14 +18,14 @@
 			<div
 				class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
 				<!-- Sidebar Start -->
-			
+
 				<aside
 					class="left-sidebar">
 					<!-- Sidebar scroll-->
 					<div>
 						<div class="brand-logo d-flex align-items-center justify-content-between">
 							<a href="{{ path('app_home') }}" class="text-nowrap logo-img">
-								<img src="../../back/assets/images/logos/dark-logo.svg" width="180" alt="Logo"/>
+								<img src="../../../../back/assets/images/logos/dark-logo.svg" width="180" alt="Logo"/>
 							</a>
 							<div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
 								<i class="ti ti-x fs-8"></i>
@@ -74,7 +74,7 @@
 								<li class="sidebar-item">
 									<a class="sidebar-link" href="{{ path('app_gratification_index') }}" aria-expanded="false">
 										<span>
-											<i class="ti ti-heart-plus"></i>
+											<i class="ti ti-hand-stop"></i>
 										</span>
 										<span class="hide-menu">Donation Management</span>
 									</a>
@@ -90,17 +90,18 @@
 								<li class="sidebar-item">
 									<a class="sidebar-link" href="{{path('app_rendez_vous_index')}}" aria-expanded="false">
 										<span>
-											<i class="ti ti-photo-check"></i>
+											<i class="ti ti-files"></i>
 										</span>
 										<span class="hide-menu">Report Management</span>
 									</a>
 								</li>
 								<li class="sidebar-item">
-									<a class="sidebar-link" href="{{path('app_reclamation_index')}}"" aria-expanded="false">
+									<a class="sidebar-link" href="{{path('app_reclamation_index')}}" " aria-expanded=" false">
 										<span>
 											<i class="ti ti-flag"></i>
 										</span>
-										<span class="hide-menu"> claims Management</span>
+										<span class="hide-menu">
+											claims Management</span>
 									</a>
 								</li>
 							</ul>
@@ -459,7 +460,7 @@
 								<div class="col-sm-6 col-xl-3">
 									<div class="card overflow-hidden rounded-2">
 										<div class="position-relative">
-											<a href="javascript:void(0)"><img src="../../back/assets/images/products/s4.jpg" class="card-img-top rounded-0" alt="..."/></a>
+											<a href="javascript:void(0)"><img src="../../../../back/assets/images/products/s4.jpg" class="card-img-top rounded-0" alt="..."/></a>
 											<a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
 												<i class="ti ti-basket fs-4"></i>
 											</a>
@@ -507,7 +508,7 @@
 								<div class="col-sm-6 col-xl-3">
 									<div class="card overflow-hidden rounded-2">
 										<div class="position-relative">
-											<a href="javascript:void(0)"><img src="../../back/assets/images/products/s5.jpg" class="card-img-top rounded-0" alt="..."/></a>
+											<a href="javascript:void(0)"><img src="../../../../back/assets/images/products/s5.jpg" class="card-img-top rounded-0" alt="..."/></a>
 											<a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
 												<i class="ti ti-basket fs-4"></i>
 											</a>
@@ -555,7 +556,7 @@
 								<div class="col-sm-6 col-xl-3">
 									<div class="card overflow-hidden rounded-2">
 										<div class="position-relative">
-											<a href="javascript:void(0)"><img src="../../back/assets/images/products/s7.jpg" class="card-img-top rounded-0" alt="..."/></a>
+											<a href="javascript:void(0)"><img src="../../../../back/assets/images/products/s7.jpg" class="card-img-top rounded-0" alt="..."/></a>
 											<a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
 												<i class="ti ti-basket fs-4"></i>
 											</a>
@@ -603,7 +604,7 @@
 								<div class="col-sm-6 col-xl-3">
 									<div class="card overflow-hidden rounded-2">
 										<div class="position-relative">
-											<a href="javascript:void(0)"><img src="../../back/assets/images/products/s11.jpg" class="card-img-top rounded-0" alt="..."/></a>
+											<a href="javascript:void(0)"><img src="../../../../back/assets/images/products/s11.jpg" class="card-img-top rounded-0" alt="..."/></a>
 											<a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
 												<i class="ti ti-basket fs-4"></i>
 											</a>
@@ -661,13 +662,13 @@
 					</div>
 				</div>
 			{% endblock %}
-			<script src="../../back/assets/libs/jquery/dist/jquery.min.js"></script>
-			<script src="../../back/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-			<script src="../../back/assets/js/sidebarmenu.js"></script>
-			<script src="../../back/assets/js/app.min.js"></script>
-			<script src="../../back/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-			<script src="../../back/assets/libs/simplebar/dist/simplebar.js"></script>
-			<script src="../../back/assets/js/dashboard.js"></script>
+			<script src="../../../../back/assets/libs/jquery/dist/jquery.min.js"></script>
+			<script src="../../../../back/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+			<script src="../../../../back/assets/js/sidebarmenu.js"></script>
+			<script src="../../../../back/assets/js/app.min.js"></script>
+			<script src="../../../../back/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+			<script src="../../../../back/assets/libs/simplebar/dist/simplebar.js"></script>
+			<script src="../../../../back/assets/js/dashboard.js"></script>
 			{% block javascripts %}{% endblock %}
 		</body>
 	</html>

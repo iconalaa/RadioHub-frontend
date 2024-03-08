@@ -29,12 +29,6 @@ use Symfony\Component\Security\Core\Security;
 
 class HomeController extends AbstractController
 {
-    #[Route('/back', name: 'app_back')]
-    public function backOffice(): Response
-    {
-        return $this->render('back.html.twig', []);
-    }
-
     #[Route('/', name: 'app_home')]
     public function frontOffice(): Response
     {
@@ -190,7 +184,7 @@ class HomeController extends AbstractController
         $articles = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            2
+            6
         );
 
 
@@ -232,14 +226,14 @@ class HomeController extends AbstractController
         // Return the total likes before toggling
         return $this->redirectToRoute('app_blog', ['totalLikes' => $totalLikes]);
     }
- 
+
     #[Route('/comment/{id}', name: 'app_comment_front_delete', methods: ['POST', 'GET'])]
     public function deleteFrontComment($id, CommentRepository $commentRepo, EntityManagerInterface $entityManager): Response
     {
-            $comment=$commentRepo->find($id);
-            $entityManager->remove($comment);
-            $entityManager->flush();
-        
+        $comment = $commentRepo->find($id);
+        $entityManager->remove($comment);
+        $entityManager->flush();
+
         return $this->redirectToRoute("app_blog");
     }
 }

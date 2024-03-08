@@ -4,25 +4,27 @@
 	Radiohub | Doctor
 {% endblock %}
 {%block footer%}{% endblock %}
-{% block header %}
-	{{ parent() }}
-{% endblock %}
+
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{ asset('../../../front/css/customdoctor.css') }}"/>
 {% endblock %}
 
 
+
 {% block body %}
 
-<div class="page-container">
 
-  <div class="content-container">
-    <h2 style=" text-transform: uppercase; font-family: 'Courier New', monospace; color: #300c7c;">doctor {{
-      app.user.lastname }} {{ app.user.name }}'s space</h2>
-    <br></br>
-    <div class="search-container">
-      <input type="text" id="searchInput" onkeyup="searchItems()" placeholder="Search for anything..">
-    </div>
+	<div class="page-container">
+
+		<div class="content-container">
+			<h2 style=" text-transform: uppercase; font-family: 'Courier New', monospace; color: #300c7c;">doctor
+				{{
+      app.user.lastname }}
+				{{ app.user.name }}'s space</h2>
+			<br></br>
+		<div class="search-container">
+			<input type="text" class="form-control py-2 px-3 w-75 mx-auto mb-5" id="searchInput" onkeyup="searchItems()" placeholder="Search for anything..">
+		</div>
 
 		<div class="content-wrapper">
 			<div class="content-column">
@@ -75,7 +77,7 @@
 						{{ compteRendu.date|date('Y-m-d') }}</p>
 					{% if prep == null %}
 						<a href="{{ path('app_prescription_new', {'compteRenduId': compteRendu.id}) }}" class="button">Create
-																																																								            Prescription</a>
+																																																																																				            Prescription</a>
 						{% endif%}
 						{% for p in prep%}
 							{% if p.compterendu.id == compteRendu.id %}
@@ -83,7 +85,7 @@
 									Prescription PDF</a>
 							{% else %}
 								<a href="{{ path('app_prescription_new', {'compteRenduId': compteRendu.id}) }}" class="button">Create
-																																																																								            Prescription</a>
+																																																																																																												            Prescription</a>
 							{% endif %}
 						{% endfor %}
 					</div>
