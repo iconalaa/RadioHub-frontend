@@ -84,8 +84,8 @@ body %}
 														{{ form_start(replyForms[comment.id]) }}
 														{{
                       form_row(replyForms[comment.id].content, {
-                        attr: { placeholder: "Votre réponse" },
-                        label: false
+                        attr: { placeholder: "write a reply...",class:'px-3 w-100 py-2' },
+                        label: false,
                       })
                     }}
 														<button type="submit" class="btn btn-sm btn-primary my-3">

@@ -12,7 +12,7 @@ body %}
 			margin: 5rem auto;
 		}
 		.blog img {
-			height: 300px;
+			height: 200px;
 			object-fit: cover;
 			border-radius: 8px;
 		}
@@ -63,7 +63,7 @@ body %}
 								{{ article.createdAt | date('Y-m-d') }}
 							</p>
 						</div>
-						<p class="card-text over">{{ article.content }}</p>
+						<p class="card-text over" style="white-space:nowrap;overflow:hidden">{{ article.content }}</p>
 						<div class="d-flex align-items-center justify-content-between w-100 mt-3">
 							<b style="color: #222">
 								Likes:
@@ -84,7 +84,7 @@ body %}
 			</div>
 
 		{% endfor %}
-		{{ knp_pagination_render(articles) }}
 	</div>
+	{{ knp_pagination_render(articles) }}
 
 {% endblock %}

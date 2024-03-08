@@ -20,8 +20,11 @@
 ###< symfony/phpunit-bridge ###
 
 
-# Ignore uploaded files
+## Ignore uploaded files
 
 /public/uploads/
 /var/uploads/
 /public/uploads/pdp
+/public/uploads/articles
+/public/uploads/images
+/public/uploads/signatures

@@ -62,3 +62,8 @@ selectFilter.addEventListener("change", () => {
     }
   });
 });
+
+// ! ------------- Settings Password ------------------------
+
+
+
