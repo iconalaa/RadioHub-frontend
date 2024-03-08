@@ -8,6 +8,7 @@ parameters:
   signature_directory: "%kernel.project_dir%/public/uploads/signatures"
   uploaded_images_directory: "%kernel.project_dir%/public/uploads/images"
   img_directory: "%kernel.project_dir%/public/articles"
+  
 services:
   # default configuration for services in *this* file
   _defaults:
