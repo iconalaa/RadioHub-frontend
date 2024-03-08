@@ -53,7 +53,7 @@
 
 	<script>
 		$(document).ready(function () {
-$('#searchForm').submit(function (event) {
+$('#searchForm').on('input',function (event) {
 event.preventDefault(); // Prevent form submission
 
 var searchTerm = $('#searchInput').val();

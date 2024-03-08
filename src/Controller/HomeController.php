@@ -184,7 +184,7 @@ class HomeController extends AbstractController
         $articles = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            6
+            2
         );
 
 

@@ -23,7 +23,7 @@ class DonateurController extends AbstractController
         $donateurs = $paginator->paginate(
             $donateurs, /* query NOT result */
             $req->query->getInt('page', 1)/*page number*/,
-            3/*limit per page*/
+            1/*limit per page*/
         );
         return $this->render('donateur/index.html.twig', [
             'donateurs' => $donateurs,
