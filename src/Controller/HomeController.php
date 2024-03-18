@@ -52,7 +52,6 @@ class HomeController extends AbstractController
         $userEmpty->setEmail($dataid->getEmail());
         $userEmpty->setGender($dataid->getGender());
         $userEmpty->setDateBirth($dataid->getDateBirth());
-        $originalEmail = $userEmpty->getEmail();
         $form = $this->createForm(UserType::class, $userEmpty);
         $form->handleRequest($req);
         if ($form->isSubmitted() and $form->isValid()) {

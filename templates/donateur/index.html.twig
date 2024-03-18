@@ -5,55 +5,62 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Donateur index</h1>
+	<div class="container-fluid">
+		<div class="card">
+			<div class="card-body">
 
-	<form id="searchForm" class="d-flex gap-2 w-75 mx-auto py-5" style="margin-top: 50px;">
-		<input type="text" class="form-control" id="searchInput" name="query" placeholder="Search...">
-		<button type="submit" class="btn btn-primary">Search</button>
-	</form>
-	<table class="table" id="donateurTable">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Nom_Donateur</th>
-				<th>Prenom_Donateur</th>
-				<th>Type_Donateur</th>
-				<th>Email</th>
-				<th>Telephone</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for donateur in donateurs %}
-				<tr>
-					<td>{{ donateur.id }}</td>
-					<td>{{ donateur.NomDonateur }}</td>
-					<td>{{ donateur.PrenomDonateur }}</td>
-					<td>{{ donateur.TypeDonateur }}</td>
-					<td>{{ donateur.Email }}</td>
-					<td>{{ donateur.Telephone }}</td>
-					<td>
-						<a href="{{ path('app_donateur_show', {'id': donateur.id}) }}" class="btn btn-primary">Show</a>
-						<a href="{{ path('app_donateur_edit', {'id': donateur.id}) }}" class="btn btn-secondary">Edit</a>
-					</td>
+				<form id="searchForm" class="d-flex gap-2 w-75 mx-auto mt-3 mb-5">
+					<input type="text" class="form-control" id="searchInput" name="query" placeholder="Search...">
+					<button type="submit" class="btn btn-primary">Search</button>
+				</form>
+				<table class="table" id="donateurTable">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Nom_Donateur</th>
+							<th>Prenom_Donateur</th>
+							<th>Type_Donateur</th>
+							<th>Email</th>
+							<th>Telephone</th>
+							<th>actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for donateur in donateurs %}
+							<tr>
+								<td>{{ donateur.id }}</td>
+								<td>{{ donateur.NomDonateur }}</td>
+								<td>{{ donateur.PrenomDonateur }}</td>
+								<td>{{ donateur.TypeDonateur }}</td>
+								<td>{{ donateur.Email }}</td>
+								<td>{{ donateur.Telephone }}</td>
+								<td>
+									<a href="{{ path('app_donateur_show', {'id': donateur.id}) }}" class="btn btn-primary">Show</a>
+									<a href="{{ path('app_donateur_edit', {'id': donateur.id}) }}" class="btn btn-success">Edit</a>
+								</td>
 
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="7">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	<div>{{ knp_pagination_render(donateurs, 'pagination.html.twig' )}}</div>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="7">no records found</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<center>
+					<div>{{ knp_pagination_render(donateurs, 'pagination.html.twig' )}}</div>
+				</center>
 
-	<a href="{{ path('app_donateur_new') }}" class="btn btn-primary mx-3">Create new</a>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+				<a href="{{ path('app_donateur_new') }}" class="btn btn-primary mx-3">Create new</a>
 
 
-	<script>
-		$(document).ready(function () {
-$('#searchForm').on('input',function (event) {
+				{# ! ----------------------------- Scripts ----------------------------- #}
+
+				<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+				<script>
+					$(document).ready(function () {
+$('#searchForm').on('input', function (event) {
 event.preventDefault(); // Prevent form submission
 
 var searchTerm = $('#searchInput').val();
@@ -80,5 +87,5 @@ console.error(error); // Handle errors
 });
 });
 });
-	</script>
-{% endblock %}
+				</script>
+			{% endblock %}

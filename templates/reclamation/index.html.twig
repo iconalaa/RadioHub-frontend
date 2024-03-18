@@ -1,76 +1,62 @@
 {% extends 'back.html.twig' %}
 
-{% block title %}Reclamation{% endblock %}
+{% block title %}Reclamation
+{% endblock %}
 
 {% block body %}
-    <h1>Reclamation index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Id_user</th>
-                <th>Etat_rec</th>
-                <th>Date_rec</th>
-                <th>Desc_rec</th>
-                <th>Type_rec</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for reclamation in reclamations %}
-            <tr>
-                <td>{{ reclamation.id }}</td>
-                <td>{{ reclamation.idUser }}</td>
-                <td>{{ reclamation.etatRec ? 'Yes' : 'No' }}</td>
-                <td>{{ reclamation.dateRec ? reclamation.dateRec|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ reclamation.descRec }}</td>
-                <td>{{ reclamation.typeRec }}</td>
-                <td>
-                    <a class="btn btn-primary" href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">show</a>
-                    <a class="btn btn-secondary" href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>
-
-                    
-                    
-                    
-                        {% if reponses == null %}
-                        <a class="btn btn-secondary" href="{{ path('create_response_for_reclamation', {'reclamationId': reclamation.id}) }}">Response</a>
-                        {% endif %}
-
-                    {%for reponses in reponses %}
-                    {% if reponses.reclamation.id != reclamation.id  %}
-                    <a class="btn btn-secondary" href="{{ path('create_response_for_reclamation', {'reclamationId': reclamation.id}) }}">Response</a>
-                    {%else%}
-                    {% endif %}
-                    {% endfor %}
-                    
-                    
+	<div class="container-fluid">
+		<div class="card">
+			<div class="card-body">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Id_user</th>
+							<th>Etat_rec</th>
+							<th>Date_rec</th>
+							<th>Desc_rec</th>
+							<th>Type_rec</th>
+							<th>actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for reclamation in reclamations %}
+							<tr>
+								<td>{{ reclamation.id }}</td>
+								<td>{{ reclamation.idUser }}</td>
+								<td>{{ reclamation.etatRec ? 'Yes' : 'No' }}</td>
+								<td>{{ reclamation.dateRec ? reclamation.dateRec|date('Y-m-d H:i:s') : '' }}</td>
+								<td>{{ reclamation.descRec }}</td>
+								<td>{{ reclamation.typeRec }}</td>
+								<td class="d-flex gap-1">
+									<a class="btn btn-primary" href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">show</a>
+									<a class="btn btn-success" href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">edit</a>
 
 
+									{% if reponses == null %}
+										<a class="btn btn-warning" href="{{ path('create_response_for_reclamation', {'reclamationId': reclamation.id}) }}">Response</a>
+									{% endif %}
+
+									{%for reponses in reponses %}
+										{% if reponses.reclamation.id != reclamation.id  %}
+											<a class="btn btn-warning" href="{{ path('create_response_for_reclamation', {'reclamationId': reclamation.id}) }}">Response</a>
+										{% endif %}
+									{% endfor %}
 
 
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="7">no records found</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 
-                    
-
-                 
-                 
-
-                  
-                
-                    
-                    
-
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a class="btn btn-primary" href="{{ path('app_reclamation_new') }}">Create new</a>
-
-    {{ knp_pagination_render(reclamations) }}  
+				<a class="btn btn-primary" href="{{ path('app_reclamation_new') }}">Create new</a>
+			</div>
+		</div>
+	</div>
+	{{ knp_pagination_render(reclamations) }}
 {% endblock %}

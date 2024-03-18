@@ -1,48 +1,21 @@
-
-
 {% extends 'back.html.twig' %}
 
-{% block title %}Create Article{% endblock %}
-
+{% block title %}Create Article
+{% endblock %}
 {% block body %}
-     
-    
 
-    <div class="d-flex justify-content-center mt-3">
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+        
+{{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-1'}})}}
+           
+    {{ form_row(form.title, {'attr': {'class': 'form-control','placeholder':'Enter the title'}}) }}
+    {{ form_row(form.content, {'attr': {'class': 'form-control','placeholder': 'Enter the content'}}) }}
+    {{ form_row(form.image, {'attr': { 'class': 'form-control',}}) }}
+    {{ form_row(form.createdAt) }}
+    <center><button type="submit" class="btn btn-primary w-25 mt-2">Save</button></center>
 
-    <h1>Create New Article</h1>
-    </div>
-          {{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-1'}})}}
+{{ form_end(form) }}
 
-
-    {{ form_row(form.title, {
-        'attr': {
-            'class': 'form-control',
-            'placeholder': 'Enter the title'
-        }
-    }) }}
-
-    {{ form_row(form.content, {
-        'attr': {
-            'class': 'form-control',
-            'placeholder': 'Enter the content'
-        }
-    }) }}
-
-    {{ form_row(form.image, {
-        'attr': {
-            'class': 'form-control',
-            'placeholder': 'Enter the image URL'
-        }
-    }) }}
-    {{ form_row(form.createdAt, {
-        'attr': {
-            'class': 'form-control',
-            'placeholder': 'Enter the date'
-        }
-    }) }}
-    <button type="submit" class="btn btn-primary">{{ button_label }}</button>
-
-    {{ form_end(form) }}
-    
 {% endblock %}

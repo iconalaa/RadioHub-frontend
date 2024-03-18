@@ -7,52 +7,58 @@
 
 {% block body %}
 
-	<h1>Gratification index
-	</h1>
+	<div class="container-fluid">
+		<div class="card">
+			<div class="card-body">
 
-	<form id="searchForm" class="d-flex gap-3 w-75 mx-auto py-3" style="margin-top: 50px;">
-		<input type="text" class="form-control" id="searchInput" name="query" placeholder="Search...">
-		<button type="submit" class="btn btn-primary">Search</button>
-	</form>
-	<div id="searchResults"></div>
+				<form id="searchForm" class="d-flex gap-3 w-75 mx-auto mt-3 mb-5">
+					<input type="text" class="form-control" id="searchInput" name="query" placeholder="Search...">
+					<button type="submit" class="btn btn-primary">Search</button>
+				</form>
+				<div id="searchResults"></div>
 
-	<table class="table" id="gratificationTable">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Date_grat</th>
-				<th>Titre_Grat</th>
-				<th>Desc_Grat</th>
-				<th>Type_Grat</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for gratification in gratifications %}
-				<tr>
-					<td>{{ gratification.id }}</td>
-					<td>{{ gratification.DateGrat ? gratification.DateGrat|date('Y-m-d') : '' }}</td>
-					<td>{{ gratification.TitreGrat }}</td>
-					<td>{{ gratification.DescGrat }}</td>
-					<td>{{ gratification.TypeGrat }}</td>
-					<td>
-						<a href="{{ path('app_gratification_show', {'id': gratification.id}) }}" class="btn btn-primary">Show</a>
-						<a href="{{ path('app_gratification_edit', {'id': gratification.id}) }}" class="btn btn-secondary">Edit</a>
-					</td>
+				<table class="table" id="gratificationTable">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Date_grat</th>
+							<th>Titre_Grat</th>
+							<th>Desc_Grat</th>
+							<th>Type_Grat</th>
+							<th>actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for gratification in gratifications %}
+							<tr>
+								<td>{{ gratification.id }}</td>
+								<td>{{ gratification.DateGrat ? gratification.DateGrat|date('Y-m-d') : '' }}</td>
+								<td>{{ gratification.TitreGrat }}</td>
+								<td>{{ gratification.DescGrat }}</td>
+								<td>{{ gratification.TypeGrat }}</td>
+								<td>
+									<a href="{{ path('app_gratification_show', {'id': gratification.id}) }}" class="btn btn-primary">Show</a>
+									<a href="{{ path('app_gratification_edit', {'id': gratification.id}) }}" class="btn btn-secondary">Edit</a>
+								</td>
 
-				</tr>
+							</tr>
 
-			{% else %}
-				<tr>
-					<td colspan="6">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+						{% else %}
+							<tr>
+								<td colspan="6">no records found</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 
-	<div>{{ knp_pagination_render(gratifications, 'pagination.html.twig' )}}</div>
-	<a href="{{ path('app_gratification_new') }}" class="btn btn-primary mx-3">Create new</a>
+				<div>{{ knp_pagination_render(gratifications, 'pagination.html.twig' )}}</div>
+				<a href="{{ path('app_gratification_new') }}" class="btn btn-primary mx-3">Create new</a>
+			</div>
+
+		</div>
+	</div>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

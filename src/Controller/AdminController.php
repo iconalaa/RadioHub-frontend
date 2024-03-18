@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\CompteRenduRepository;
 
@@ -63,6 +62,7 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $brochureFile = $form->get('brochureFilename')->getData();
+
             if ($brochureFile) {
                 $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
@@ -75,7 +75,9 @@ class AdminController extends AbstractController
                 } catch (FileException $e) {
                 }
                 $addUser->setBrochureFilename($newFilename);
-            }
+            }else
+                $addUser->setBrochureFilename('x');
+            
             $addUser->setPassword(
                 $userPasswordHasher->hashPassword(
                     $addUser,
@@ -94,7 +96,7 @@ class AdminController extends AbstractController
         $users = $paginator->paginate(
             $users,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         $patient = $user->countUsersByRole("ROLE_PATIENT");
         $doctor = $user->countUsersByRole("ROLE_DOCTOR");

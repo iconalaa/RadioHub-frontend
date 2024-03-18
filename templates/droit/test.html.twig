@@ -1,21 +1,21 @@
 {%for i in droits %}
-<div>
-{{i.id}}
-{{i.radioloque}}
-{{i.image.id}}
-<a href="{{ path('deletedroit', {'id': i.id ,'idimg':i.image.id}) }}">Delete</a>
-</div>
+	<div>
+		{{i.id}}
+		{{i.radioloque}}
+		{{i.image.id}}
+		<a href="{{ path('deletedroit', {'id': i.id ,'idimg':i.image.id}) }}">Delete</a>
+	</div>
 
-{%endfor%}
+	{%endfor%}
 
-{%for i in rads %}
-<div>
-{%if i ==owner%}
-{{i.name}}
-{%else%}
-{{i.id}}
-{{i.name}}
-{%endif %}
-</div>
+	{%for i in rads %}
+		<div>
+			{%if i ==owner%}
+				{{i.name}}
+				{%else%}
+				{{i.id}}
+				{{i.name}}
+			{%endif %}
+		</div>
 
-{%endfor%}
+		{%endfor%}
