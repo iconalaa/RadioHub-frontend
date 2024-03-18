@@ -32,20 +32,20 @@
 					Pending list
 				</h3>
 				<br></br>
-			{% if compteRendus|length > 0 %}
-				{% for compteRendu in compteRendus %}
+			{% if Reports|length > 0 %}
+				{% for report in Reports %}
 					<div class="item">
 						<p class="item_title">Patient:
-							{{ compteRendu.idImage.patient.user.name }}
+							{{ report.image.patient.user.name }}
 							{{
-            compteRendu.idImage.patient.user.lastname }}</p>
+            report.image.patient.user.lastname }}</p>
 						<p>Radiologist:
-							{{ compteRendu.idImage.radiologist.user.name }}
+							{{ report.image.radiologist.user.name }}
 							{{
-            compteRendu.idImage.radiologist.user.lastname }}</p>
+            report.image.radiologist.user.lastname }}</p>
 						<p class="item_interpretation">Radiologist's interpretation :
-							{{ compteRendu.InterpretationRad }}</p>
-						<a href="{{ path('add_decision', {'id': compteRendu.id}) }}" class="button">Add interpretation</a>
+							{{ report.InterpretationRad }}</p>
+						<a href="{{ path('add_decision', {'id': report.id}) }}" class="button">Add interpretation</a>
 					</div>
 				{% endfor %}
 			{% else %}
@@ -57,34 +57,34 @@
 			<br></br>
 		{% if done|length > 0 %}
 
-			{% for compteRendu in done %}
+			{% for report in done %}
 
 				<div class="item">
-					<button onclick="downloadPdf('{{ path('generate_pdf', {'id': compteRendu.id}) }}')">Download PDF</button>
+					<button onclick="downloadPdf('{{ path('generate_pdf', {'id': report.id}) }}')">Download PDF</button>
 					<p class="item_title">Patient:
-						{{ compteRendu.idImage.patient.user.name }}
+						{{ report.image.patient.user.name }}
 						{{
-            compteRendu.idImage.patient.user.lastname }}</p>
+            report.image.patient.user.lastname }}</p>
 					<p>Radiologist:
-						{{ compteRendu.idImage.radiologist.user.name }}
+						{{ report.image.radiologist.user.name }}
 						{{
-            compteRendu.idImage.radiologist.user.lastname }}</p>
+            report.image.radiologist.user.lastname }}</p>
 					<p class="item_interpretation">Radiologist's interpretation :
-						{{ compteRendu.InterpretationRad }}</p>
+						{{ report.InterpretationRad }}</p>
 					<p class="item_interpretation">Doctor’s interpretation:
-						{{ compteRendu.interpretationMed }}</p>
+						{{ report.interpretationMed }}</p>
 					<p class="item_date">Date:
-						{{ compteRendu.date|date('Y-m-d') }}</p>
+						{{ report.date|date('Y-m-d') }}</p>
 					{% if prep == null %}
-						<a href="{{ path('app_prescription_new', {'compteRenduId': compteRendu.id}) }}" class="button">Create
+						<a href="{{ path('app_prescription_new', {'reportId': report.id}) }}" class="button">Create
 																																																																																				            Prescription</a>
 						{% endif%}
 						{% for p in prep%}
-							{% if p.compterendu.id == compteRendu.id %}
+							{% if p.report.id == report.id %}
 								<a href="{{ path('generate_prescription', {'id': p.id}) }}" class="button">
 									Prescription PDF</a>
 							{% else %}
-								<a href="{{ path('app_prescription_new', {'compteRenduId': compteRendu.id}) }}" class="button">Create
+								<a href="{{ path('app_prescription_new', {'reportId': report.id}) }}" class="button">Create
 																																																																																																												            Prescription</a>
 							{% endif %}
 						{% endfor %}
@@ -96,7 +96,9 @@
 			{% endif %}
 		</div>
 	</div>
-</div></div><!-- JavaScript function to download the PDF --><script>
+</div></div>
+<!-- JavaScript function to download the PDF -->
+<script>
 function downloadPdf(pdfUrl) { // Send an AJAX request to generate the PDF
 var xhr = new XMLHttpRequest();
 xhr.open('GET', pdfUrl, true);
@@ -148,4 +150,5 @@ items[i].style.display = "";
 items[i].style.display = "none";
 }
 }
-}</script>{% endblock %}
+}</script>
+{% endblock %}

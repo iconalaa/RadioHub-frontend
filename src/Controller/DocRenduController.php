@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\CompteRendu;
+use App\Entity\Report;
 use App\Form\MedType;
-use App\Repository\CompteRenduRepository;
+use App\Repository\ReportRepository;
 use App\Repository\DoctorRepository;
 use App\Repository\PrescriptionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +19,7 @@ use Knp\Component\Pager\PaginatorInterface;
 class DocRenduController extends AbstractController
 {
     #[Route('/add_decision/{id}', name: 'add_decision')]
-    public function addInterpretation(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager, DoctorRepository $repoMed): Response
+    public function addInterpretation(Request $request, Report $Report, EntityManagerInterface $entityManager, DoctorRepository $repoMed): Response
     {
         // Retrieve the currently logged-in user
         /** @var UserInterface $user */
@@ -37,20 +37,20 @@ class DocRenduController extends AbstractController
         }
 
 
-        $form = $this->createForm(MedType::class, $compteRendu);
+        $form = $this->createForm(MedType::class, $Report);
         $form->handleRequest($request);
-        $idimage = $compteRendu->getIdImage()->getId();
+        $idimage = $Report->getImage()->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Convert string date to DateTime object
             $date = $form->get('date')->getData();
 
-            $compteRendu->setDate($date);
-            $compteRendu->setIsEdited(true); // Mark the compte rendu as edited
+            $Report->setDate($date);
+            $Report->setIsEdited(true); // Mark the compte rendu as edited
             $entityManager->flush();
 
             // Redirect back to the 'app_doctor' route with the updated compte rendu ID
-            return $this->redirectToRoute('app_doctor', ['updated_id' => $compteRendu->getId()]);
+            return $this->redirectToRoute('app_doctor', ['updated_id' => $Report->getId()]);
         }
 
         return $this->render('med/update.html.twig', [
@@ -60,7 +60,7 @@ class DocRenduController extends AbstractController
     }
 
     #[Route('/doctor', name: 'app_doctor', methods: ['GET'])]
-    public function index(Request $request, CompteRenduRepository $repoCompteendu, DoctorRepository $repoMed, PrescriptionRepository $prescription, PaginatorInterface $paginator): Response
+    public function index(Request $request, ReportRepository $repoCompteendu, DoctorRepository $repoMed, PrescriptionRepository $prescription, PaginatorInterface $paginator): Response
     {
         // Retrieve the currently logged-in user
         /** @var UserInterface $user */
@@ -85,18 +85,18 @@ class DocRenduController extends AbstractController
 
         // Now you have the ID of the associated doctor, you can use it for further processing
         // Retrieve the list of compte rendus for the logged-in doctor
-        $compteRendus = $repoCompteendu->findBy(['id_doctor' => $doctorId, 'isEdited' => false]);
-        $compteRendusdone = $repoCompteendu->findBy(['id_doctor' => $doctorId, 'isEdited' => true]);
+        $Reports = $repoCompteendu->findBy(['doctor' => $doctorId, 'isEdited' => false]);
+        $Reportsdone = $repoCompteendu->findBy(['doctor' => $doctorId, 'isEdited' => true]);
 
         // Paginate the done compte rendus
         $pagination = $paginator->paginate(
-            $compteRendusdone,
+            $Reportsdone,
             $request->query->getInt('page', 1), // Get page number from the request, default to 1
             1 // Items per page
         );
 
         return $this->render('med/med.html.twig', [
-            'compteRendus' => $compteRendus,
+            'Reports' => $Reports,
             'done' => $pagination, // Pass the paginated data to the template
             'prep' => $prescriptions,
         ]);
@@ -105,10 +105,10 @@ class DocRenduController extends AbstractController
 
 
     #[Route('/generate-pdf/{id}', name: 'generate_pdf')]
-    public function generatePdfAction(CompteRendu $compteRendu): Response
+    public function generatePdfAction(Report $Report): Response
     {
         // Get absolute file path to the logo image
-        $idimage = $compteRendu->getIdImage()->getId();
+        $idimage = $Report->getImage()->getId();
         $imagePath = $this->getParameter('kernel.project_dir') . '/public/uploads/images/' . $idimage . '.png';
 
         // Check if the logo image exists
@@ -120,9 +120,9 @@ class DocRenduController extends AbstractController
             $imageData = ''; // You may set a default image here if needed
         }
 
-        // Render the PDF template with the CompteRendu data
+        // Render the PDF template with the Report data
         $html = $this->renderView('pdf/report_template.html.twig', [
-            'compteRendu' => $compteRendu,
+            'report' => $Report,
             'imageData' => $imageData, // Pass the base64-encoded image data to the template
         ]);
 
@@ -139,7 +139,7 @@ class DocRenduController extends AbstractController
         $dompdf->render();
 
         // Generate PDF file name (optional)
-        $pdfFileName = sprintf('compte_rendu_%s.pdf', $compteRendu->getId());
+        $pdfFileName = sprintf('compte_rendu_%s.pdf', $Report->getId());
 
         // Stream the PDF to the client
         return new Response($dompdf->output(), Response::HTTP_OK, [

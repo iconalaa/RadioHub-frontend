@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\CompteRendu;
+use App\Entity\Report;
 use App\Entity\User;
 use App\Form\CompteRenduType;
-use App\Repository\CompteRenduRepository;
+use App\Repository\ReportRepository;
 use App\Repository\PrescriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,10 +19,10 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class ReportController extends AbstractController
 {
 
-    #[Route('/{id}/edit', name: 'app_compte_rendu_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager): Response
+    #[Route('/edit/{id}', name: 'app_Report_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Report $Report, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(CompteRenduType::class, $compteRendu);
+        $form = $this->createForm(CompteRenduType::class, $Report);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -34,58 +34,58 @@ class ReportController extends AbstractController
             return $this->redirectToRoute('app_admin_report');
         }
 
-        return $this->render('admin/compte_rendu/edit.html.twig', [
-            'compte_rendu' => $compteRendu,
+        return $this->render('admin/Report/edit.html.twig', [
+            'Report' => $Report,
             'form' => $form->createView(),
         ]);
     }
 
     #[Route('/report', name: 'app_admin_report')]
-    public function index(CompteRenduRepository $compteRenduRepository): Response
+    public function index(ReportRepository $ReportRepository): Response
     {
         return $this->render('admin/report.html.twig', [
-            'compte_rendus' => $compteRenduRepository->findAll(),
+            'Reports' => $ReportRepository->findAll(),
         ]);
     }
-    #[Route('/new', name: 'app_compte_rendu_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_Report_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $compteRendu = new CompteRendu();
-        $form = $this->createForm(CompteRenduType::class, $compteRendu);
+        $Report = new Report();
+        $form = $this->createForm(CompteRenduType::class, $Report);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($compteRendu);
+            $entityManager->persist($Report);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_compte_rendu_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_Report_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('admin/compte_rendu/new.html.twig', [
-            'compte_rendu' => $compteRendu,
+        return $this->renderForm('admin/Report/new.html.twig', [
+            'Report' => $Report,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_compte_rendu_show', methods: ['GET'])]
-    public function show(CompteRendu $compteRendu): Response
+    #[Route('/show/{id}', name: 'app_Report_show', methods: ['GET'])]
+    public function show(Report $Report): Response
     {
-        return $this->render('admin/compte_rendu/show.html.twig', [
-            'compte_rendu' => $compteRendu,
+        return $this->render('admin/Report/show.html.twig', [
+            'Report' => $Report,
         ]);
     }
 
 
-    #[Route('/{id}', name: 'app_compte_rendu_delete', methods: ['POST'])]
-    public function delete(Request $request, CompteRendu $compteRendu, EntityManagerInterface $entityManager, PrescriptionRepository $pres): Response
+    #[Route('/{id}', name: 'app_Report_delete', methods: ['POST'])]
+    public function delete(Request $request, Report $Report, EntityManagerInterface $entityManager, PrescriptionRepository $pres): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $compteRendu->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $Report->getId(), $request->request->get('_token'))) {
 
 
-            $del_pres = $pres->findOneBy(["compterendu" => $compteRendu]);
+            $del_pres = $pres->findOneBy(["Report" => $Report]);
             $entityManager->remove($del_pres);
             $entityManager->flush();
-            $entityManager->remove($compteRendu);
+            $entityManager->remove($Report);
             $entityManager->flush();
         }
 
@@ -93,10 +93,10 @@ class ReportController extends AbstractController
     }
 
     #[Route('/export/gg', name: 'app_export_excel')]
-    public function export(CompteRenduRepository $compteRenduRepository): Response
+    public function export(ReportRepository $ReportRepository): Response
     {
-        // Fetch data from the CompteRendu entity
-        $compteRendus = $compteRenduRepository->findBy(['isEdited' => true]);
+        // Fetch data from the Report entity
+        $Reports = $ReportRepository->findBy(['isEdited' => true]);
 
         // Create a new PhpSpreadsheet instance
         $spreadsheet = new Spreadsheet();
@@ -111,25 +111,25 @@ class ReportController extends AbstractController
 
         // Populate data rows
         $row = 2;
-        foreach ($compteRendus as $compteRendu) {
+        foreach ($Reports as $Report) {
             // Retrieve the associated Doctor entity
-            $doctor = $compteRendu->getIdDoctor();
+            $doctor = $Report->getDoctor();
             // Get the user associated with the doctor to access the name
             $user = $doctor ? $doctor->getUser() : null;
             // Get the doctor's name
             $doctorName = $user ? $user->getName() : '';
 
-            $sheet->setCellValue('A' . $row, $compteRendu->getId())
-                ->setCellValue('B' . $row, $compteRendu->getInterpretationMed())
-                ->setCellValue('C' . $row, $compteRendu->getInterpretationRad())
+            $sheet->setCellValue('A' . $row, $Report->getId())
+                ->setCellValue('B' . $row, $Report->getInterpretationMed())
+                ->setCellValue('C' . $row, $Report->getInterpretationRad())
                 ->setCellValue('D' . $row, $doctorName)
-                ->setCellValue('E' . $row, $compteRendu->getDate() ? $compteRendu->getDate()->format('Y-m-d') : ''); // Assuming Date is a DateTime object
+                ->setCellValue('E' . $row, $Report->getDate() ? $Report->getDate()->format('Y-m-d') : ''); // Assuming Date is a DateTime object
             $row++;
         }
 
         // Create a writer and save the spreadsheet
         $writer = new Xlsx($spreadsheet);
-        $filename = 'compte_rendus.xlsx';
+        $filename = 'Reports.xlsx';
         $writer->save($filename);
 
         // Set headers for Excel file download

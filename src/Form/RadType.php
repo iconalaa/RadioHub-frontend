@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Repository\ImageRepository;
-use App\Entity\CompteRendu;
+use App\Entity\Report;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -36,7 +36,7 @@ class RadType extends AbstractType
                 ],
             ])
             
-            ->add('id_doctor', null, [
+            ->add('doctor', null, [
                 'constraints' => [
                     new NotBlank(['message' => 'Assign a doctor']),
                 ],
@@ -48,7 +48,7 @@ class RadType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => CompteRendu::class,
+            'data_class' => Report::class,
         ]);
     }
 }

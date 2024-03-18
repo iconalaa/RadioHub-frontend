@@ -20,8 +20,8 @@ class Doctor
     #[Assert\NotBlank(message: "you should write your doctor Matricule !")]
     private ?string $matricule = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_doctor', targetEntity: CompteRendu::class)]
-    private Collection $compteRendus;
+    #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: Report::class)]
+    private Collection $Reports;
 
 
     #[ORM\OneToOne(cascade: ['persist'])]
@@ -30,7 +30,7 @@ class Doctor
 
     public function __construct()
     {
-        $this->compteRendus = new ArrayCollection();
+        $this->Reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,11 +65,11 @@ class Doctor
     
 
     /**
-     * @return Collection<int, CompteRendu>
+     * @return Collection<int, Report>
      */
-    public function getCompteRendus(): Collection
+    public function getReports(): Collection
     {
-        return $this->compteRendus;
+        return $this->Reports;
     }
     public function __toString()
     {
@@ -80,22 +80,22 @@ class Doctor
         return 'Doctor';
     }
 
-    public function addCompteRendu(CompteRendu $compteRendu): static
+    public function addReport(Report $Report): static
     {
-        if (!$this->compteRendus->contains($compteRendu)) {
-            $this->compteRendus->add($compteRendu);
-            $compteRendu->setIdDoctor($this);
+        if (!$this->Reports->contains($Report)) {
+            $this->Reports->add($Report);
+            $Report->setDoctor($this);
         }
 
         return $this;
     }
 
-    public function removeCompteRendu(CompteRendu $compteRendu): static
+    public function removeReport(Report $Report): static
     {
-        if ($this->compteRendus->removeElement($compteRendu)) {
+        if ($this->Reports->removeElement($Report)) {
             // set the owning side to null (unless already changed)
-            if ($compteRendu->getIdDoctor() === $this) {
-                $compteRendu->setIdDoctor(null);
+            if ($Report->getDoctor() === $this) {
+                $Report->setDoctor(null);
             }
         }
 

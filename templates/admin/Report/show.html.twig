@@ -1,0 +1,64 @@
+{% extends 'Back.html.twig' %}
+
+{% block title %} MED {% endblock %}
+
+
+{% block footer %}
+{% endblock %}
+
+
+
+{% block body %}
+<div style="display: list-item; justify-content: center; padding-top: 70px;"> <!-- Adjust padding-top as needed -->
+    <div class="card">
+        <div class="card-header text-center">
+            <h1 class="card-header">Diagnostic Report</h1>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Patient :</th>
+                        <td>{{Report.image.patient.user.name }} {{ Report.image.patient.user.lastname }}</td>
+                    </tr>
+                    <tr>
+                        <th>Doctor :</th>
+                        <td>{{ Report.doctor.user.name }} {{
+                            Report.doctor.user.lastname }}</td>
+                    </tr>
+                    {% if Report.interpretationMed >0 %}
+                    <tr>
+                        <th>Doctor's decision</th>
+                        <td>{{ Report.interpretationMed }}</td>
+                    </tr>
+                    {%endif%}
+                    <tr>
+                        <th>Radiologist :</th>
+                        <td>{{ Report.image.radiologist.user.name }} {{ Report.image.radiologist.user.lastname }}</td>
+                    </tr>
+                    <tr>
+                        <th>Radiologist's decision</th>
+                        <td>{{ Report.interpretationRad }}</td>
+                    </tr>
+                    {% if Report.date is not null %}
+                    <tr>
+                        <th>Date</th>
+                        <td>{{ Report.date ? Report.date|date('Y-m-d') : '' }}</td>
+                    </tr>
+                    {%endif%}
+
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <a href="{{ path('app_admin_report') }}" class="btn btn-info mr-2">Back to List</a>
+                <a href="{{ path('app_Report_edit', {'id': Report.id}) }}" class="btn btn-info" style="margin-left: 150px;">Edit</a>
+                <br><br> <!-- Add a line break -->
+                {{ include('admin/Report/_delete_form.html.twig') }}
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

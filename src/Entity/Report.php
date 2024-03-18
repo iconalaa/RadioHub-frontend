@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CompteRenduRepository;
+use App\Repository\ReportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: CompteRenduRepository::class)]
-class CompteRendu
+#[ORM\Entity(repositoryClass: ReportRepository::class)]
+class Report
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,13 +24,13 @@ class CompteRendu
     private ?\DateTimeInterface $date = null;
 
 
-    #[ORM\ManyToOne(inversedBy: 'compteRendus')]
-    private ?Doctor $id_doctor = null;
+    #[ORM\ManyToOne(inversedBy: 'Reports')]
+    private ?Doctor $doctor = null;
 
 
  
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Image $id_image = null;
+    private ?Image $image = null;
 
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -75,33 +75,33 @@ class CompteRendu
         return $this;
     }
 
-    public function getIdDoctor(): ?Doctor
+    public function getDoctor(): ?Doctor
     {
-        return $this->id_doctor;
+        return $this->doctor;
     }
 
-    public function setIdDoctor(?Doctor $id_doctor): static
+    public function setDoctor(?Doctor $doctor): static
     {
-        $this->id_doctor = $id_doctor;
+        $this->doctor = $doctor;
 
         return $this;
     }
 
-    public function getIdImage(): ?Image
+    public function getImage(): ?Image
     {
-        return $this->id_image;
+        return $this->image;
     }
 
 
-    public function setIdImage(?Image $id_image): static
+    public function setImage(?Image $image): static
     {
-        $this->id_image = $id_image;
+        $this->image = $image;
 
         return $this;
     }
     public function __toString()
     {
-        return $this->id_image;
+        return $this->image;
     }
 
     public function getInterpretationRad(): ?string

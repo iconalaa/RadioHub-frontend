@@ -24,7 +24,7 @@ class Prescription
     private string $signatureFilename;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?CompteRendu $compterendu = null;
+    private ?Report $Report = null;
 
     public function getId(): ?int
     {
@@ -71,14 +71,14 @@ class Prescription
         return $this;
     }
 
-    public function getCompterendu(): ?CompteRendu
+    public function getReport(): ?Report
     {
-        return $this->compterendu;
+        return $this->Report;
     }
 
-    public function setCompterendu(?CompteRendu $compterendu): static
+    public function setReport(?Report $Report): static
     {
-        $this->compterendu = $compterendu;
+        $this->Report = $Report;
 
         return $this;
     }

@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\PrescriptionRepository;
-use App\Repository\CompteRenduRepository;
+use App\Repository\ReportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\PrescriptionType;
 use App\Entity\Prescription;
@@ -23,16 +23,16 @@ use Dompdf\Options;
 #[Route('/prescription')]
 class PrescriptionController extends AbstractController
 {
-    #[Route('/new/{compteRenduId}', name: 'app_prescription_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CompteRenduRepository $compteRenduRepository, $compteRenduId, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{reportId}', name: 'app_prescription_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, reportRepository $reportRepository, $reportId, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
-        $compteRendu = $compteRenduRepository->find($compteRenduId);
-        if (!$compteRendu) {
+        $report = $reportRepository->find($reportId);
+        if (!$report) {
             throw $this->createNotFoundException('Compte rendu not found');
         }
 
         $prescription = new Prescription();
-        $prescription->setCompterendu($compteRendu);
+        $prescription->setreport($report);
 
         $form = $this->createForm(PrescriptionType::class, $prescription);
         $form->handleRequest($request);
@@ -77,8 +77,8 @@ class PrescriptionController extends AbstractController
     #[Route('/generate_prescription/{id}', name: 'generate_prescription')]
     public function generatePdf(Request $request, Prescription $prescription): Response
     {
-        // Get related CompteRendu
-        $compteRendu = $prescription->getCompterendu();
+        // Get related report
+        $report = $prescription->getreport();
 
         // Get absolute file path to the logo image
         $logoPath = $this->getParameter('kernel.project_dir') . '/public/uploads/signatures/logo.png';
@@ -97,7 +97,7 @@ class PrescriptionController extends AbstractController
             'prescription' => $prescription,
             'imageData' => $this->getBase64ImageData($prescription),
             'logoData' => $logoData, // Pass the logo data to the template
-            'compteRendu' => $compteRendu,
+            'report' => $report,
         ]);
 
         // Create PDF options
