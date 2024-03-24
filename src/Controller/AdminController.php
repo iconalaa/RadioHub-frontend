@@ -28,21 +28,22 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\CompteRenduRepository;
 use App\Security\PasswordHashing;
+use App\Repository\ReportRepository;
 
 #[Route('/admin')]
 class AdminController extends AbstractController
 {
 
     #[Route('/', name: 'app_admin', methods: ['GET', 'POST'])]
-    public function admin(UserRepository $userRepo, CompteRenduRepository $compteRenduRepository): Response
+    public function admin(UserRepository $userRepo, ReportRepository $ReportRepository): Response
     {
         $users = $userRepo->findAll();
         $patient = $userRepo->countUsersByRole("ROLE_PATIENT");
         $doctor = $userRepo->countUsersByRole("ROLE_DOCTOR");
         $radiologist = $userRepo->countUsersByRole("ROLE_RADIOLOGIST");
 
-        $doneCount = $compteRenduRepository->countReportsByStatus(true);
-        $notDoneCount = $compteRenduRepository->countReportsByStatus(false);
+        $doneCount = $ReportRepository->countReportsByStatus(true);
+        $notDoneCount = $ReportRepository->countReportsByStatus(false);
 
         return $this->render('admin/dashboard.html.twig', [
             'patient' => $patient,

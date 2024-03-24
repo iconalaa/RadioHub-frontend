@@ -23,8 +23,8 @@ class ImageRepository extends ServiceEntityRepository
     public function findImagesWithoutCompteRendu()
     {
         return $this->createQueryBuilder('i')
-            ->leftJoin('App\Entity\CompteRendu', 'cr', 'WITH', 'i.id = cr.id_image')
-            ->where('cr.id_image IS NULL')
+            ->leftJoin('App\Entity\Report', 'cr', 'WITH', 'i.id = cr.image')
+            ->where('cr.image IS NULL')
             ->getQuery()
             ->getResult();
     }

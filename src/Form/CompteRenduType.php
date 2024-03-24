@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\CompteRendu;
+use App\Entity\Report;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -40,12 +40,12 @@ class CompteRenduType extends AbstractType
                     'rows' => 5, // Set the number of visible rows for the textarea
                 ],
             ])
-            ->add('id_doctor', null, [
+            ->add('doctor', null, [
                 'constraints' => [
                     new NotBlank(['message' => 'Please provide the doctor ID']),
                 ],
             ])
-            ->add('id_image', null, [
+            ->add('image', null, [
                 'constraints' => [
                     new NotBlank(['message' => 'Please provide the image ID']),
                 ],
@@ -57,7 +57,7 @@ class CompteRenduType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => CompteRendu::class,
+            'data_class' => Report::class,
         ]);
     }
 }

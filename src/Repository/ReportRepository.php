@@ -2,23 +2,23 @@
 
 namespace App\Repository;
 
-use App\Entity\CompteRendu;
+use App\Entity\Report;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<CompteRendu>
+ * @extends ServiceEntityRepository<Report>
  *
- * @method CompteRendu|null find($id, $lockMode = null, $lockVersion = null)
- * @method CompteRendu|null findOneBy(array $criteria, array $orderBy = null)
- * @method CompteRendu[]    findAll()
- * @method CompteRendu[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Report|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Report|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Report[]    findAll()
+ * @method Report[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CompteRenduRepository extends ServiceEntityRepository
+class ReportRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CompteRendu::class);
+        parent::__construct($registry, Report::class);
     }
 
     public function findByField(string $query): array
@@ -55,7 +55,7 @@ class CompteRenduRepository extends ServiceEntityRepository
 
 
     //    /**
-    //     * @return CompteRendu[] Returns an array of CompteRendu objects
+    //     * @return Report[] Returns an array of Report objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -69,7 +69,7 @@ class CompteRenduRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?CompteRendu
+    //    public function findOneBySomeField($value): ?Report
     //    {
     //        return $this->createQueryBuilder('c')
     //            ->andWhere('c.exampleField = :val')

@@ -80,16 +80,16 @@
       <div class="d-flex justify-content-around">
 
         <div class="d-flex flex-column">
-          <label class="inputs" for="{{ form.id_doctor.vars.id }}" class="">Assign to Doctor:</label>
-          {{ form_widget(form.id_doctor, {'attr': {'class': 'form-control select2 w-100'}}) }}
-          {% if form_errors(form.id_doctor) %}
+          <label class="inputs" for="{{ form.doctor.vars.id }}" class="">Assign to Doctor:</label>
+          {{ form_widget(form.doctor, {'attr': {'class': 'form-control select2 w-100'}}) }}
+          {% if form_errors(form.doctor) %}
             <div class="text-danger">
-                {{ form_errors(form.id_doctor) }}
+                {{ form_errors(form.doctor) }}
             </div>
           {% endif %}
         </div>
 
-        
+    
 
       <div class="form-group">
       <br>

@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\CompteRendu;
+use App\Entity\Report;
 use App\Form\RadType;
-use App\Repository\CompteRenduRepository;
+use App\Repository\ReportRepository;
 use App\Repository\DoctorRepository;
 use App\Repository\ImageRepository;
 use App\Repository\RadiologistRepository;
@@ -18,7 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class RadioRenduController extends AbstractController
 {
     #[Route('/radio/{id}', name: 'app_radio', methods: ['GET', 'POST'])]
-    public function new($id,Request $request, EntityManagerInterface $entityManager, DoctorRepository $medrepo, ImageRepository $imagesRepo, RadiologistRepository $repoRad,CompteRenduRepository $cm): Response
+    public function new($id,Request $request, EntityManagerInterface $entityManager, DoctorRepository $medrepo, ImageRepository $imagesRepo, RadiologistRepository $repoRad,ReportRepository $cm): Response
     {
 
         // Retrieve the currently logged-in user
@@ -37,19 +37,19 @@ class RadioRenduController extends AbstractController
         }
 
 
-        $o=$cm->findOneBy(["id_image"=> $id]);
+        $o=$cm->findOneBy(["image"=> $id]);
        if($o !=null)
     {
 
         return $this->render('radio/error.html.twig');
     }
-        $compteRendu = new CompteRendu();
-        $form = $this->createForm(RadType::class, $compteRendu);
+        $Report = new Report();
+        $form = $this->createForm(RadType::class, $Report);
         $form->handleRequest($request);
        $image= $imagesRepo->findOneBy(['id'=>$id]);
         if ($form->isSubmitted() && $form->isValid()) {
-            $compteRendu->setIdImage($image);
-            $entityManager->persist($compteRendu);
+            $Report->setImage($image);
+            $entityManager->persist($Report);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_image');
