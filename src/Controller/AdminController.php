@@ -21,13 +21,13 @@ use Dompdf\Options;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\CompteRenduRepository;
+use App\Security\PasswordHashing;
 
 #[Route('/admin')]
 class AdminController extends AbstractController
@@ -77,13 +77,7 @@ class AdminController extends AbstractController
                 $addUser->setBrochureFilename($newFilename);
             }else
                 $addUser->setBrochureFilename('x');
-            
-            $addUser->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $addUser,
-                    $form->get('password')->getData()
-                )
-            );
+            $addUser->setPassword(PasswordHashing::hashPassword($form->get('password')->getData()));
             $entityManager->persist($addUser);
             $entityManager->flush();
         }

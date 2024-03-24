@@ -11,6 +11,7 @@ use App\Form\PatientType;
 use App\Form\RadiologistType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Security\PasswordHashing;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,8 +60,8 @@ class RegistrationController extends AbstractController
           
             // ! user ----
             $userData = $form->get('user')->getData();
-            $hashedPassword = $userPasswordHasher->hashPassword($userData, $form->get('user')->get('password')->getData());
-            $userData->setPassword($hashedPassword);
+
+            $userData->setPassword(PasswordHashing::hashPassword($form->get('user')->get('password')->getData()));
             $userData->setRoles(['ROLE_WAITING_DOCTOR']);
             $userData->setBrochureFilename("x");
             $entityManager->persist($userData);
@@ -102,8 +103,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // ! user ----
             $userData = $form->get('user')->getData();
-            $hashedPassword = $userPasswordHasher->hashPassword($userData, $form->get('user')->get('password')->getData());
-            $userData->setPassword($hashedPassword);
+            $userData->setPassword(PasswordHashing::hashPassword($form->get('user')->get('password')->getData()));
             $userData->setBrochureFilename("x");
             $userData->setRoles(['ROLE_PATIENT']);
             $entityManager->persist($userData);
@@ -146,8 +146,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // ! user ----
             $userData = $form->get('user')->getData();
-            $hashedPassword = $userPasswordHasher->hashPassword($userData, $form->get('user')->get('password')->getData());
-            $userData->setPassword($hashedPassword);
+            $userData->setPassword(PasswordHashing::hashPassword($form->get('user')->get('password')->getData()));
             $userData->setBrochureFilename("x");
             $userData->setRoles(['ROLE_WAITING_RADIOLOGIST']);
             $entityManager->persist($userData);

@@ -12,6 +12,7 @@ use App\Repository\DoctorRepository;
 use App\Repository\PatientRepository;
 use App\Repository\RadiologistRepository;
 use App\Repository\UserRepository;
+use App\Security\PasswordHashing;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -70,13 +71,7 @@ class HomeController extends AbstractController
                 }
                 $dataid->setBrochureFilename($newFilename);
             }
-            $dataid->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $dataid,
-                    $form->get('password')->getData()
-                )
-            );
-
+            $dataid->setPassword(PasswordHashing::hashPassword($form->get('password')->getData()));
             $dataid->setName($userEmpty->getName());
             $dataid->setLastname($userEmpty->getLastname());
             $dataid->setDateBirth($userEmpty->getDateBirth());
