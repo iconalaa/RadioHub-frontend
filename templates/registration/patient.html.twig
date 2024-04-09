@@ -1,0 +1,110 @@
+{% extends 'front.html.twig' %}
+{% block title %}RadioHub | Sign
+{% endblock %}
+{% block body %}
+
+	<style>
+		ul li {
+			color: rgba(255, 0, 0, 0.8);
+		}
+		.list li {
+			color: #222 !important;
+		}
+		.sign-container {
+			height: 400px;
+		}
+		input {
+			font-size: 15px !important;
+		}
+		.nice-select .list {
+			height: 150px;
+			overflow-y: scroll;
+		}
+	</style>
+	<center>
+		<h1 class="display-5 mt-3">Patient</h1>
+	</center>
+	<div class="d-flex justify-content-center gap-5 sign-container">
+		<img class="img-fluid sign-img" src="../../front/img/sign/patient-sign-img.jpeg" alt="patient-sign-img"/>
+
+		{{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-5'}}
+		)}}
+		<div class="d-flex flex-column w-100 mx-auto gap-3">
+			<div class="d-flex gap-3">
+				<div class="d-flex flex-column w-100">
+					{{ form_widget(form.user.name,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+        }}) }}
+
+					{{ form_errors(form.user.name) }}
+				</div>
+				<div class="d-flex flex-column w-100">
+					{{ form_widget(form.user.lastname,{'attr':{'class':'form-control px-3 py-2'
+
+
+
+        }}) }}
+					{{ form_errors(form.user.lastname) }}
+				</div>
+			</div>
+			<div class="d-flex gap-3">
+				<div class="d-flex flex-column w-50">
+					{{ form_widget(form.user.email,{'attr':{'class':'form-control px-3 py-2'}}) }}
+					{{ form_errors(form.user.email) }}
+				</div>
+				<div class="d-flex flex-column w-50">
+					{{ form_widget(form.user.password,{'attr':{'class':'form-control px-3 py-2','id':'password'
+
+
+        }}) }}
+					<p class="error text-danger mt-2"></p>
+				</div>
+			</div>
+			<div class="d-flex gap-3">
+				<div class="d-flex flex-column w-50">
+					{{ form_widget(form.user.cas_med,{'attr':{'class':'form-control px-3 py-2' }}) }}
+					{{ form_errors(form.user.cas_med) }}
+				</div>
+				<div class="d-flex flex-column w-50">
+					{{ form_widget(form.user.n_cnam,{'attr':{'class':'form-control px-3 py-2'  }}) }}
+					{{ form_errors(form.user.n_cnam) }}
+				</div>
+			</div>
+			<div class="d-flex gap-3">
+				<div class="d-flex flex-column w-50">
+					{{ form_widget(form.user.assurance,{'attr':{'class':'form-control px-3 py-2' }}) }}
+					{{ form_errors(form.user.assurance) }}
+				</div>
+				<div class="d-flex flex-column w-50">
+					{{ form_widget(form.user.num_assurance,{'attr':{'class':'form-control px-3 py-2' }}) }}
+					{{ form_errors(form.user.num_assurance) }}
+				</div>
+			</div>
+
+			<div class="d-flex gap-3">
+				<div class="d-flex flex-column">
+					{{ form_widget(form.user.gender) }}
+					{{ form_errors(form.user.gender) }}
+				</div>
+				{{ form_widget(form.user.date_birth,{'attr':{'class':'d-flex gap-1 justify-content-center'
+      }}) }}
+			</div>
+			<div style="display: none">
+				<label style="white-space: nowrap; cursor: pointer" for="form_user_brochureFilename" class="required d-flex flex-column align-items-center">
+					<img width="40px" src="../upload-btn.png" alt="Upload img"/>Upload IMG
+				</label>
+				{{ form_widget(form.user.brochureFilename) }}
+			</div>
+
+			<button type="submit" class="btn w-50 mx-auto">Submit</button>
+		</div>
+		{{ form_end(form) }}
+	</div>
+
+{% endblock %}
+{% block footer%}{% endblock %}
+{% block javascripts %}
+	<script src="../front/js/custom.js"></script>
+{% endblock %}

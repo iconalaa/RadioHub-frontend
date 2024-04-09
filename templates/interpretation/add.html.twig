@@ -1,0 +1,86 @@
+{% extends 'backrad.html.twig' %}
+
+
+{%block change1%} my images{%endblock%}
+
+{% block change1path%} {{path('app_image')}} {%endblock%}
+
+{%block change2%}shared with me {%endblock%}
+{% block change2path%} {{path('shared')}} {%endblock%}
+
+ {%block change3%}Interpretations{%endblock%}
+ {% block change3path%} {{path('inter')}} {%endblock%}
+
+
+{%block change4%}Upload {%endblock%}
+{% block change4path%} {{path('image_upload')}} {%endblock%}
+
+{%block content%}
+<style>
+  /* Style for error messages */
+</style>
+<style>
+  .form-error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+</style>
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h5>Add Interpretation</h5>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{path("shared")}}">shared</a></li>
+        <li class="breadcrumb-item">Interpret </li>
+
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Interpret Image</h5>
+
+
+
+          {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+          <div class="mb-3">
+            {{ form_label(form.interpretation) }}
+            {{ form_widget(form.interpretation, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error-message">{{ form_errors(form.interpretation) }}</div>
+          </div>
+
+          <div class="mb-3">
+            {{ form_label(form.urgency) }}
+            {{ form_widget(form.urgency, {'attr': {'class': 'form-select'}}) }}
+            <div class="form-error-message">{{ form_errors(form.urgency) }}</div>
+          </div>
+
+          <div class="mb-3">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error-message">{{ form_errors(form.description) }}</div>
+          </div>
+          <div class="mb-3">
+         
+            {{ form_widget(form.save) }}
+           
+          </div>
+
+          
+          {{ form_end(form) }}
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+
+{%endblock%}

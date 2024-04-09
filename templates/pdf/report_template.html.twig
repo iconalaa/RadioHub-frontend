@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ccc;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: #007bff;
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .details {
+            margin-bottom: 20px;
+        }
+
+        .details p {
+            margin: 10px 0;
+        }
+
+        .details strong {
+            color: #007bff;
+        }
+
+        .interpretation {
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+            margin-bottom: 20px;
+        }
+
+        .interpretation h2 {
+            color: #007bff;
+            margin-top: 0;
+        }
+
+        .interpretation p {
+            margin: 10px 0;
+        }
+
+        .date {
+            text-align: right;
+        }
+
+        .date p {
+            margin: 5px 0;
+            color: #777;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+
+        .footer img {
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Medical Report</h1>
+        </div>
+        <div class="details">
+
+        
+            
+            <p><strong>Patient:</strong>{{ report.image.patient.name }} {{ report.image.patient.lastname }}</p>
+            <p><strong>Medical Insurance Code:</strong>{{ report.image.patient.NumAssurance}} </p>
+            <p><strong>Radiologist:</strong>{{ report.image.radiologist.name }} {{ report.image.radiologist.lastname }}</p>
+            <p><strong>Doctor:</strong>{{ report.doctor.name }} {{ report.doctor.lastname }}</p>
+        </div>
+        <div class="interpretation">
+            <h2>Radiologist's Interpretation:</h2>
+            <p>{{ report.interpretationRad }}.</p>
+            
+        </div>
+        <div class="interpretation">
+            <h2>Doctor's Interpretation:</h2>
+            <p>{{ report.interpretationMed }}.</p>
+        </div>
+        <div class="date">
+            <p>{{ report.date|date('Y-m-d') }}</p>
+        </div>
+    </div>
+    <center><img src="data:image/png;base64,{{ imageData }}" alt="Logo" style="max-width: 300px; height: 300px;"></center>
+    <div class="footer">
+        
+    </div>
+</body>
+</html>
