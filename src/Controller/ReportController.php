@@ -115,7 +115,7 @@ class ReportController extends AbstractController
             // Retrieve the associated Doctor entity
             $doctor = $Report->getDoctor();
             // Get the user associated with the doctor to access the name
-            $user = $doctor ? $doctor->getUser() : null;
+            $user = $doctor ;
             // Get the doctor's name
             $doctorName = $user ? $user->getName() : '';
 
