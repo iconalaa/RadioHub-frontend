@@ -1,0 +1,145 @@
+{# popup_template.html.twig #}
+<style>
+/* CSS for the close icon */
+    #close-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        height:10px;
+            font-size: medium;
+    }
+    /* CSS for the pop-up */
+    #popup-content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 400px;
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+        overflow-y: auto;
+    }
+
+    /* CSS for the user list */
+    #userList {
+        margin-top: 20px;
+    }
+
+    /* CSS for checkboxes */
+    #userList input[type="checkbox"] {
+        margin-bottom: 10px;
+    }
+</style>
+
+<div id="popup-content">
+<span id="close-icon">&times;</span> <!-- Close icon -->
+    <input type="text" id="searchInput" placeholder="Search...">
+    <button class="btn btn-primary" id="addButton">Add</button>
+    <div id="userList">
+  {%for user in rads %}
+  {%if user ==owner%}
+
+{%else%}
+               <div class="user-item">
+                   <input type="checkbox" id="user_{{ user.id }}" value="{{ user.id }}">
+                   <label for="user_{{ user.id }}">{{ user.name }}</label>
+               </div>
+               {%endif%}
+               {%endfor%}
+
+
+  <div class="user-item">
+      {% for i in droits %}
+          <label for="user_{{ i.id }}">{{ i.radioloqist }}</label>
+          <a href="#" class="delete-droit" data-droit-id="{{ i.id }}" data-image-id="{{ i.image.id }}">Delete</a>
+      {% endfor %}
+  </div>
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+// Close the pop-up when the close icon is clicked
+$('#close-icon').click(function() {
+    $('#popup-content').hide();
+});
+
+$(document).ready(function() {
+    $('#addButton').click(function() {
+        var selectedIds = [];
+        $('input[type="checkbox"]:checked').each(function() {
+            selectedIds.push($(this).val());
+        });
+        if(selectedIds.length<=0)
+        return ;
+        // Send the selected IDs to the server via AJAX
+        $.ajax({
+            url: '{{ path('app_droit', {'id': imageid}) }}',
+            type: 'POST',
+            data: { idrad: selectedIds }, // Send the selected IDs as data
+            success: function(response) {
+                // Handle the response from the server if needed
+                console.log('Response from server:', response);
+                $('#close-icon').click();
+            },
+            error: function(error) {
+                console.error('Error:', error);
+                $('#close-icon').click();
+            }
+        });
+    });
+
+
+});
+
+/*
+
+$(document).off('click', '.deleteButton').on('click', '.deleteButton', function() {
+ var radioloqueId = $(this).data('attr');
+    image=document.getElementById('image_id');
+    $.ajax({
+        url: '{{ path('deletedroit', {'id':1,'idimg':1} ) }}',
+        type: 'POST',
+        data: { id: radioloqueId },
+        success: function(response) {
+
+            $('#show').html(response);
+        },
+        error: function(error) {
+                return 0;
+        }
+    });
+});
+
+
+
+*/
+
+ $('.delete-droit').click(function(event) {
+            event.preventDefault(); // Prevent the default link behavior
+
+            var droitId = $(this).data('droit-id');
+            var imageId = $(this).data('image-id');
+
+            // Send an AJAX request to delete the droit
+            $.ajax({
+                url: '/droit/delete/' + droitId + '/' + imageId,
+                type: 'DELETE',
+                success: function(response) {
+                    // Reload the content of the container after successful deletion
+                   refreshPopupContent(imageId) // Update with the URL to refresh the droit page content
+                },
+                error: function(xhr, status, error) {
+                    // Handle error if needed
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+</script>

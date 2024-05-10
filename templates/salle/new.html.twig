@@ -1,0 +1,10 @@
+
+
+{% block body %}
+
+    <h1>Add a room </h1>
+
+    {{ include('salle/_form.html.twig') }}
+
+    <a href="{{ path('app_salle_index') }}">back to list</a>
+{% endblock %}

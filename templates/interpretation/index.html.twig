@@ -1,0 +1,122 @@
+{% extends 'backrad.html.twig' %}
+
+
+
+
+
+{%block change1%} my images{%endblock%}
+
+{% block change1path%} {{path('app_image')}} {%endblock%}
+
+{%block change2%}shared with me {%endblock%}
+{% block change2path%} {{path('shared')}} {%endblock%}
+
+ {%block change3%}Interpretations{%endblock%}
+ {% block change3path%} {{path('inter')}} {%endblock%}
+
+
+{%block change4%}Upload {%endblock%}
+{% block change4path%} {{path('image_upload')}} {%endblock%}
+
+	{%block content%}
+	<style>
+	#up
+	{
+	display: flex;
+        align-items: self-start;
+        justify-content: end;
+	}
+	</style>
+	<main id="main" class="main">
+
+      <div class="pagetitle">
+        <h5>Interpretations</h5>
+
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{path('inter')}}">Image</a></li>
+            <li class="breadcrumb-item">Interpretations</li>
+
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+
+      <section class="section">
+        <div class="row">
+
+<div class="card" >
+        <div class="card-body">
+          <h5 class="card-title">Default Table</h5>
+
+          <!-- Default Table -->
+          <table class="table" id="dataTable">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">date</th>
+                <th scope="col">radiologist</th>
+                <th scope="col">Image</th>
+
+                <th style="text-align:center">Actions</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in inter  %}
+
+              <tr>
+
+                <th scope="row"> {{i.id }}</td>
+                <td>{{i.sendat | date }}</td>
+                <td>{{i.radiologist}}</td>
+                <td>{{i.image}}</td>
+                <td style="display: flex;justify-content: center;">
+                  <a href="{{ path('editinterpretation', {'id': i.id}) }}">
+                    <button class="btn btn-success " style="margin-right:5px">Edit</button>
+                </a>
+                <a href="{{ path('deleteinter', {'id': i.id}) }}">
+                  <button class="btn btn-danger" style="margin-right:5px;">Delete</button>
+              </a>
+
+
+
+                </td>
+
+
+              </tr>
+
+              {%endfor%}
+
+
+            </tbody>
+          </table>
+          <!-- End Default Table Example -->
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </section>
+</main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Include DataTables library -->
+
+
+<!-- DataTables Initialization Script -->
+<script>
+  $(document).ready(function () {
+    $('#dataTable').DataTable({
+      "initComplete": function (settings, json) {
+        // Customize the search input field
+        var searchInput = $('#dataTable_filter input[type="search"]');
+        searchInput.addClass('form-control');
+        searchInput.attr('placeholder', 'Search...'); // Set placeholder text
+      }
+    });
+  });
+</script>
+
+{% endblock %}
+

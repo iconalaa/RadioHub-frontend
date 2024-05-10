@@ -1,0 +1,13 @@
+{# reponse/new.html.twig #}
+{% block body %}
+   
+
+    {{ include('reponse/_form.html.twig') }}
+
+    {# Access properties of the Reponse object, not the form view #}
+    
+  
+    
+
+    <a href="{{ path('app_reclamation_show', {'id': reponse.reclamation.id}) }}">Back to Reclamation</a>
+{% endblock %}

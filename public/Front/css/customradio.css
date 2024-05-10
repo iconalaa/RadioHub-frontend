@@ -1,0 +1,88 @@
+.error {
+    color: red !important;
+}
+
+.form-container {
+    border: 2px solid #041425;
+    /* Border color */
+    border-radius: 10px;
+    /* Rounded corners */
+    padding: 20px;
+    /* Padding inside the border */
+    box-shadow: 0 0 10px rgba(115, 28, 85, 0.547);
+    /* Optional: Add shadow effect */
+}
+
+.form-inline-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.custom-label {
+    flex: 0 0 200px;
+    /* Adjust as needed */
+    text-align: right;
+    margin-right: 15px;
+}
+
+.form-control {
+    flex: 1;
+    border-radius: 5px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    /* Ensure padding is included in width */
+    resize: vertical;
+    /* Allow vertical resizing */
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #007bff;
+    /* Change to desired focus color */
+}
+
+.select2-selection {
+    width: calc(100% - 200px);
+    /* Adjust width based on the label width */
+    height: 38px;
+    /* Adjust height as needed */
+}
+
+.select2-selection__arrow {
+    height: 38px;
+    /* Adjust height to match select height */
+}
+
+.form-control-textarea {
+    min-height: 100px;
+    /* Minimum height for textarea */
+    overflow-y: auto;
+    /* Add scrollbar if content exceeds height */
+}
+
+.btn-submit {
+    width: 50%;
+    /* Adjust width as needed */
+    margin-left: auto;
+    /* Align to the right */
+    margin-right: auto;
+    /* Align to the left */
+    display: block;
+    /* Ensure it takes up full width */
+}
+
+.inputs {
+    margin-top: 20px;
+    font-family: 'Georgia, serif';
+    color: #87178d;
+
+
+}
+.dang {
+    color: red; /* Set the text color to red */
+    font-size: 14px; /* Optional: Adjust the font size */
+    /* Add any other styles as needed */
+}

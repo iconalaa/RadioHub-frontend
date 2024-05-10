@@ -1,0 +1,191 @@
+﻿body {
+    overflow: hidden;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: red;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    color: white;
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    cursor: pointer;
+}
+
+    .close:hover {
+        color: white;
+    }
+
+#errorMesssage {
+    color: red;
+    font-weight: bold;
+}
+
+.popupai {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background-color: white;
+    border: 1px solid black;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.popup img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+}
+
+#dicomCanvas {
+    touch-action: auto !important;
+    user-select: auto !important;
+}
+
+.chat-header {
+    height: 5vh;
+    border-top: 1px solid #2a2b36;
+    background-color: #2a2b36;
+    color: white;
+}
+
+.body-message {
+    height: 80vh;
+    background-color: #1e1f27;
+    padding: 8%;
+    overflow: auto;
+}
+
+.chat-footer {
+    background-color: #1e1f27;
+}
+
+.btn {
+    background-color: #5c61ed;
+    color: white;
+}
+
+.bg-chat {
+    background-color: #1e1f27;
+}
+
+.btn-toolbar {
+    justify-content: flex-end;
+}
+
+.bg-tool {
+    background-color: #5c61ed;
+    margin-right: 0;
+}
+
+.bg-dcm {
+    background-color: black;
+}
+
+#chat-section {
+    overflow: hidden;
+}
+
+.col-6 {
+    text-align: center;
+}
+
+#houssem {
+    padding: 0;
+}
+
+.tool-cls {
+    height: 100%;
+}
+
+.btn-danger {
+    background-color: #c13636;
+}
+
+.info {
+    position: absolute;
+    color: green;
+    top: 100px;
+}
+
+.info1 {
+    position: absolute;
+    color: green;
+    top: 120px;
+}
+
+.info2 {
+    position: absolute;
+    color: green;
+    top: 140px;
+}
+
+.btn {
+    background-color: #1e1f27;
+    ;
+}
+
+.btn-toolbar {
+    justify-content: start;
+}
+
+.cornerstone-canvas {
+    width: 10%;
+}
+
+.tool-btn {
+    width: 100px;
+    border-right: 1px solid #a1a4f0;
+    border-top: 1px solid #5c61ed;
+    border-bottom: 1px solid #5c61ed;
+    background-color: #5c61ed;
+    color: white;
+}
+
+    .tool-btn:hover {
+        opacity: 0.4;
+    }
+
+.fa {
+}
+
+.col-6 {
+    padding: 1.8%;
+}
+
+#discussion {
+    background-color: #2e2e64;
+}
+
+.btn-message {
+    background-color: #5c61ed !important;
+    color: white !important;
+}
+
+.addmemeber {
+    background-color: #5c61ed !important;
+    color: white !important;
+}
