@@ -30,9 +30,14 @@ use Symfony\Component\Security\Core\Security;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function frontOffice(): Response
+    public function frontOffice(Security $security): Response
+
     {
-        return $this->render('home/home.html.twig', []);
+        $user = $security->getUser();
+
+
+
+        return $this->render('home/home.html.twig', ['user'=>$user]);
     }
 
     #[Route('/profile', name: 'app_profile')]

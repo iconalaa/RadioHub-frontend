@@ -22,31 +22,20 @@ endblock %} {% block body %}
 
     <div class="d-flex" style="gap: 0.5rem">
       <div class="d-flex flex-column w-100">
-        {{ form_widget(form.nomPatient, {'attr': {'class': 'form-control'   }})
-        }} {{ form_errors(form.nomPatient,{'attr':{'class':'text-danger'}}) }}
-      </div>
-      <div class="d-flex flex-column w-100">
-        {{ form_widget(form.prenomPatient, {'attr': {'class': 'form-control'}})
-        }} {{ form_errors(form.prenomPatient,{'attr':{'class':'text-danger'}})
-        }}
-      </div>
-    </div>
-    <div class="d-flex" style="gap: 0.5rem">
-      <div class="d-flex flex-column w-100">
-        {{ form_widget(form.mailPatient, {'attr': {'class': 'd-flex',   }}) }}
-        {{ form_errors(form.mailPatient,{'attr':{'class':'text-danger'}}) }}
-      </div>
-    </div>
-    <div class="d-flex" style="gap: 0.5rem">
-      <div class="d-flex flex-column w-100">
         {{ form_widget(form.dateRV, {'attr': {'class': 'form-control'   }}) }}
         {{ form_errors(form.dateRV,{'attr':{'class':'text-danger'}}) }}
       </div>
     </div>
-    <div class="d-flex" style="gap: 0.5rem">
+    <div class="d-flex" style="gap: 0.5rem" style="display: none;">
       <div class="d-flex flex-column w-100">
-        {{ form_widget(form.typeExam, {'attr': {'class': 'd-flex',   }}) }}
+        {{ form_widget(form.typeExam, {'attr': {'class': 'form-control'   }}) }}
         {{ form_errors(form.typeExam,{'attr':{'class':'text-danger'}}) }}
+      </div>
+    </div>
+    <div class="d-flex" style="gap: 0.5rem" style="display: none;">
+      <div class="d-flex flex-column w-100">
+        {{ form_widget(form.salle, {'attr': {'class': 'form-control'   }}) }}
+        {{ form_errors(form.salle,{'attr':{'class':'text-danger'}}) }}
       </div>
     </div>
     
