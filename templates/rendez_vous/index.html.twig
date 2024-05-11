@@ -1,0 +1,83 @@
+{% extends 'back.html.twig' %} {% block title %}RendezVous{% endblock %} {%
+block body %}
+
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <h1>Appointments</h1>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Id</th>
+           
+            <th>name</th>
+            <th>lastname</th>
+            <th>patient_mail</th>
+            <th>DateRV</th>
+            <th>TypeExam</th>
+
+            <th colspan="2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for rendez_vou in rendez_vouses %}
+
+          <tr>
+
+            <td>{{ rendez_vou.id }}</td>
+        
+            <td>{{ rendez_vou.nomPatient }}</td>
+    
+     
+
+            <td>{{ rendez_vou.prenomPatient }}</td>
+   
+     
+      
+            <td>{{ rendez_vou.mailPatient }}</td>
+     
+        
+            
+     
+     
+            <td>
+              {{ rendez_vou.dateRV ? rendez_vou.dateRV|date('Y-m-d') : '' }}
+            </td>
+     
+            <td>{{ rendez_vou.typeExam }}</td>
+            <td>
+              <a
+                class="btn btn-primary"
+                href="{{ path('app_rendez_vous_show', { id: rendez_vou.id }) }}"
+                >show</a
+              >
+            </td>
+        
+            <td>
+              <a
+                class="btn btn-success"
+                href="{{ path('app_rendez_vous_edit', { id: rendez_vou.id }) }}"
+                >Affect Room</a
+              >
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5">no records found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <a class="btn btn-primary" href="{{ path('app_rendez_vous_new') }}"
+        >Create new</a
+      >
+    </div>
+  </div>
+</div>
+{{ knp_pagination_render(rendez_vouses) }}  
+
+
+
+{% endblock %}

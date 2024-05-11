@@ -1,0 +1,72 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'd-flex gap-5 flex-column w-50 mx-auto my-5'}}) }}
+<div class="d-flex flex-column gap-3">
+    <div class="d-flex align-items-center"> 
+        {{ form_widget(form.Date_grat, {'attr': {'class': 'form-control p-0 ml-2', 'id': 'date','type': 'date'}}) }}
+        <div class="form-error-message">{{ form_errors(form.Date_grat) }}</div>
+    </div>
+    <div classe="d-flex flex_column gap-3">
+    {{ form_widget(form.Titre_Grat, {'attr': {'class': 'form-control p-2'}}) }}
+    <div class="form-error-message">{{ form_errors(form.Titre_Grat) }}</div>
+    </div>
+    <div class="d-flex flex-column gap-3">
+    {{ form_widget(form.Desc_Grat, {'attr': {'class': 'form-control p-2'}}) }}
+    <div class="form-error-message gap-3">{{ form_errors(form.Desc_Grat) }}</div>
+    </div>
+    
+    {% for child in form.Type_Grat %}
+        <div class="form-check d-flex flex-column gap-5">
+            {{ form_row(child, {'id': 'type_' ~ child.vars.value, 'attr': {'class': 'form-check-input'}}) }}
+            {{ form_label(child, child.vars.label, {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    {% endfor %}
+    <div class="monetary-donation-field">
+        {{ form_row(form.Montant, {'attr': {'class': 'form-control p-2'}}) }}
+        <div class="form-error-message">{{ form_errors(form.Montant) }}</div>
+    </div>
+
+    <div class="machine-donation-field">
+        {{ form_row(form.Type_Machine, {'attr': {'class': 'form-control p-2'}}) }}
+        <div class="form-error-message">{{ form_errors(form.Type_Machine) }}</div>
+    </div>
+</div>
+
+<div>
+<button class="btn btn-lg d-block mx-auto">{{ button_label|default('Save') }}</button>
+</div>
+
+
+<style>
+    .form-error-message {
+        color: red;
+        margin-top: 5px;
+        font-size: 14px;
+
+
+
+    }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the donation type field
+    var donationTypeField = document.querySelector('#{{ form.Type_Grat.vars.id }}');
+
+    // Get the monetary donation field
+    var monetaryDonationField = document.querySelector('.monetary-donation-field');
+
+    // Add event listener to the donation type field
+    donationTypeField.addEventListener('change', function() {
+        // If the selected donation type is 'Monnaitaire', enable the monetary donation field
+        if (donationTypeField.value === 'Monnaitaire') {
+            monetaryDonationField.removeAttribute('disabled');
+        } else {
+            // Otherwise, disable the monetary donation field
+            monetaryDonationField.setAttribute('disabled', 'disabled');
+        }
+    });
+});
+
+</script>
+
+
+
+{{ form_end(form) }}

@@ -1,0 +1,45 @@
+{% extends "back.html.twig" %}
+
+{% block title %}
+	Détail de l'article
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="display-4 text-center my-4">{{ article.title }}</h1>
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ article.id }}</td>
+			</tr>
+			<tr>
+				<th>Title</th>
+				<td>{{ article.title }}</td>
+			</tr>
+			<tr>
+				<th>Content</th>
+				<td>{{ article.content }}</td>
+			</tr>
+			<tr>
+				<th>Image</th>
+				<td>
+					{{ article.image }}
+					<img src="{{ asset('articles/' ~ article.image) }}" class="card-img-top" alt="...">
+				</td>
+			</tr>
+			<tr>
+				<th>CreatedAt</th>
+				<td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Comment Count</th>
+				<td>{{ commentCount }}</td>
+				<!-- Affichez le nombre de commentaires -->
+			</tr>
+		</tbody>
+	</table>
+	<a href="{{ path('app_article_index') }}">back to list</a>
+	<a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
+	{{ include('article/_delete_form.html.twig') }}
+{% endblock %}

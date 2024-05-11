@@ -1,0 +1,24 @@
+{% extends 'back.html.twig' %}
+{% block title %}Comment{% endblock %}
+{% block body %}
+
+         
+          {{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-1'}})}}
+        
+        
+        {{ form_row(form.content, {
+        'attr': {
+            'class': 'form-control',
+            'placeholder': 'Enter the content'
+           }
+        }) }}
+     {{ form_row(form.createdAt, {
+        'attr': {
+            'class': 'form-control',
+            'placeholder': 'Enter the date'
+        }
+    }) }}
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+{% endblock %}

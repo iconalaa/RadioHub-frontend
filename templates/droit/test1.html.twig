@@ -1,0 +1,11 @@
+{# your_template.html.twig #}
+<form method="post">
+    {{ form_start(form) }}
+    <div>
+        {{ form_label(form.radioloqist) }}
+        {{ form_widget(form.radioloqist) }}
+    </div>
+    {# render other fields as needed #}
+    <button type="submit">Submit</button>
+    {{ form_end(form) }}
+</form>
