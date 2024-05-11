@@ -51,7 +51,8 @@ class InterpretationController extends AbstractController
                 $em->getManager()->persist($inter);
                 $em->getManager()->flush();
             // Redirect the user to another page
-            return $this->redirectToRoute('inter');
+            
+            return $this->redirectToRoute('app_image');
         }
 
         // Render the form template

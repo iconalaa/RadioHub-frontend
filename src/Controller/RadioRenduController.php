@@ -44,7 +44,13 @@ class RadioRenduController extends AbstractController
         return $this->render('radio/error.html.twig');
     }
         $Report = new Report();
-        $form = $this->createForm(RadType::class, $Report);
+
+
+
+        $doctors=$medrepo->findDoctors();
+        $form = $this->createForm(RadType::class, $Report, [
+            'doctors' => $doctors,
+        ]);
         $form->handleRequest($request);
        $image= $imagesRepo->findOneBy(['id'=>$id]);
         if ($form->isSubmitted() && $form->isValid()) {

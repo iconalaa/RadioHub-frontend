@@ -47,18 +47,20 @@ class ImageController extends AbstractController
     }
 
     #[Route('/image/upload', name: 'image_upload')]
-    public function new(Security $security,Request $request, SluggerInterface $slugger,ManagerRegistry $entityManager,ImageRepository $rep,UserRepository $reprad): Response
+    public function new(Security $security, UserRepository $userRepository,Request $request, SluggerInterface $slugger,ManagerRegistry $entityManager,ImageRepository $rep,UserRepository $reprad): Response
     {
         $radiologist = $this->getUser(); // Assuming the logged-in user is the radiologist
         $rad= $radiologist;
 
-
+    $patients=$userRepository->findPatients();
 
 
 
 
         $product = new Image();
-        $form = $this->createForm(ImageType::class, $product);
+        $form = $this->createForm(ImageType::class, $product, [
+            'patients' => $patients,
+        ]);
         $droit=new Droit();
 
         $form->handleRequest($request);
