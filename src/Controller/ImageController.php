@@ -219,12 +219,15 @@ class ImageController extends AbstractController
 
 
     #[Route('/image/edit/{id}', name: 'edit_image', methods: ['GET', 'POST'])]
-    public function edit(Request $request, SluggerInterface $slugger, ImageRepository $rep, $id)
+    public function edit(Request $request,UserRepository $userRepository , SluggerInterface $slugger, ImageRepository $rep, $id)
     {
         $image = $rep->find($id);
 
+        $patients=$userRepository->findPatients();
+
         // Create the edit form
-        $form = $this->createForm(EditType::class, $image);
+        $form = $this->createForm(EditType::class, $image, [
+            'patients' => $patients]);
 
         // Handle form submission
         $form->handleRequest($request);
