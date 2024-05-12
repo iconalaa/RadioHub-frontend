@@ -9,7 +9,7 @@
 
 
 {% block body %}
-<div style="display: list-item; justify-content: center; padding-top: 70px;"> <!-- Adjust padding-top as needed -->
+<div style="display: list-item; justify-content: center; padding-top: 70px; margin-right: 200px; margin-left: 200px;"> <!-- Adjust padding-top as needed -->
     <div class="card">
         <div class="card-header text-center">
             <h1 class="card-header">Diagnostic Report</h1>
@@ -51,8 +51,8 @@
             </table>
 
             <div class="text-center">
-                <a href="{{ path('app_admin_report') }}" class="btn btn-info mr-2">Back to List</a>
-                <a href="{{ path('app_Report_edit', {'id': Report.id}) }}" class="btn btn-info" style="margin-left: 150px;">Edit</a>
+                <a href="{{ path('app_admin_report') }}" class="btn btn-info mr-2" >Back to List</a>
+                <a href="{{ path('app_Report_edit', {'id': Report.id}) }}" class="btn btn-info" style="margin-left: 240px;">Edit</a>
                 <br><br> <!-- Add a line break -->
                 {{ include('admin/Report/_delete_form.html.twig') }}
             </div>

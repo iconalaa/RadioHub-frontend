@@ -199,9 +199,11 @@
 											</ul>
 										</div>
 
-									{% else %}
+										{% elseif app.user is empty %}
 										<a href="{{ path('app_register') }}" class="btn">Sign up</a>
 										<a href="{{ path('app_login') }}" class="btn ml-3">Log in</a>
+										{% else %}
+										
 
 									{% endif %}
 								</div>
@@ -240,13 +242,13 @@
 								{%if user is empty %}			
 								<div class="button">
 								<a href="{{path('app_login')}}" class="btn">Get Appointment</a>
-								<a href="#" class="btn primary">Learn More</a>
+								
 							</div>
 
 							{%else%}
 							<div class="button">
 								<a href="{{path('app_rendez_vous_new')}}" class="btn">Get Appointment</a>
-								<a href="#" class="btn primary">Learn More</a>
+								
 							</div>
 
 							{%endif%}							

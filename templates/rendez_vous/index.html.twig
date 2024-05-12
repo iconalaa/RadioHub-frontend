@@ -13,7 +13,7 @@ block body %}
            
             <th>name</th>
             <th>lastname</th>
-            <th>patient_mail</th>
+            <th>Room</th>
             <th>DateRV</th>
             <th>TypeExam</th>
 
@@ -27,19 +27,14 @@ block body %}
 
             <td>{{ rendez_vou.id }}</td>
         
-            <td>{{ rendez_vou.nomPatient }}</td>
+            <td>{{ rendez_vou.user.name }}</td>
     
      
 
-            <td>{{ rendez_vou.prenomPatient }}</td>
-   
-     
-      
-            <td>{{ rendez_vou.mailPatient }}</td>
-     
-        
-            
-     
+            <td>{{ rendez_vou.user.lastname }}</td>
+
+            <td>{{ rendez_vou.salle.numSalle }}</td>
+  
      
             <td>
               {{ rendez_vou.dateRV ? rendez_vou.dateRV|date('Y-m-d') : '' }}
@@ -54,13 +49,7 @@ block body %}
               >
             </td>
         
-            <td>
-              <a
-                class="btn btn-success"
-                href="{{ path('app_rendez_vous_edit', { id: rendez_vou.id }) }}"
-                >Affect Room</a
-              >
-            </td>
+            
           </tr>
           {% else %}
           <tr>
@@ -76,8 +65,11 @@ block body %}
     </div>
   </div>
 </div>
+<div style="align-content: center;
+justify-content: center;">
 {{ knp_pagination_render(rendez_vouses) }}  
 
+</div>
 
 
 {% endblock %}
