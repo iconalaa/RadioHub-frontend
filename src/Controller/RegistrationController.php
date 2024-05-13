@@ -79,7 +79,6 @@ class RegistrationController extends AbstractController
             ->add('user', PatientType::class, [
                 'data' => $user,
             ])
-           
             ->getForm();
 
         $form->handleRequest($request);

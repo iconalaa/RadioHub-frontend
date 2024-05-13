@@ -48,6 +48,8 @@ class RadiologistType extends AbstractType
                 'placeholder' => 'Gender',
             ])
             ->add('brochureFilename', FileType::class, [
+                'mapped'=>false,
+                'required'=>false,
                 'constraints' => [
                     new File([
                         'maxSize' => '5024k',

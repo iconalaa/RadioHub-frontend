@@ -110,7 +110,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/patient', name: 'app_admin_patient', methods: ['GET', 'POST'])]
-    public function patientDashboard(UserRepository $patient, Request $request, EntityManagerInterface $entityManager): Response
+    public function patientDashboard(UserRepository $patient, UserPasswordHasherInterface $userPasswordHasher,Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $addPatient = new User();
         $form = $this->createForm(PatientType::class, $addPatient);
@@ -118,10 +118,27 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Retrieve the password from the request parameters
-    $password = $request->request->get('patient')['password'];
+            $userData = $form->getData();
+            $hashedPassword = $userPasswordHasher->hashPassword($userData, $form->get('password')->getData());
 
+    $brochureFile = $form->get('brochureFilename')->getData();
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+                $addPatient->setBrochureFilename($newFilename);
+            }else{
+                $addPatient->setBrochureFilename("x");
+            }
     // Set the password for the $addPatient object
-    $addPatient->setPassword($password);
+            $addPatient->setPassword($hashedPassword);
             $userRole = $addPatient->getRoles();
             array_push($userRole, 'ROLE_PATIENT');
             $addPatient->setRoles($userRole);
@@ -135,17 +152,32 @@ class AdminController extends AbstractController
         ]);
     }
     #[Route('/doctor', name: 'app_admin_doctor', methods: ['GET', 'POST'])]
-    public function DoctorDashboard(UserRepository $Doctor, Request $request, EntityManagerInterface $entityManager): Response
+    public function DoctorDashboard(UserRepository $Doctor,UserPasswordHasherInterface $userPasswordHasher, SluggerInterface $slugger, Request $request, EntityManagerInterface $entityManager): Response
     {
         $addDoctor = new User();
         $form = $this->createForm(DoctorType::class, $addDoctor);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $request->request->get('doctor')['password'];
-
-    // Set the password for the $addPatient object
-    $addDoctor->setPassword($password);
+        $userData = $form->getData();
+        $password = $userPasswordHasher->hashPassword($userData, $form->get('password')->getData());
+        $brochureFile = $form->get('brochureFilename')->getData();
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+                $addDoctor->setBrochureFilename($newFilename);
+            }else{
+                $addDoctor->setBrochureFilename("x");
+            }
+        // Set the password for the $addPatient object
+        $addDoctor->setPassword($password);
             $userRole = $addDoctor->getRoles();
             array_push($userRole, 'ROLE_DOCTOR');
             $addDoctor->setRoles($userRole);
@@ -159,18 +191,34 @@ class AdminController extends AbstractController
         ]);
     }
     #[Route('/radiologist', name: 'app_admin_radiologist', methods: ['GET', 'POST'])]
-    public function radiologistDashboard(UserRepository $radiologist, Request $request, EntityManagerInterface $entityManager): Response
+    public function radiologistDashboard(UserRepository $radiologist,UserPasswordHasherInterface $userPasswordHasher, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+           
         $addradiologist = new User();
         $form = $this->createForm(RadiologistType::class, $addradiologist);
         $form->handleRequest($request);
-
+        $brochureFile = $form->get('brochureFilename')->getData();
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $request->request->get('radiologist')['password'];
+        $userData = $form->getData();
+        $password = $userPasswordHasher->hashPassword($userData, $form->get('password')->getData());
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+                $addradiologist->setBrochureFilename($newFilename);
+            }else{
+                $addradiologist->setBrochureFilename("x");
+            }
 
             // Set the password for the $addPatient object
             $addradiologist->setPassword($password);
-
             $userRole = $addradiologist->getRoles();
             array_push($userRole, 'ROLE_RADIOLOGIST');
             $addradiologist->setRoles($userRole);
@@ -367,6 +415,7 @@ class AdminController extends AbstractController
     {
         $em = $managerRegistry->getManager();
         $dataid = $doctor->findOneBy(['id'=>$id]);
+
         $form = $this->createForm(DoctorType::class, $dataid);
         $form->handleRequest($req);
         if ($form->isSubmitted() and $form->isValid()) {
