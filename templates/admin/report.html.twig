@@ -8,11 +8,11 @@
         <h5 style="color:blue;" class="card-title fw-semibold mb-4">
           Diagnostic List
         </h5>
-        <div class="mb-3">
-          <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for anything..">
+        <div class="mb-3 d-flex gap-3">
+          <input class="form-control" type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for anything..">
+          <a href="{{ path('app_export_excel') }}" class="btn btn-success w-25">Export Data</a>
         </div>
         <div class="table-responsive" style="overflow-x: auto;">
-          <a href="{{ path('app_export_excel') }}" class="btn btn-primary">Export Data</a>
           <table id="compteRenduTable" class="table text-nowrap mb-0 align-middle">
             <thead class="text-dark fs-4">
               <tr>

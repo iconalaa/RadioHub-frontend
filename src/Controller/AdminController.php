@@ -90,7 +90,7 @@ class AdminController extends AbstractController
         $users = $paginator->paginate(
             $users,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         $patient = $user->countUsersByRole("ROLE_PATIENT");
         $doctor = $user->countUsersByRole("ROLE_DOCTOR");

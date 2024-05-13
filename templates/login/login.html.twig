@@ -1,110 +1,172 @@
-{% extends 'front.html.twig' %}
-{% block title %}RadioHub | Log in
-{% endblock
-%}
-{% block body %}
-	{% if app.user %}
+{% extends 'front.html.twig' %} {% block title %}RadioHub | Log in {% endblock
+%} {% block body %} {% if app.user %}
 
-		<div class="my-5 d-flex flex-column">
-			<h1 class="display-5 mb-5 text-center">
-				You are logged in as
-				<b>
-					{{ app.user.name }}</b>
-				<br/>
-				<br/>
-				😲
-			</h1>
+<div class="my-5 d-flex flex-column">
+  <h1 class="display-5 mb-5 text-center">
+    You are logged in as
+    <b> {{ app.user.name }}</b>
+    <br />
+    <br />
+    😲
+  </h1>
 
-			<a class="text-center text-primary text-decoration-underline fw-bold" href="{{ path('app_home') }}">Go Back to HomePage</a>
-		</div>
+  <a
+    class="text-center text-primary text-decoration-underline fw-bold"
+    href="{{ path('app_home') }}"
+    >Go Back to HomePage</a
+  >
+</div>
 
-		{% block footer %}{% endblock %}
-	{% else %}
-		<form class="w-50 mx-auto my-5" action="{{ path('app_login') }}" method="post">
-			<center>
-				<img class="w-25 img-fluid" src="../../front/img/logo.png" alt="logo"/>
-			</center>
-			<div class="mb-3">
-				<label for="username">Email:</label>
-				<input class="form-control py-2 px-3" type="text" id="username" name="_username" value="{{ last_username }}" placeholder="exp@gmail.com"/>
-				<p class="error text-danger mt-2"></p>
-			</div>
-			<div class="mb-3">
-				<label for="password">Password:</label>
-				<div class="position-relative">
-					<input class="form-control py-2 px-3" type="password" id="password" name="_password" placeholder="password"/>
-					<span style="position:absolute;top:10px;right:20px;cursor:pointer;" onclick="showMDP()">
-						<i class="fa-regular fa-eye"></i>
-					</span>
-				</div>
-				<script>
-					var bool = -1;
-const showMDP = () => {
-bool *= -1;
-(bool === 1) ? (document.querySelector("#password").type = "text") : (document.querySelector("#password").type = "password");
-};
-				</script>
-			</div>
-			{% if error %}
-				<div class="alert alert-danger">Password Doesn't Match</div>
-			{% endif %}
-			<center>
-				<button class="btn btn-primary w-25" type="submit">login</button>
-			</center>
-		</form>
-	{% endif %}
+{% block footer %}{% endblock %} {% else %}
+<div class="d-flex justify-content-between w-75 mx-auto">
+<img src="LogInPic.png" >
+<form class="w-50 mx-auto my-5 d-flex flex-column justify-content-between" action="{{ path('app_login') }}" method="post">
+  <center>
+    <img style="width: 33.33%;" class="img-fluid" src="../../front/img/logo.png" alt="logo" />
+  </center>
+  <div>
+
+  <div class="mb-3">
+    <label for="username">Email:</label>
+    <input
+      class="form-control py-2 px-3"
+      type="text"
+      id="username"
+      name="_username"
+      value="{{ last_username }}"
+      placeholder="example@gmail.com"
+    />
+    <p class="error text-danger mt-2"></p>
+  </div>
+  <div class="mb-3">
+    <label for="password">Password:</label>
+    <div class="position-relative">
+      <input
+        class="form-control py-2 px-3"
+        type="password"
+        id="password"
+        name="_password"
+        placeholder="password"
+      />
+      <span
+        style="position: absolute; top: 10px; right: 20px; cursor: pointer"
+        onclick="showMDP()"
+      >
+        <i class="fa-regular fa-eye"></i>
+      </span>
+    </div>
+    <script>
+      var bool = -1;
+      const showMDP = () => {
+        bool *= -1;
+        bool === 1
+          ? (document.querySelector("#password").type = "text")
+          : (document.querySelector("#password").type = "password");
+      };
+    </script>
+  </div>
+  {% if error %}
+  <div class="alert alert-danger">Password Doesn't Match</div>
+  {% endif %}
+  <center>
+
+    <button class="btn btn-primary w-25" type="submit">login</button><br><br>
+    <p>dont have an account ?, <a href="{{path('app_register')}}" class="text-decoration-underline text-primary" type="submit">Sign Up</a></p>
+  </center>
+</div>
+
+</form>
+</div>
+
+{% endif %} {% endblock %} {% block javascripts %}
+<script src="../front/js/custom.js"></script>
+{% endblock %} {% block auth%} {% if not app.user %}
+<a href="{{ path('app_register') }}" class="btn ml-3">Sign Up</a>
+{% else %}
+
+<div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+  <ul
+    class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
+  >
+    <li class="nav-item dropdown">
+      <a
+        class="nav-link nav-icon-hover"
+        href="javascript:void(0)"
+        id="drop2"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <img
+          src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}"
+          alt=""
+          id="pdp-image"
+          class="rounded-circle"
+        />
+      </a>
+
+      <div
+        class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+        aria-labelledby="drop2"
+      >
+        <div class="message-body">
+          <a
+            href="{{ path('app_profile') }}"
+            class="d-flex align-items-center gap-2 dropdown-item"
+          >
+            <i
+              style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              "
+              class="fa-solid fa-user"
+            ></i>
+            <p class="mb-0 fs-3">
+              <span style="text-transform: capitalize"
+                >{{ app.user.name }} Profile</span
+              >
+            </p>
+          </a>
+          <a
+            href="{{ path('app_settings', { id: app.user.id }) }}"
+            class="d-flex align-items-center gap-2 dropdown-item"
+          >
+            <i
+              style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              "
+              class="fa-solid fa-gear"
+            ></i>
+            <p class="mb-0 fs-3">
+              <span style="text-transform: capitalize"> Settings</span>
+            </p>
+          </a>
+          {% if is_granted('ROLE_ADMIN') %}
+          <a
+            href="{{ path('app_admin') }}"
+            class="d-flex align-items-center gap-2 dropdown-item"
+          >
+            <i
+              style="
+                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
+                  brightness(78%) contrast(81%);
+              "
+              class="fa-solid fa-lock"
+            ></i>
+            <p class="mb-0 fs-3">Dashboard</p>
+          </a>
+          {% endif %}
+          <a
+            id="logout"
+            href="{{ path('app_logout') }}"
+            class="btn btn-outline-primary mx-3 mt-2 d-block"
+            >Logout</a
+          >
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+{% endif%} {% endblock %}
+{% block header%}
 {% endblock %}
-{% block javascripts %}
-	<script src="../front/js/custom.js"></script>
-{% endblock %}
-{% block auth%}
-	{% if not app.user %}
-		<a href="{{ path('app_register') }}" class="btn ml-3">Sign Up</a>
-	{% else %}
-
-		<div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-			<ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-				<li class="nav-item dropdown">
-					<a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
-						<img src="{{ asset('uploads/pdp/' ~ app.user.brochureFileName) }}" alt="" id="pdp-image" class="rounded-circle"/>
-					</a>
-
-					<div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-						<div class="message-body">
-							<a href="{{ path('app_profile') }}" class="d-flex align-items-center gap-2 dropdown-item">
-								<i style="
-																																																																																																			                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-																																																																																																			                  brightness(78%) contrast(81%);
-																																																																																																			              " class="fa-solid fa-user"></i>
-								<p class="mb-0 fs-3">
-									<span style="text-transform: capitalize">{{ app.user.name }}
-										Profile</span>
-								</p>
-							</a>
-							<a href="{{ path('app_settings', { id: app.user.id }) }}" class="d-flex align-items-center gap-2 dropdown-item">
-								<i style="
-																																																																																																			                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-																																																																																																			                  brightness(78%) contrast(81%);
-																																																																																																			              " class="fa-solid fa-gear"></i>
-								<p class="mb-0 fs-3">
-									<span style="text-transform: capitalize">
-										Settings</span>
-								</p>
-							</a>
-							{% if is_granted('ROLE_ADMIN') %}
-								<a href="{{ path('app_admin') }}" class="d-flex align-items-center gap-2 dropdown-item">
-									<i style="
-																																																																																																														                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-																																																																																																														                  brightness(78%) contrast(81%);
-																																																																																																														              " class="fa-solid fa-lock"></i>
-									<p class="mb-0 fs-3">Dashboard</p>
-								</a>
-							{% endif %}
-							<a id="logout" href="{{ path('app_logout') }}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-		{% endif%}
-	{% endblock %}
