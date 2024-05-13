@@ -31,6 +31,9 @@ class Article
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
+    
+    #[ORM\Column(type: 'integer')] // Ajout de l'attribut "likes"
+    private int $likes = 0; // Initialisé à 0
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -84,7 +87,18 @@ class Article
 
         return $this;
     }
+ // Getters et setters pour "likes"
+ public function getLikes(): int
+ {
+     return $this->likes;
+ }
 
+ public function setLikes(int $likes): self
+ {
+     $this->likes = $likes;
+
+     return $this;
+ }
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -132,3 +146,4 @@ class Article
         
     }
 }
+

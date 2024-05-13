@@ -38,10 +38,7 @@ class Interpretation
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "This field cannot be blank.")]
-    #[Assert\Regex(
-        pattern: '/(\b[a-zA-Z]+\b\s*){6,}/',
-        message: 'This field must contain at least 6 words.'
-    )]
+   
     private ?string $description = null;
 
     public function getId(): ?int

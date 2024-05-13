@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\User;
+use App\Entity\Article;
 use App\Form\CommentType;
 use App\Form\UserType;
 use App\Repository\ArticleRepository;
@@ -149,79 +150,85 @@ class HomeController extends AbstractController
             'articles' => $article,
             'existingComments' => $existingComments,
             'replyForms' => $replyForms,
+            'user' =>$user,
 
         ]);
     }
 
 
     #[Route('/blog', name: 'app_blog')]
-    public function showBlog(ArticleRepository $articleRepository, PaginatorInterface $paginator, Request $request, SessionInterface $session,)
+    public function showBlog(ArticleRepository $articleRepository, PaginatorInterface $paginator, Request $request, SessionInterface $session)
     {
         $queryBuilder = $articleRepository->createQueryBuilder('a')
             ->orderBy('a.createdAt', 'DESC');
-
+    
         $searchTerm = $request->query->get('q');
         if ($searchTerm) {
             $queryBuilder
                 ->where('a.title LIKE :term')
                 ->setParameter('term', '%' . $searchTerm . '%');
         }
-
+    
         $query = $queryBuilder->getQuery();
-
+    
         $articles = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            2
+            3
         );
-
-
+    
         // Get the favorites from session
         $favorites = $session->get('favorites', []);
-
-        // Get total likes
-        $totalLikes = count($favorites);
-
+    
+        // Create an array to store likes for each article
+        $articleLikes = [];
+        foreach ($articles as $article) {
+            $articleLikes[$article->getId()] = $article->getLikes();
+        }
+    
         return $this->render('article/blog.html.twig', [
             'articles' => $articles,
             'favorites' => $favorites,
-            'totalLikes' => $totalLikes, // Pass total likes to the template
+            'articleLikes' => $articleLikes, // Pass article likes to the template
         ]);
     }
-
     #[Route('/toggle-favorite/{id}', name: 'toggle_favorite')]
     public function toggleFavorite($id, SessionInterface $session)
     {
         $articleId = (int) $id;
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        // Récupérer l'objet Article correspondant à l'identifiant
+        $article = $entityManager->getRepository(Article::class)->find($articleId);
+        if (!$article) {
+            throw $this->createNotFoundException('Article not found');
+        }
+        
+        // Initialize the favorites array if not already present
         $favorites = $session->get('favorites', []);
-
-        // Get the total likes before toggling
-        $totalLikes = count($favorites);
-
+        
+        // Get the total likes for the specific article before toggling
+        $totalLikes = $article->getLikes();
+        
         // Check if the article is already in favorites
         $index = array_search($articleId, $favorites);
-
-        // Add or remove the article from the favorites list
+        
+        // Toggle like for the specific article
         if ($index !== false) {
             unset($favorites[$index]);
+            $article->setLikes(max(0, $totalLikes - 1)); // Decrease likes
         } else {
             $favorites[] = $articleId;
+            $article->setLikes($totalLikes + 1); // Increase likes
         }
-
+        
         // Update the favorites list in the session
         $session->set('favorites', $favorites);
-
-        // Return the total likes before toggling
-        return $this->redirectToRoute('app_blog', ['totalLikes' => $totalLikes]);
-    }
-
-    #[Route('/comment/{id}', name: 'app_comment_front_delete', methods: ['POST', 'GET'])]
-    public function deleteFrontComment($id, CommentRepository $commentRepo, EntityManagerInterface $entityManager): Response
-    {
-        $comment = $commentRepo->find($id);
-        $entityManager->remove($comment);
+        
+        // Enregistrer les modifications dans la base de données
         $entityManager->flush();
-
-        return $this->redirectToRoute("app_blog");
+        
+        // Rediriger vers la même page ou route après le basculement
+        return $this->redirectToRoute('app_blog');
     }
 }
