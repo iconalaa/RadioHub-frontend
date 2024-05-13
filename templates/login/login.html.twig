@@ -18,7 +18,14 @@
 </div>
 
 {% block footer %}{% endblock %} {% else %}
-<div class="d-flex justify-content-between w-75 mx-auto">
+<style>
+  body{
+    display: flex;
+    justify-content: center;
+    
+  }
+</style>
+<div class="d-flex justify-content-between gap-5 w-75">
 <img src="LogInPic.png" >
 <form class="w-50 mx-auto my-5 d-flex flex-column justify-content-between" action="{{ path('app_login') }}" method="post">
   <center>
