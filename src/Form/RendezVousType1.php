@@ -88,7 +88,6 @@ class RendezVousType1 extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => RendezVous::class,
-
         ]);
     }
 
