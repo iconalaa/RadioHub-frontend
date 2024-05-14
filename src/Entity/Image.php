@@ -43,7 +43,7 @@ class Image
 
     #[ORM\ManyToOne(inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Radiologist $radiologist = null;
+    private ?User $radiologist = null;
 
     #[ORM\OneToMany(mappedBy: 'image', targetEntity: Droit::class, orphanRemoval: true)]
 
@@ -52,7 +52,7 @@ class Image
     #[ORM\ManyToOne(inversedBy: 'image')]
     #[Assert\NotBlank(message: "the patient cannot be blank.")]
 
-    private ?Patient $patient = null;
+    private ?User $patient = null;
 
     #[ORM\OneToMany(mappedBy: 'image', targetEntity: Interpretation::class, orphanRemoval: true)]
     private Collection $interpretations;
@@ -116,12 +116,12 @@ class Image
         return $this;
     }
 
-    public function getRadiologist(): ?Radiologist
+    public function getRadiologist(): ?User
     {
         return $this->radiologist;
     }
 
-    public function setRadiologist(?Radiologist $radiologist): static
+    public function setRadiologist(?User $radiologist): static
     {
         $this->radiologist = $radiologist;
 
@@ -158,12 +158,12 @@ class Image
         return $this;
     }
 
-    public function getPatient(): ?Patient
+    public function getPatient(): ?User
     {
         return $this->patient;
     }
 
-    public function setPatient(?Patient $patient): static
+    public function setPatient(?User $patient): static
     {
         $this->patient = $patient;
 

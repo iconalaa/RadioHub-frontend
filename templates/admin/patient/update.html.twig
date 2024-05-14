@@ -1,104 +1,84 @@
-{% extends 'back.html.twig' %} {% block body %}
+{% extends 'back.html.twig' %}
 
-<style>
-  ul li {
-    color: red;
-  }
-</style>
+{% block body %}
+  <style>
+    ul li {
+      color: red;
+    }
+  </style>
 
-<div class="container-fluid">
-  <div class="card">
-    <div class="card-body">
-      <a
-        href="{{ path('app_admin_user') }}"
-        class="btn btn-danger h-25 px-4 fs-5 align-self-start"
-        ><i class="ti ti-arrow-back"></i
-      ></a>
-      <h1 class="text-center">
-        Update Patient <b>[ {{ user.id }} ]</b>
-      </h1>
-      {{ form_start(f,{'attr':{'novalidate': 'novalidate','class':'my-5'}})}}
-      <div class="d-flex flex-column w-50 mx-auto gap-3">
-        <div class="d-flex gap-3">
-          <div class="d-flex flex-column w-50">
-            {{ form_widget(f.cas_med,{'attr':{'class':'form-control px-3 py-2'
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-body">
+        <a href="{{ path('app_admin_user') }}" class="btn btn-danger h-25 px-4 fs-5 align-self-start">
+          <i class="ti ti-arrow-back"></i>
+        </a>
+        <h1 class="text-center">
+          Update Patient <b>[ {{ user.id }} ]</b>
+        </h1>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-            }})}}
-            {{ form_errors(f.cas_med) }}
+        {{ form_start(f, {'attr': {'novalidate': 'novalidate', 'class': 'my-5'}}) }}
+        <div class="d-flex flex-column w-50 mx-auto gap-3">
+          <div class="d-flex gap-3">
+            <div class="d-flex flex-column w-50">
+              {{ form_widget(f.cas_med, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+              {{ form_errors(f.cas_med) }}
+            </div>
+            <div class="d-flex flex-column w-50">
+              {{ form_widget(f.n_cnam, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+              {{ form_errors(f.n_cnam) }}
+            </div>
           </div>
-          <div class="d-flex flex-column w-50">
-            {{ form_widget(f.n_cnam,{'attr':{'class':'form-control px-3 py-2'}})
-            }}
-            {{ form_errors(f.n_cnam) }}
+          <div class="d-flex gap-3">
+            <div class="d-flex flex-column w-50">
+              {{ form_widget(f.assurance, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+              {{ form_errors(f.assurance) }}
+            </div>
+            <div class="d-flex flex-column w-50">
+              {{ form_widget(f.num_assurance, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+              {{ form_errors(f.num_assurance) }}
+            </div>
           </div>
+          <div class="d-flex gap-3">
+            <div class="d-flex flex-column w-50">
+              {{ form_widget(f.email, {'attr': {'class': 'form-control px-3 py-2', 'placeholder': 'Email@exemp.exp'}}) }}
+              {{ form_errors(f.email) }}
+            </div>
+            <div class="d-flex flex-column w-50">
+              {{ form_widget(f.password, {'attr': {'class': 'form-control px-3 py-2', 'placeholder': 'Password'}}) }}
+              {{ form_errors(f.password) }}
+            </div>
+          </div>
+          <div class="d-flex gap-3">
+            <div class="d-flex flex-column w-50">
+              {{ form_widget(f.name, {'attr': {'class': 'form-control px-3 py-2', 'placeholder': 'Name'}}) }}
+              {{ form_errors(f.name) }}
+            </div>
+            <div class="d-flex flex-column w-50">
+              {{ form_widget(f.lastname, {'attr': {'class': 'form-control px-3 py-2', 'placeholder': 'Last Name'}}) }}
+              {{ form_errors(f.lastname) }}
+            </div>
+          </div>
+          <div class="d-flex gap-3">
+            <div class="d-flex flex-column w-50">
+              {{ form_widget(f.date_birth, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+              {{ form_errors(f.date_birth) }}
+            </div>
+            <div class="d-flex flex-column w-50">
+              {{ form_widget(f.gender, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+              {{ form_errors(f.gender) }}
+            </div>
+          </div>
+          <div class="d-flex gap-3">
+            <div class="d-flex flex-column w-50">
+              {{ form_widget(f.brochureFilename, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+              {{ form_errors(f.brochureFilename) }}
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Update</button>
         </div>
-        <div class="d-flex gap-3">
-          <div class="d-flex flex-column w-50">
-            {{ form_widget(f.assurance,{'attr':{'class':'form-control px-3 py-2'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            }}) }}
-            {{ form_errors(f.assurance) }}
-          </div>
-          <div class="d-flex flex-column w-50">
-            {{ form_widget(f.num_assurance,{'attr':{'class':'form-control px-3 py-2'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            }}) }}
-            {{ form_errors(f.num_assurance) }}
-          </div>
-        </div>
-
-        <div class="d-flex gap-3">
-          {{ form_widget(f.user,{'attr':{'class':'form-select px-3 py-2'}}) }}
-        </div>
-        <button type="submit" class="btn btn-primary">Update</button>
+        {{ form_end(f) }}
       </div>
-      {{ form_end(f) }}
     </div>
   </div>
-</div>
 {% endblock %}

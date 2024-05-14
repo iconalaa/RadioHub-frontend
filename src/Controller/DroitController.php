@@ -6,7 +6,7 @@ use App\Entity\Droit;
 use App\Form\DroitType;
 use App\Repository\DroitRepository;
 use App\Repository\ImageRepository;
-use App\Repository\RadiologistRepository;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +35,7 @@ class DroitController extends AbstractController
 
 
     #[Route('/droit/{id}', name: 'app_droit')]
-    public function index($id, Request $request, DroitRepository $rep, ImageRepository $repim, ManagerRegistry $em,  RadiologistRepository $repr,HubInterface $hub): Response
+    public function index($id, Request $request, DroitRepository $rep, ImageRepository $repim, ManagerRegistry $em,  UserRepository $repr,HubInterface $hub): Response
     { // Get the list of IDs from the request query parameters
 
         $ids = $request->request->get('idrad');
@@ -84,7 +84,7 @@ class DroitController extends AbstractController
         $update = new Update(
             '/test',
             json_encode(['users' =>$ids,'idimage'=>$id,'aquisition'=>$aquisition,'bodypart'=>$bodypart
-            ,'rad'=>$rad->getUser()->getName()
+            ,'rad'=>$rad->getName()
 
             ])
         );
@@ -106,7 +106,7 @@ class DroitController extends AbstractController
         $update = new Update(
             '/test',
             json_encode(['users' =>$ids,'idimage'=>$id,'aquisition'=>$aquisition,'bodypart'=>$bodypart
-            ,'rad'=>$rad->getUser()->getName()
+            ,'rad'=>$rad->getName()
 
             ])
         );

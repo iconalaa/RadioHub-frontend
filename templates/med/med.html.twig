@@ -36,13 +36,13 @@
 				{% for report in Reports %}
 					<div class="item">
 						<p class="item_title">Patient:
-							{{ report.image.patient.user.name }}
+							{{ report.image.patient.name }}
 							{{
-            report.image.patient.user.lastname }}</p>
+            report.image.patient.lastname }}</p>
 						<p>Radiologist:
-							{{ report.image.radiologist.user.name }}
+							{{ report.image.radiologist.name }}
 							{{
-            report.image.radiologist.user.lastname }}</p>
+            report.image.radiologist.lastname }}</p>
 						<p class="item_interpretation">Radiologist's interpretation :
 							{{ report.InterpretationRad }}</p>
 						<a href="{{ path('add_decision', {'id': report.id}) }}" class="button">Add interpretation</a>
@@ -62,13 +62,13 @@
 				<div class="item">
 					<button onclick="downloadPdf('{{ path('generate_pdf', {'id': report.id}) }}')">Download PDF</button>
 					<p class="item_title">Patient:
-						{{ report.image.patient.user.name }}
+						{{ report.image.patient.name }}
 						{{
-            report.image.patient.user.lastname }}</p>
+            report.image.patient.lastname }}</p>
 					<p>Radiologist:
-						{{ report.image.radiologist.user.name }}
+						{{ report.image.radiologist.name }}
 						{{
-            report.image.radiologist.user.lastname }}</p>
+            report.image.radiologist.lastname }}</p>
 					<p class="item_interpretation">Radiologist's interpretation :
 						{{ report.InterpretationRad }}</p>
 					<p class="item_interpretation">Doctor’s interpretation:

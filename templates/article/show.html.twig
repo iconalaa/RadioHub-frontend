@@ -1,45 +1,46 @@
 {% extends "back.html.twig" %}
 
 {% block title %}
-	Détail de l'article
+    Détail de l'article
 {% endblock %}
 
 {% block body %}
+<div style="margin-left:300px ;margin-right: 300px">
+    <table class="table" style="border-collapse: collapse; border: 1px solid #ddd;">
+        <tbody>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">Id</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ article.id }}</td>
+            </tr>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">Title</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ article.title }}</td>
+            </tr>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">Content</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ article.content }}</td>
+            </tr>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">Image</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">
+                   
+                    <img src="{{ asset('articles/' ~ article.image) }}" class="card-img-top" id="image" alt="...">
+                </td>
+            </tr>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">CreatedAt</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">Comment Count</th>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ commentCount }}</td>
+                <!-- Affichez le nombre de commentaires -->
+            </tr>
+        </tbody>
+    </table>
 
-	<h1 class="display-4 text-center my-4">{{ article.title }}</h1>
-	<table class="table">
-		<tbody>
-			<tr>
-				<th>Id</th>
-				<td>{{ article.id }}</td>
-			</tr>
-			<tr>
-				<th>Title</th>
-				<td>{{ article.title }}</td>
-			</tr>
-			<tr>
-				<th>Content</th>
-				<td>{{ article.content }}</td>
-			</tr>
-			<tr>
-				<th>Image</th>
-				<td>
-					{{ article.image }}
-					<img src="{{ asset('articles/' ~ article.image) }}" class="card-img-top" alt="...">
-				</td>
-			</tr>
-			<tr>
-				<th>CreatedAt</th>
-				<td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-			</tr>
-			<tr>
-				<th>Comment Count</th>
-				<td>{{ commentCount }}</td>
-				<!-- Affichez le nombre de commentaires -->
-			</tr>
-		</tbody>
-	</table>
-	<a href="{{ path('app_article_index') }}">back to list</a>
-	<a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
-	{{ include('article/_delete_form.html.twig') }}
+<a href="{{ path('app_article_index') }}">back to list</a>
+<a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
+{{ include('article/_delete_form.html.twig') }}
+</div>
 {% endblock %}

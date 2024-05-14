@@ -23,43 +23,9 @@ class RendezVousRepository extends ServiceEntityRepository
 
     
 
-     ////////// search ////
-/*     public function findBySearchTerm($searchTerm)
-     {
-         if (!$searchTerm) {
-             return []; // Return an empty array if $searchTerm is null or empty
-         }
-     
-         return $this->createQueryBuilder('RDV')
-             ->andWhere('RDV.nomPatient LIKE :searchTerm OR RDV.prenomPatient LIKE :searchTerm ')
-             ->setParameter('searchTerm', '%' . $searchTerm . '%')
-             ->getQuery()
-             ->getResult();
-     }
-       /*
 
-//    /**
-//     * @return RendezVous[] Returns an array of RendezVous objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?RendezVous
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+
+
+
 }

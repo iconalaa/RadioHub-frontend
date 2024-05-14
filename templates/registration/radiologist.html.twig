@@ -32,6 +32,9 @@
   <div class="d-flex flex-column w-100 mx-auto gap-3">
     <div class="d-flex gap-3">
       <div class="d-flex flex-column w-50">
+       {{ form_widget(form.user.matricule,{'attr':{'class':'form-control px-3 py-2' }}) }}
+                {{ form_errors(form.user.matricule,{'attr':{'class':'alert alert-danger '}}) }}
+
         {{ form_widget(form.user.name,{'attr':{'class':'form-control px-3 py-2'
 
 
@@ -74,22 +77,6 @@
         <p class="error text-danger mt-2"></p>
       </div>
     </div>
-    <div class="d-flex flex-column w-50">
-      {{ form_widget(form.radiologist.mat_cnom,{'attr':{'class':'form-control px-3 py-2'
-
-
-
-
-
-
-
-
-
-
-
-      }}) }}
-      {{ form_errors(form.radiologist.mat_cnom) }}
-    </div>
     <div class="d-flex gap-3">
       <div class="d-flex flex-column">
         {{ form_widget(form.user.gender) }}
@@ -118,7 +105,6 @@
         <img width="40px" src="../upload-btn.png" alt="Upload img" />Upload IMG
       </label>
         {{ form_widget(form.user.brochureFilename) }}
-        {{ form_widget(form.radiologist.user) }}
       </div>
 
     <button type="submit" class="btn w-50 mx-auto">Submit</button>

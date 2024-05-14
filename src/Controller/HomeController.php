@@ -30,9 +30,14 @@ use Symfony\Component\Security\Core\Security;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function frontOffice(): Response
+    public function frontOffice(Security $security): Response
+
     {
-        return $this->render('home/home.html.twig', []);
+        $user = $security->getUser();
+
+
+
+        return $this->render('home/home.html.twig', ['user'=>$user]);
     }
 
     #[Route('/profile', name: 'app_profile')]
@@ -93,33 +98,16 @@ class HomeController extends AbstractController
 
 
     #[Route('/profile/delete/{id}', name: 'app_delete_user_profile')]
-    public function deleteUserProfile($id, ManagerRegistry $managerRegistry, AuthorizationCheckerInterface $authChecker, UserRepository $user, DoctorRepository $doctor, PatientRepository $patient, RadiologistRepository $radiologist): Response
+    public function deleteUserProfile($id, ManagerRegistry $managerRegistry, AuthorizationCheckerInterface $authChecker, UserRepository $user): Response
     {
         $em = $managerRegistry->getManager();
         $dataid = $user->find($id);
 
-        if ($authChecker->isGranted('ROLE_DOCTOR')) {
-            $doctorId = $doctor->findDoctorByUser($id);
-            if ($doctorId !== null) {
-                $em->remove($doctorId);
-            }
-        }
-        if ($authChecker->isGranted('ROLE_PATIENT')) {
-            $patientId = $patient->findPatientByUser($id);
-            if ($patientId !== null) {
-                $em->remove($patientId);
-            }
-        }
-        if ($authChecker->isGranted('ROLE_RADIOLOGIST')) {
-            $radiologistId = $radiologist->findradiologistByUser($id);
-            if ($radiologistId !== null) {
-                $em->remove($radiologistId);
-            }
-        }
+        
 
         $em->remove($dataid);
         $em->flush();
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('app_home');
     }
 
     // ! ------------------------- Hadil Friaa -------------------------------------

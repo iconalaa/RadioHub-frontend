@@ -47,7 +47,7 @@
 {%else%}
                <div class="user-item">
                    <input type="checkbox" id="user_{{ user.id }}" value="{{ user.id }}">
-                   <label for="user_{{ user.id }}">{{ user.user.name }}</label>
+                   <label for="user_{{ user.id }}">{{ user.name }}</label>
                </div>
                {%endif%}
                {%endfor%}

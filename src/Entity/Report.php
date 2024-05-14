@@ -25,7 +25,7 @@ class Report
 
 
     #[ORM\ManyToOne(inversedBy: 'Reports')]
-    private ?Doctor $doctor = null;
+    private ?User $doctor = null;
 
 
  
@@ -75,12 +75,12 @@ class Report
         return $this;
     }
 
-    public function getDoctor(): ?Doctor
+    public function getDoctor(): ?User
     {
         return $this->doctor;
     }
 
-    public function setDoctor(?Doctor $doctor): static
+    public function setDoctor(?User $doctor): static
     {
         $this->doctor = $doctor;
 

@@ -50,33 +50,39 @@ class DroitRepository extends ServiceEntityRepository
     public function findRadioloquesWithoutAccessToImage($imageId)
     {
         $qb = $this->createQueryBuilder('d');
-        $qb->leftJoin('d.radioloqist', 'r')
+        $qb->leftJoin('d.user', 'r')
             ->leftJoin('d.image', 'i')
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->isNull('i.id'),
-                $qb->expr()->notIn('d.role', ['guest', 'owner'])
+                $qb->expr()->notIn('d.role', ['guest', 'owner']),
+                $qb->expr()->neq('d.role', ':role'),
+
+
             ))
-            ->setParameter('imageId', $imageId); // This line is incorrect
+            ->setParameter('imageId', $imageId) // This line is incorrect
+            ->setParameter('userRole', '["ROLE_RADIOLOGIST"]');
+
 
         return $qb->getQuery()->getResult();
     }
     public function findRadioloqueWithoutDroit($imageId)
     {
-        // Supposons que $entityManager est votre instance de EntityManagerInterface
         $qb = $this->_em->createQueryBuilder();
-
-        $qb->select('r')
-            ->from('App\Entity\Radiologist', 'r')
-            ->leftJoin('App\Entity\Droit', 'd', 'WITH', 'd.radioloqist = r.id AND d.image = :imageId')
+    
+        $qb->select('u')
+            ->from('App\Entity\User', 'u')
+            ->leftJoin('App\Entity\Droit', 'd', 'WITH', 'd.radioloqist = u.id AND d.image = :imageId')
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->isNull('d.id'),
-                $qb->expr()->neq('d.role', ':role'),
+                $qb->expr()->neq('d.role', ':role')
             ))
-
+            ->andWhere($qb->expr()->eq('u.roles', ':userRole'))
             ->setParameter('imageId', $imageId)
             ->setParameter('role', 'guest')
-        ;
+            ->setParameter('userRole', '["ROLE_RADIOLOGIST"]');
+    
         return $qb->getQuery()->getResult();
     }
+    
 
 }

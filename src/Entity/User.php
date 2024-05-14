@@ -55,6 +55,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: "Select a Gender")]
     private ?string $gender = null;
 
+    #[ORM\Column(length: 255,nullable:true)]
+    private ?string $cas_med  = null;
+
+    #[ORM\Column(length: 255,nullable:true)]
+   
+    private ?string $n_cnam = null;
+
+    #[ORM\Column(length: 255,nullable:true)]
+    private ?string $assurance = null;
+
+    #[ORM\Column(length: 255,nullable:true)]
+    
+    private ?string $num_assurance = null;
+    #[ORM\Column(length: 255,nullable:true)]
+  
+    private ?string $matricule = null;
 
     public function getId(): ?int
     {
@@ -109,7 +125,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)  $this->lastname." ".$this->name;
     }
 
     /**
@@ -151,6 +167,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+    public function getMatricule(): ?string
+    {
+        return $this->matricule;
+    }
+
+    public function setMatricule(string $matricule): static
+    {
+        $this->matricule = $matricule;
 
         return $this;
     }
@@ -211,6 +238,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+   
+    
+    
+    public function getNCnam(): ?string
+    {
+        return $this->n_cnam;
+    }
+   
+    
+
+    public function setNCnam(?string $n_cnam): static
+    {
+        $this->n_cnam = $n_cnam;
+
+        return $this;
+    }
+
+    public function getAssurance(): ?string
+    {
+        return $this->assurance;
+    }
+
+    public function setAssurance(?string $assurance): static
+    {
+        $this->assurance = $assurance;
+
+        return $this;
+    }
+
+    public function getNumAssurance(): ?string
+    {
+        return $this->num_assurance;
+    }
+
+    public function setNumAssurance(?string $num_assurance): static
+    {
+        $this->num_assurance = $num_assurance;
+
+        return $this;
+    }
+    public function getCasMed(): ?string
+{
+    return $this->cas_med;
+}
+
+public function setCasMed(?string $cas_med): self
+{
+    $this->cas_med = $cas_med;
+
+    return $this;
+}
 
 
     function __toString()

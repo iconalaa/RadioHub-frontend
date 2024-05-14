@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Report;
 use App\Form\MedType;
 use App\Repository\ReportRepository;
-use App\Repository\DoctorRepository;
+use App\Repository\UserRepository;
 use App\Repository\PrescriptionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ use Knp\Component\Pager\PaginatorInterface;
 class DocRenduController extends AbstractController
 {
     #[Route('/add_decision/{id}', name: 'add_decision')]
-    public function addInterpretation(Request $request, Report $Report, EntityManagerInterface $entityManager, DoctorRepository $repoMed): Response
+    public function addInterpretation(Request $request, Report $Report, EntityManagerInterface $entityManager, UserRepository $repoMed): Response
     {
         // Retrieve the currently logged-in user
         /** @var UserInterface $user */
@@ -29,12 +29,9 @@ class DocRenduController extends AbstractController
             throw new \LogicException('No user is logged in.');
         }
         // Retrieve the associated doctor entity using the DoctorRepository
-        $doctor = $repoMed->findOneBy(['user' => $user]);
+        $doctor = $user;
 
         // Check if the user is a doctor
-        if (!$doctor) {
-            throw new \LogicException('Logged-in user is not associated with any doctor.');
-        }
 
 
         $form = $this->createForm(MedType::class, $Report);
@@ -60,7 +57,7 @@ class DocRenduController extends AbstractController
     }
 
     #[Route('/doctor', name: 'app_doctor', methods: ['GET'])]
-    public function index(Request $request, ReportRepository $repoCompteendu, DoctorRepository $repoMed, PrescriptionRepository $prescription, PaginatorInterface $paginator): Response
+    public function index(Request $request, ReportRepository $repoCompteendu, UserRepository $repoMed, PrescriptionRepository $prescription, PaginatorInterface $paginator): Response
     {
         // Retrieve the currently logged-in user
         /** @var UserInterface $user */
@@ -72,13 +69,10 @@ class DocRenduController extends AbstractController
         }
 
         // Retrieve the associated doctor entity using the DoctorRepository
-        $doctor = $repoMed->findOneBy(['user' => $user]);
+        $doctor =  $user;
         $prescriptions = $prescription->findAll();
 
-        // Check if the user is a doctor
-        if (!$doctor) {
-            throw new \LogicException('Logged-in user is not associated with any doctor.');
-        }
+
 
         // Retrieve the ID of the associated doctor
         $doctorId = $doctor->getId();
@@ -147,6 +141,4 @@ class DocRenduController extends AbstractController
             'Content-Disposition' => 'inline; filename="' . $pdfFileName . '"',
         ]);
     }
-
-    
 }

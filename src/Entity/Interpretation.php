@@ -26,7 +26,7 @@ class Interpretation
     private ?string $sendat = null;
 
     #[ORM\ManyToOne(inversedBy: 'interpretations')]
-    private ?Radiologist $radiologist = null;
+    private ?User $radiologist = null;
 
     #[ORM\ManyToOne(inversedBy: 'interpretations')]
     private ?Image $image = null;
@@ -73,12 +73,12 @@ class Interpretation
         return $this;
     }
 
-    public function getRadiologist(): ?Radiologist
+    public function getRadiologist(): ?User
     {
         return $this->radiologist;
     }
 
-    public function setRadiologist(?Radiologist $radiologist): static
+    public function setRadiologist(?User $radiologist): static
     {
         $this->radiologist = $radiologist;
 

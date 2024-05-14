@@ -7,7 +7,7 @@ use App\Form\RadType;
 use App\Repository\ReportRepository;
 use App\Repository\DoctorRepository;
 use App\Repository\ImageRepository;
-use App\Repository\RadiologistRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class RadioRenduController extends AbstractController
 {
     #[Route('/radio/{id}', name: 'app_radio', methods: ['GET', 'POST'])]
-    public function new($id,Request $request, EntityManagerInterface $entityManager, DoctorRepository $medrepo, ImageRepository $imagesRepo, RadiologistRepository $repoRad,ReportRepository $cm): Response
+    public function new($id,Request $request, EntityManagerInterface $entityManager, UserRepository $medrepo, ImageRepository $imagesRepo, UserRepository $repoRad,ReportRepository $cm): Response
     {
 
         // Retrieve the currently logged-in user
@@ -29,7 +29,7 @@ class RadioRenduController extends AbstractController
             throw new \LogicException('No user is logged in.');
         }
         // Retrieve the associated doctor entity using the DoctorRepository
-        $radiologist = $repoRad->findOneBy(['user' => $user]);
+        $radiologist =$user;
 
         // Check if the user is a doctor
         if (!$radiologist) {
@@ -44,7 +44,13 @@ class RadioRenduController extends AbstractController
         return $this->render('radio/error.html.twig');
     }
         $Report = new Report();
-        $form = $this->createForm(RadType::class, $Report);
+
+
+
+        $doctors=$medrepo->findDoctors();
+        $form = $this->createForm(RadType::class, $Report, [
+            'doctors' => $doctors,
+        ]);
         $form->handleRequest($request);
        $image= $imagesRepo->findOneBy(['id'=>$id]);
         if ($form->isSubmitted() && $form->isValid()) {

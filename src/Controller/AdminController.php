@@ -2,17 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Doctor;
-use App\Entity\Patient;
-use App\Entity\Radiologist;
+
 use App\Entity\User;
 use App\Form\DoctorType;
 use App\Form\PatientType;
 use App\Form\RadiologistType;
 use App\Form\UserType;
-use App\Repository\DoctorRepository;
-use App\Repository\PatientRepository;
-use App\Repository\RadiologistRepository;
+
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,12 +17,10 @@ use Dompdf\Options;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\ReportRepository;
 
@@ -75,6 +69,8 @@ class AdminController extends AbstractController
                 } catch (FileException $e) {
                 }
                 $addUser->setBrochureFilename($newFilename);
+            }else{
+                $addUser->setBrochureFilename("x");
             }
             $addUser->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -94,7 +90,7 @@ class AdminController extends AbstractController
         $users = $paginator->paginate(
             $users,
             $request->query->getInt('page', 1),
-            1
+            5
         );
         $patient = $user->countUsersByRole("ROLE_PATIENT");
         $doctor = $user->countUsersByRole("ROLE_DOCTOR");
@@ -114,60 +110,122 @@ class AdminController extends AbstractController
     }
 
     #[Route('/patient', name: 'app_admin_patient', methods: ['GET', 'POST'])]
-    public function patientDashboard(PatientRepository $patient, Request $request, EntityManagerInterface $entityManager): Response
+    public function patientDashboard(UserRepository $patient, UserPasswordHasherInterface $userPasswordHasher,Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-        $addPatient = new Patient();
+        $addPatient = new User();
         $form = $this->createForm(PatientType::class, $addPatient);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRole = $addPatient->getUser()->getRoles();
+            // Retrieve the password from the request parameters
+            $userData = $form->getData();
+            $hashedPassword = $userPasswordHasher->hashPassword($userData, $form->get('password')->getData());
+
+    $brochureFile = $form->get('brochureFilename')->getData();
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+                $addPatient->setBrochureFilename($newFilename);
+            }else{
+                $addPatient->setBrochureFilename("x");
+            }
+    // Set the password for the $addPatient object
+            $addPatient->setPassword($hashedPassword);
+            $userRole = $addPatient->getRoles();
             array_push($userRole, 'ROLE_PATIENT');
-            $addPatient->getUser()->setRoles($userRole);
+            $addPatient->setRoles($userRole);
             $entityManager->persist($addPatient);
             $entityManager->flush();
         }
-        $dataPatient = $patient->findAll();
+        $dataPatient = $patient->findUsersByRole('ROLE_PATIENT');
         return $this->render('admin/patient/patient.html.twig', [
             'form' => $form->createView(),
             'patients' => $dataPatient,
         ]);
     }
     #[Route('/doctor', name: 'app_admin_doctor', methods: ['GET', 'POST'])]
-    public function DoctorDashboard(DoctorRepository $Doctor, Request $request, EntityManagerInterface $entityManager): Response
+    public function DoctorDashboard(UserRepository $Doctor,UserPasswordHasherInterface $userPasswordHasher, SluggerInterface $slugger, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $addDoctor = new Doctor();
+        $addDoctor = new User();
         $form = $this->createForm(DoctorType::class, $addDoctor);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRole = $addDoctor->getUser()->getRoles();
+        $userData = $form->getData();
+        $password = $userPasswordHasher->hashPassword($userData, $form->get('password')->getData());
+        $brochureFile = $form->get('brochureFilename')->getData();
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+                $addDoctor->setBrochureFilename($newFilename);
+            }else{
+                $addDoctor->setBrochureFilename("x");
+            }
+        // Set the password for the $addPatient object
+        $addDoctor->setPassword($password);
+            $userRole = $addDoctor->getRoles();
             array_push($userRole, 'ROLE_DOCTOR');
-            $addDoctor->getUser()->setRoles($userRole);
+            $addDoctor->setRoles($userRole);
             $entityManager->persist($addDoctor);
             $entityManager->flush();
         }
-        $dataDoctor = $Doctor->findAll();
+        $dataDoctor = $Doctor->findUsersByRole('ROLE_DOCTOR');
         return $this->render('admin/doctor/doctor.html.twig', [
             'form' => $form->createView(),
             'doctors' => $dataDoctor,
         ]);
     }
     #[Route('/radiologist', name: 'app_admin_radiologist', methods: ['GET', 'POST'])]
-    public function radiologistDashboard(RadiologistRepository $radiologist, Request $request, EntityManagerInterface $entityManager): Response
+    public function radiologistDashboard(UserRepository $radiologist,UserPasswordHasherInterface $userPasswordHasher, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-        $addradiologist = new Radiologist();
+           
+        $addradiologist = new User();
         $form = $this->createForm(RadiologistType::class, $addradiologist);
         $form->handleRequest($request);
-
+        $brochureFile = $form->get('brochureFilename')->getData();
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRole = $addradiologist->getUser()->getRoles();
+        $userData = $form->getData();
+        $password = $userPasswordHasher->hashPassword($userData, $form->get('password')->getData());
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+                $addradiologist->setBrochureFilename($newFilename);
+            }else{
+                $addradiologist->setBrochureFilename("x");
+            }
+
+            // Set the password for the $addPatient object
+            $addradiologist->setPassword($password);
+            $userRole = $addradiologist->getRoles();
             array_push($userRole, 'ROLE_RADIOLOGIST');
-            $addradiologist->getUser()->setRoles($userRole);
+            $addradiologist->setRoles($userRole);
             $entityManager->persist($addradiologist);
             $entityManager->flush();
         }
-        $dataradiologist = $radiologist->findAll();
+        $dataradiologist = $radiologist->findUsersByRole('ROLE_RADIOLOGIST');
         return $this->render('admin/radiologist/radiologist.html.twig', [
             'form' => $form->createView(),
             'radiologists' => $dataradiologist,
@@ -176,7 +234,7 @@ class AdminController extends AbstractController
     //! ------------------ PDF Controller -------------------------
 
     #[Route('/user/pdf/{id}', name: 'app_user_pdf')]
-    public function downloadcertif($id, UserRepository $userRepo, DoctorRepository $docRepo, RadiologistRepository $radioRepo)
+    public function downloadcertif($id, UserRepository $userRepo)
     {
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'poppins');
@@ -193,8 +251,8 @@ class AdminController extends AbstractController
         ]);
         $dompdf->setHttpContext($context);
         $user = $userRepo->find($id);
-        $doctor = $docRepo->findDoctorByUser($id);
-        $radio = $radioRepo->findRadiologistByUser($id);
+        $doctor = $userRepo->findOneBy(['roles'=>'["ROLE_DOCTOR"]']);
+        $radio = $userRepo->findOneBy(['roles'=>'["ROLE_RADIOLOGIST"]']);
         $html = $this->renderView('admin/pdf.html.twig', [
             'user' => $user,
             'doc' => $doctor,
@@ -214,54 +272,55 @@ class AdminController extends AbstractController
     // ! ---------------- DELETE ---------------------------
 
     #[Route('/delete-patient/{id}', name: 'app_delete_patient')]
-    public function deletePatient($id, ManagerRegistry $managerRegistry, PatientRepository $patient): Response
+    public function deletePatient($id, ManagerRegistry $managerRegistry, UserRepository $patient): Response
     {
         $em = $managerRegistry->getManager();
         $dataid = $patient->find($id);
         $em->remove($dataid);
-        $userRole = $dataid->getUser()->getRoles();
+        $userRole = $dataid->getRoles();
         $index = array_search('ROLE_PATIENT', $userRole);
         array_splice($userRole, $index, 1);
-        $dataid->getUser()->setRoles($userRole);
+        $dataid->setRoles($userRole);
         $em->flush();
 
         return $this->redirectToRoute('app_admin_patient');
     }
     #[Route('/delete-doctor/{id}', name: 'app_delete_doctor')]
-    public function deletedoctor($id, ManagerRegistry $managerRegistry, DoctorRepository $doctor): Response
+    public function deletedoctor($id, ManagerRegistry $managerRegistry, UserRepository $doctor): Response
     {
         $em = $managerRegistry->getManager();
         $dataid = $doctor->find($id);
         $em->remove($dataid);
-        $userRole = $dataid->getUser()->getRoles();
+        $userRole = $dataid->getRoles();
         $index = array_search('ROLE_DOCTOR', $userRole);
         array_splice($userRole, $index, 1);
-        $dataid->getUser()->setRoles($userRole);
+        $dataid->setRoles($userRole);
         $em->flush();
 
         return $this->redirectToRoute('app_admin_doctor');
     }
 
     #[Route('/delete-radiologist/{id}', name: 'app_delete_radiologist')]
-    public function deleteRadiologist($id, ManagerRegistry $managerRegistry, RadiologistRepository $radiologist): Response
+    public function deleteRadiologist($id, ManagerRegistry $managerRegistry, UserRepository $radiologist): Response
     {
         $em = $managerRegistry->getManager();
         $dataid = $radiologist->find($id);
         $em->remove($dataid);
-        $userRole = $dataid->getUser()->getRoles();
+        $userRole = $dataid->getRoles();
         $index = array_search('ROLE_RADIOLOGIST', $userRole);
         array_splice($userRole, $index, 1);
-        $dataid->getUser()->setRoles($userRole);
+        $dataid->setRoles($userRole);
         $em->flush();
 
         return $this->redirectToRoute('app_admin_radiologist');
     }
 
     #[Route('/delete/{id}', name: 'app_delete_user')]
-    public function deleteUser($id, ManagerRegistry $managerRegistry, UserRepository $userRepo, DoctorRepository $doctorRepo, PatientRepository $patientRepo, RadiologistRepository $radiologistRepo): Response
+    public function deleteUser($id, ManagerRegistry $managerRegistry, UserRepository $userRepo): Response
     {
         $em = $managerRegistry->getManager();
         $user = $userRepo->find($id);
+        /*
         // ! -------- Doctor ------------------
         $doctor = $doctorRepo->findDoctorByUser($id);
         if ($doctor !== null) {
@@ -276,7 +335,7 @@ class AdminController extends AbstractController
         $radiologist = $radiologistRepo->findRadiologistByUser($id);
         if ($radiologist !== null) {
             $em->remove($radiologist);
-        }
+        }*/
 
         $em->remove($user);
         $em->flush();
@@ -335,7 +394,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/update-patient/{id}', name: 'app_update_patient')]
-    public function updatePatient($id, PatientRepository $patient, ManagerRegistry $managerRegistry, Request $req): Response
+    public function updatePatient($id, UserRepository $patient, ManagerRegistry $managerRegistry, Request $req): Response
     {
         $em = $managerRegistry->getManager();
         $dataid = $patient->find($id);
@@ -352,10 +411,11 @@ class AdminController extends AbstractController
         ]);
     }
     #[Route('/update-doctor/{id}', name: 'app_update_doctor')]
-    public function updateDoctor($id, DoctorRepository $doctor, ManagerRegistry $managerRegistry, Request $req): Response
+    public function updateDoctor($id,UserRepository $doctor, ManagerRegistry $managerRegistry, Request $req): Response
     {
         $em = $managerRegistry->getManager();
-        $dataid = $doctor->find($id);
+        $dataid = $doctor->findOneBy(['id'=>$id]);
+
         $form = $this->createForm(DoctorType::class, $dataid);
         $form->handleRequest($req);
         if ($form->isSubmitted() and $form->isValid()) {
@@ -369,7 +429,7 @@ class AdminController extends AbstractController
         ]);
     }
     #[Route('/update-radiologist/{id}', name: 'app_update_radiologist')]
-    public function updateRadiologist($id, RadiologistRepository $radiologist, ManagerRegistry $managerRegistry, Request $req): Response
+    public function updateRadiologist($id, UserRepository $radiologist, ManagerRegistry $managerRegistry, Request $req): Response
     {
         $em = $managerRegistry->getManager();
         $dataid = $radiologist->find($id);
@@ -400,11 +460,11 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_user');
     }
     #[Route('/trash-doctor/{id}', name: 'app_trash', methods: ['GET', 'POST'])]
-    public function trash($id, UserRepository $userRepo, DoctorRepository $doctorRepo, ManagerRegistry $managerRegistry): Response
+    public function trash($id, UserRepository $userRepo,  ManagerRegistry $managerRegistry): Response
     {
         $em = $managerRegistry->getManager();
         $user = $userRepo->find($id);
-        $doctor = $doctorRepo->findDoctorByUser($id);
+        $doctor = $user;
         $user->setRoles([]);
         $em->persist($user);
         $em->remove($doctor);
@@ -425,11 +485,11 @@ class AdminController extends AbstractController
     }
 
     #[Route('/trash-radio/{id}', name: 'app_trash_radio', methods: ['GET', 'POST'])]
-    public function trashRad($id, UserRepository $userRepo, RadiologistRepository $radiologistRepo, ManagerRegistry $managerRegistry): Response
+    public function trashRad($id, UserRepository $userRepo,UserRepository $radiologistRepo, ManagerRegistry $managerRegistry): Response
     {
         $em = $managerRegistry->getManager();
         $user = $userRepo->find($id);
-        $radiologist = $radiologistRepo->findRadiologistByUser($id);
+        $radiologist =$user;
         $user->setRoles([]);
         $em->persist($user);
         $em->remove($radiologist);

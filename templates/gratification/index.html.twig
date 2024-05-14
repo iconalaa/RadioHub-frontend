@@ -10,9 +10,13 @@
 	<h1>Gratification index
 	</h1>
 
-	<form id="searchForm" class="d-flex gap-3 w-75 mx-auto py-3" style="margin-top: 50px;">
-		<input type="text" class="form-control" id="searchInput" name="query" placeholder="Search...">
-		<button type="submit" class="btn btn-primary">Search</button>
+	<form id="searchForm" class="d-flex justify-content-between w-full mx-3 my-5">
+		<input type="text" class="form-control w-75" id="searchInput" name="query" placeholder="Search...">
+		<div class="d-flex gap-3">
+			<button type="submit" class="btn btn-primary">Search</button>
+			<a href="{{ path('app_gratification_new') }}" class="btn btn-primary">Create new</a>
+		</div>
+
 	</form>
 	<div id="searchResults"></div>
 
@@ -36,8 +40,8 @@
 					<td>{{ gratification.DescGrat }}</td>
 					<td>{{ gratification.TypeGrat }}</td>
 					<td>
-						<a href="{{ path('app_gratification_show', {'id': gratification.id}) }}" class="btn btn-primary">Show</a>
-						<a href="{{ path('app_gratification_edit', {'id': gratification.id}) }}" class="btn btn-secondary">Edit</a>
+						<a href="{{ path('app_gratification_show', {'id': gratification.id}) }}" class="btn btn-danger">Show</a>
+						<a href="{{ path('app_gratification_edit', {'id': gratification.id}) }}" class="btn btn-success">Edit</a>
 					</td>
 
 				</tr>
@@ -51,7 +55,8 @@
 	</table>
 
 	<div>{{ knp_pagination_render(gratifications, 'pagination.html.twig' )}}</div>
-	<a href="{{ path('app_gratification_new') }}" class="btn btn-primary mx-3">Create new</a>
+	<br>
+	<br>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

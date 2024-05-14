@@ -6,7 +6,7 @@ use App\Entity\Interpretation;
 use App\Form\InterpretationType;
 use App\Repository\ImageRepository;
 use App\Repository\InterpretationRepository;
-use App\Repository\RadiologistRepository;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ class InterpretationController extends AbstractController
 
 
     #[Route('/interpretatin/{id}', name: 'add_interpretation')]
-    public function add($id,Request $request,ManagerRegistry $em,ImageRepository $rep,Security $security,RadiologistRepository $reprad): Response
+    public function add($id,Request $request,ManagerRegistry $em,ImageRepository $rep,Security $security,UserRepository $reprad): Response
     {
 
 
@@ -40,7 +40,7 @@ class InterpretationController extends AbstractController
             // Perform any necessary processing with the form data
             $inter->setImage($rep->find($id));
             $user = $security->getUser();
-            $rad=$reprad->findOneBy(['user'=> $user]);
+            $rad=$user;
             $inter->setRadiologist($rad);
             $timestamp = time();
             $currentDate = gmdate('Y-m-d', $timestamp);
@@ -51,7 +51,8 @@ class InterpretationController extends AbstractController
                 $em->getManager()->persist($inter);
                 $em->getManager()->flush();
             // Redirect the user to another page
-            return $this->redirectToRoute('inter');
+            
+            return $this->redirectToRoute('app_image');
         }
 
         // Render the form template
@@ -63,7 +64,7 @@ class InterpretationController extends AbstractController
 
 
         #[Route('/interedit/{id}', name: 'editinterpretation')]
-    public function edit($id,Request $request,ManagerRegistry $em, InterpretationRepository $rep,Security $security,RadiologistRepository $reprad): Response
+    public function edit($id,Request $request,ManagerRegistry $em, InterpretationRepository $rep,Security $security,UserRepository $reprad): Response
     {
 // Create a new instance of the form class
         $inter=$rep->find($id);
@@ -110,7 +111,7 @@ class InterpretationController extends AbstractController
 
 
     #[Route('/delete/{id}', name: 'deleteinter')]
-    public function delete($id,ManagerRegistry $em,InterpretationRepository $rep,Security $security,RadiologistRepository $reprad): Response
+    public function delete($id,ManagerRegistry $em,InterpretationRepository $rep,Security $security,UserRepository $reprad): Response
     {
 
         $inter=$rep->find($id);
@@ -123,11 +124,11 @@ class InterpretationController extends AbstractController
 
 
     #[Route('/inter', name: 'inter')]
-    public function inter(InterpretationRepository $rep,Security $security,RadiologistRepository $reprad): Response
+    public function inter(InterpretationRepository $rep,Security $security,UserRepository $reprad): Response
     {
         $user = $security->getUser();
 
-        $rad=$reprad->findOneBy(['user'=> $user]);
+        $rad=$user;
 
         // Assuming there's a relationship between Radiologist and Interpretation entities,
         // adjust the query to retrieve Interpretation entities associated with the given Radiologist
@@ -139,7 +140,7 @@ class InterpretationController extends AbstractController
     }
 
     #[Route('/feedbacks/{id}', name: 'feedbacks')]
-    public function show($id,InterpretationRepository $rep,Request $request,ManagerRegistry $em,Security $security,RadiologistRepository $reprad): Response
+    public function show($id,InterpretationRepository $rep,Request $request,ManagerRegistry $em,Security $security,UserRepository $reprad): Response
     {
         $feeds=$rep->findBy(['image'=>$id]);
         return  $this->render('image/feeds.html.twig',['feeds'=>$feeds]);

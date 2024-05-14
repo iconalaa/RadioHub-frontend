@@ -1,6 +1,7 @@
 {% extends 'front.html.twig' %}
 {% block title %}RadioHub | Sign up{% endblock%}
-{% block footer%}{%endblock%}
+{% block footer %}{%endblock%}
+{% block header %}{%endblock%}
 {% block body %}
 	{% if
 is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -28,10 +29,9 @@ is_granted('IS_AUTHENTICATED_FULLY') %}
 			.sign-up-cards {
 				display: flex;
 				justify-content: center;
-
 				gap: 3rem;
 				width: 80%;
-				margin: 0 auto;
+				margin:0 auto;
 			}
 			.sign-card {
 				display: flex;
@@ -65,7 +65,7 @@ is_granted('IS_AUTHENTICATED_FULLY') %}
 			}
 		</style>
 		<center>
-			<h1 class="display-5">Sign Up as</h1>
+			<h1 class="display-5 mt-3">Sign Up as</h1>
 		</center>
 		<div class="sign-up-cards my-5">
 			<a href="{{ path('app_register_patient') }}">
@@ -99,5 +99,6 @@ is_granted('IS_AUTHENTICATED_FULLY') %}
 				</div>
 			</a>
 		</div>
+		<center><a href="{{path('app_login')}}" class="btn btn-primary px-5" style="color:#fff">LogIn</a></center>
 	{% endif %}
 {% endblock %}

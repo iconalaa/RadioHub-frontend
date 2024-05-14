@@ -8,11 +8,11 @@
         <h5 style="color:blue;" class="card-title fw-semibold mb-4">
           Diagnostic List
         </h5>
-        <div class="mb-3">
-          <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for anything..">
+        <div class="mb-3 d-flex gap-3">
+          <input class="form-control" type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for anything..">
+          <a href="{{ path('app_export_excel') }}" class="btn btn-success w-25">Export Data</a>
         </div>
         <div class="table-responsive" style="overflow-x: auto;">
-          <a href="{{ path('app_export_excel') }}" class="btn btn-primary">Export Data</a>
           <table id="compteRenduTable" class="table text-nowrap mb-0 align-middle">
             <thead class="text-dark fs-4">
               <tr>
@@ -43,13 +43,13 @@
                   <h6 class="fw-semibold mb-0">{{ Report.id }}</h6>
                 </td>
                 <td class="border-bottom-0">
-                  <h6 class="fw-semibold mb-1">{{ Report.image.radiologist.user.name }} {{
-                    Report.image.radiologist.user.lastname }}</h6>
+                  <h6 class="fw-semibold mb-1">{{ Report.image.radiologist.name }} {{
+                    Report.image.radiologist.lastname }}</h6>
                   <span class="fw-normal"></span>
                 </td>
                 <td class="border-bottom-0">
-                  <p class="mb-0 fw-normal">{{ Report.image.patient.user.name }}
-                    {{Report.image.patient.user.lastname }}</p>
+                  <p class="mb-0 fw-normal">{{ Report.image.patient.name }}
+                    {{Report.image.patient.lastname }}</p>
                 </td>
                 {% if Report.isEdited == 1 %}
                 <td class="border-bottom-0">
@@ -67,8 +67,8 @@
                 </td>
                 {% endif %}
                 <td class="border-bottom-0">
-                  <h6 class="fw-semibold mb-0 fs-4">{{ Report.doctor.user.name }} {{
-                    Report.doctor.user.lastname }}</h6>
+                  <h6 class="fw-semibold mb-0 fs-4">{{ Report.doctor.name }} {{
+                    Report.doctor.lastname }}</h6>
                 </td>
                 <td class="border-bottom-0">
                   <a href="{{ path('app_Report_show', {'id': Report.id}) }}"

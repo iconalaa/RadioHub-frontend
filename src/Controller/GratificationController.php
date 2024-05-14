@@ -29,7 +29,7 @@ class GratificationController extends AbstractController
         $gratification = $paginator->paginate(
             $gratification, /* query NOT result */
             $req->query->getInt('page', 1)/*page number*/,
-            4/*limit per page*/
+            5/*limit per page*/
         );
         #dd($gratification);
         return $this->render('gratification/index.html.twig', [

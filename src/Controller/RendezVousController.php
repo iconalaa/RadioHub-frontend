@@ -7,6 +7,7 @@ use App\Entity\RendezVous;
 use App\Form\RendezVousType1;
 use App\Form\RendezVousType;
 use App\Repository\RendezVousRepository;
+use App\Repository\SalleRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,25 +45,31 @@ class RendezVousController extends AbstractController
         return $this->render('rendez_vous/booked.html.twig');
     }
     #[Route('/new', name: 'app_rendez_vous_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ManagerRegistry $entityManager, MailService $mailService): Response
+    public function new(Request $request, ManagerRegistry $entityManager, MailService $mailService,SalleRepository $salle): Response
     {
+        $user = $this->getUser(); // Assuming you have a method to get the logged-in user
+
         $rendezVou = new RendezVous();
-        $form = $this->createForm(RendezVousType1::class, $rendezVou);
+        $rendezVou->setUser($user);
+        $salles =$salle->findAll();
+    
+        $rendezVou = new RendezVous();
+        $form = $this->createForm(RendezVousType1::class, $rendezVou );
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $rendezVou->setUser($user); // Explicitly set the user association (optional)
+    
             $entityManager->getManager()->persist($rendezVou);
             $entityManager->getManager()->flush();
+    
             // Envoi de l'e-mail ici après avoir persisté la nouvelle proposition
             $mailService->sendEmail();
-
-
+    
             return $this->redirectToRoute('app_booked_appointment');
         }
-
+    
         return $this->renderForm('rendez_vous/new.html.twig', [
-
             'form' => $form,
         ]);
     }
@@ -105,79 +112,5 @@ class RendezVousController extends AbstractController
         return $this->redirectToRoute('app_rendez_vous_index', [], Response::HTTP_SEE_OTHER);
     }
 
-
-
-
-
-    //////////////////////search ///////////////////////////////////////
-
-    /*  #[Route('/{id}/search', name: 'app_appointment_search', methods: ['GET'])]
-    public function search(Request $request, RendezVousRepository $RendezVousRepository): JsonResponse
-    {
-        $searchTerm = $request->query->get('search');
-        $rendez_vous = $RendezVousRepository->findBySearchTerm($searchTerm);
-
-        $data = [];
-        foreach ($rendez_vous as $rendez_vous) {
-            $data[] = [
-                'id ' => $rendez_vous->getId(),
-                'nomPatient' => $rendez_vous->getnomPatient(),
-                'prenomPatient' => $rendez_vous->getprenomPatient(),
-                'mailPatient' => $rendez_vous->getMailPatient(),
-                'dateRV' => $rendez_vous->getdateRV(),
-               
-            ];
-        }
-
-        return new JsonResponse(['appointments' => $data]);
-    }*/
-
-
-
-    ////////////////////////////////////////////////
-
-
-
-
-    /*public function rendez_vous (Request $request, ManagerRegistry $entityManager, LoggerInterface $logger, RendezVousRepository $rdvrepo): Response
-    {
-        $searchValue = $request->request->get('searchValue');
-        $logger->info('Search Value: ' . $searchValue);
-    
-        if ($searchValue) {
-            // If there's a search value, perform a filtered search
-            /*$appointments = $entityManager->getRepository(RendezVous::class)-> findBySearchValue ($searchValue);*/
-    /* $appointments= $rdvrepo->findBySearchValue($searchValue);
-            //en principe hakka tekhdem
-            //kima nkoulou tamel instance mel repo, w menha heya temchi tjib el method mtek w thot fiha el parameter eli adytou  hedha maneha
-        } else {
-            // If no search value, fetch all users
-            $appointments = $entityManager->getRepository(RendezVous::class)->findAll();
-        }
-    
-        // Render the entire page, including the layout
-        return $this->render('rendez_vous/index.html.twig', [
-            'appointments' => $appointments,
-        ]);
-    }
-    #[Route('/appointmentss/search', name: 'app_appointments_search')]
-           public function searchAppointments(Request $request, ManagerRegistry $entityManager , RendezVousRepository $rdvrepo): Response
-         {
-              $searchValue = $request->request->get('searchValue');
-
-               if ($searchValue) {
-        // If there's a search value, perform a filtered search
-              // If there's a search value, perform a filtered search
-            /*$appointments = $entityManager->getRepository(RendezVous::class)-> findBySearchValue ($searchValue);*/
-    /*  $appointments= $rdvrepo->findBySearchValue($searchValue);($searchValue);//
-               } else {
-        // If no search value, fetch all users
-                $appointments = $entityManager->getRepository(RendezVous::class)->findAll();
-              }*/
-
-    // Render only the table content
-    /*return $this->render('rendez_vous/index.html.twig', [
-                'appointments' => $appointments,
-         ]);
-}*/
+   
 }

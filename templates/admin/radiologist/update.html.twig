@@ -1,44 +1,47 @@
-{% extends 'back.html.twig' %} {% block body %}
+{% extends 'back.html.twig' %} 
+{% block body %}
 
 <div class="container-fluid py-5">
   <div class="card">
     <div class="card-body">
-      <a
-        href="{{ path('app_admin_user') }}"
-        class="btn btn-danger h-25 align-self-start px-4 fs-5"
-        ><i class="ti ti-arrow-back"></i
-      ></a>
+      <a href="{{ path('app_admin_user') }}" class="btn btn-danger h-25 align-self-start px-4 fs-5">
+        <i class="ti ti-arrow-back"></i>
+      </a>
       <div class="d-flex gap-2 justify-content-center">
         <h1 class="text-center mb-5 align-self-baseline">
           Update Radiologist <b>[ {{ user.id }} ]</b>
         </h1>
       </div>
-      {{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-1 '}}
-      )}}
+      {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'my-1'}}) }}
       <div class="d-flex flex-column w-50 mx-auto gap-3">
-        {{ form_widget(form.mat_cnom,{'attr':{'class':'form-control px-3 py-2'
+        {{ form_widget(form.matricule, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+        {{ form_errors(form.matricule, {'attr': {'class': 'alert alert-danger'}}) }}
+        
+        {# Add the missing attributes with their respective classes and error handling #}
+        {{ form_widget(form.email, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+        {{ form_errors(form.email, {'attr': {'class': 'alert alert-danger'}}) }}
 
+        {{ form_widget(form.password, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+        {{ form_errors(form.password, {'attr': {'class': 'alert alert-danger'}}) }}
 
+        {{ form_widget(form.name, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+        {{ form_errors(form.name, {'attr': {'class': 'alert alert-danger'}}) }}
 
+        {{ form_widget(form.lastname, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+        {{ form_errors(form.lastname, {'attr': {'class': 'alert alert-danger'}}) }}
 
+        {{ form_widget(form.date_birth, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+        {{ form_errors(form.date_birth, {'attr': {'class': 'alert alert-danger'}}) }}
 
+        {{ form_widget(form.gender, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+        {{ form_errors(form.gender, {'attr': {'class': 'alert alert-danger'}}) }}
 
-
-        }})}}
-        {{ form_errors(form.mat_cnom) }}
-        {{ form_widget(form.user,{'attr':{'class':'select-form px-3 py-2'
-
-
-
-
-
-
-
-        }})}}
+        {{ form_widget(form.brochureFilename, {'attr': {'class': 'form-control px-3 py-2'}}) }}
+        {{ form_errors(form.brochureFilename, {'attr': {'class': 'alert alert-danger'}}) }}
 
         <button class="btn btn-primary" type="submit">Update</button>
-        {{ form_end(form) }}
       </div>
+      {{ form_end(form) }}
     </div>
   </div>
 </div>

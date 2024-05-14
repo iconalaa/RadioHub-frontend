@@ -4,14 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Droit;
 use App\Entity\Image;
-use App\Entity\Radiologist;
+use App\Entity\User;
 use App\Form\EditType;
 use App\Form\ImageType;
 use App\Form\ImageTypeEdit;
 use App\Repository\DroitRepository;
 use App\Repository\ImageRepository;
 use App\Repository\PrescriptionRepository;
-use App\Repository\RadiologistRepository;
+use App\Repository\ReportRepository;
+
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,52 +22,52 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterfaced;
-use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Security\Core\Security;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\CompteRenduRepository;
+
 class ImageController extends AbstractController
 {
     #[Route('/image', name: 'app_image')]
-    public function index(ImageRepository $rep, Security $security, RadiologistRepository $reprad, PaginatorInterface $paginator,Request $request): Response
+    public function index(ImageRepository $rep, Security $security, UserRepository $reprad, PaginatorInterface $paginator, Request $request): Response
     {
         $user = $security->getUser();
-        $rad = $reprad->findOneBy(['user' => $user]);
-        $imagesQuery = $rep->findBy(['radiologist' => $rad], ['id' => 'DESC']);
-    
+        $imagesQuery = $rep->findBy(['radiologist' => $user], ['id' => 'DESC']);
+
         // Paginate the query
         $images = $paginator->paginate(
             $imagesQuery,
             $request->query->getInt('page', 1), // Get the current page from the request
-            1// Limit of items per page
+            1 // Limit of items per page
         );
-    
+
         return $this->render('image/index.html.twig', [
             'images' => $images,
         ]);
     }
 
     #[Route('/image/upload', name: 'image_upload')]
-    public function new(Security $security,Request $request, SluggerInterface $slugger,ManagerRegistry $entityManager,ImageRepository $rep,RadiologistRepository $reprad): Response
+    public function new(Security $security, UserRepository $userRepository, Request $request, SluggerInterface $slugger, ManagerRegistry $entityManager, ImageRepository $rep, UserRepository $reprad): Response
     {
         $radiologist = $this->getUser(); // Assuming the logged-in user is the radiologist
-        $rad=$reprad->findOneBy(['user'=>$radiologist]);
+        $rad = $radiologist;
 
-
+        $patients = $userRepository->findPatients();
 
 
 
 
         $product = new Image();
-        $form = $this->createForm(ImageType::class, $product);
-        $droit=new Droit();
+        $form = $this->createForm(ImageType::class, $product, [
+            'patients' => $patients,
+        ]);
+        $droit = new Droit();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $security->getUser();
-            $rad=$reprad->findOneBy(['user'=> $user]);
             $product->setRadiologist($rad);
             $product->setFilename("changed");
             $currentDate = new \DateTime();
@@ -82,7 +84,7 @@ class ImageController extends AbstractController
                 $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
                 // this is needed to safely include the file name as part of the URL
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $product->getId().'.dcm';
+                $newFilename = $product->getId() . '.dcm';
 
                 // Move the file to the directory where brochures are stored
                 try {
@@ -97,8 +99,8 @@ class ImageController extends AbstractController
 
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
-             
-                $product->setFilename($originalFilename.".dcm");
+
+                $product->setFilename($originalFilename . ".dcm");
             }
 
             $entityManager->getManager()->persist($product);
@@ -108,7 +110,7 @@ class ImageController extends AbstractController
             $droit->setRole("owner");
 
             $user = $security->getUser();
-            $rad=$reprad->findOneBy(['user'=> $user]);
+
             $droit->setRadioloqist($rad);
 
             $entityManager->getManager()->persist($droit);
@@ -123,18 +125,14 @@ class ImageController extends AbstractController
         return $this->renderForm('Image/add.html.twig', [
             'f' => $form,
         ]);
-
-
-
-
-
     }
     #[Route('/image/shared', name: 'shared')]
 
-    public   function sharedImagesForRadiologist( Security $security ,RadiologistRepository $reprad): Response
-    {$user = $security->getUser();
-        $rad=$reprad->findOneBy(['user'=> $user]);
-        $radiologistId=$rad->getId();
+    public   function sharedImagesForRadiologist(Security $security, UserRepository $reprad): Response
+    {
+        $user = $security->getUser();
+        $rad = $user;
+        $radiologistId = $rad->getId();
         // Récupérez le référentiel de l'entité Image
         $entityManager = $this->getDoctrine()->getManager();
         $imageRepository = $entityManager->getRepository(Image::class);
@@ -157,7 +155,7 @@ class ImageController extends AbstractController
         // Par exemple, passez-les à un modèle pour les afficher
         return $this->render('Image/share.html.twig', [
             'images' => $sharedImages,
-            'currectuserid'=>$radiologistId
+            'currectuserid' => $radiologistId
 
         ]);
     }
@@ -170,25 +168,21 @@ class ImageController extends AbstractController
 
 
     #[Route('/image/delete/{id}', name: 'delete', methods: ['GET', 'POST'])]
-    public function delete(Request $request,ImageRepository $rep,$id,ManagerRegistry $man, CompteRenduRepository $repcm,PrescriptionRepository $pres)
+    public function delete(Request $request, ImageRepository $rep, $id, ManagerRegistry $man, ReportRepository $repcm, PrescriptionRepository $pres)
     {
 
-// Get the entity manager
+        // Get the entity manager
         $entityManager = $man->getManager();
         $image = $entityManager->getRepository(Image::class)->find($id);
-        $delcm=$repcm->findOneBy(["id_image"=>$image]);
-        if($delcm!=null)
-        {
-        $presr=$pres->findOneBy(["compterendu"=>$delcm]);
-        if($presr!=null)
-        {
-            $man->getManager()->remove($presr);
-            $man->getManager()->remove($delcm);
-         }
-        else
-        {
-            $man->getManager()->remove($delcm);
-        }
+        $delcm = $repcm->findOneBy(["image" => $image]);
+        if ($delcm != null) {
+            $presr = $pres->findOneBy(["Report" => $delcm]);
+            if ($presr != null) {
+                $man->getManager()->remove($presr);
+                $man->getManager()->remove($delcm);
+            } else {
+                $man->getManager()->remove($delcm);
+            }
         }
 
 
@@ -205,8 +199,6 @@ class ImageController extends AbstractController
         // Flush changes to the database
         $entityManager->flush();
         return $this->redirectToRoute('app_image');
-
-
     }
 
 
@@ -218,12 +210,16 @@ class ImageController extends AbstractController
 
 
     #[Route('/image/edit/{id}', name: 'edit_image', methods: ['GET', 'POST'])]
-    public function edit(Request $request, SluggerInterface $slugger, ImageRepository $rep, $id)
+    public function edit(Request $request, UserRepository $userRepository, SluggerInterface $slugger, ImageRepository $rep, $id)
     {
         $image = $rep->find($id);
 
+        $patients = $userRepository->findPatients();
+
         // Create the edit form
-        $form = $this->createForm(EditType::class, $image);
+        $form = $this->createForm(EditType::class, $image, [
+            'patients' => $patients
+        ]);
 
         // Handle form submission
         $form->handleRequest($request);
@@ -259,20 +255,20 @@ class ImageController extends AbstractController
 
     #[Route('/image/consult/{id}', name: 'consult', methods: ['GET', 'POST'])]
 
-    public function consult($id ,Security $security,RadiologistRepository $reprad,DroitRepository $repd)
+    public function consult($id, Security $security, UserRepository $reprad, DroitRepository $repd)
     {
         $user = $security->getUser();
-        $rad=$reprad->findOneBy(['user'=> $user]);
-        $radiologistId=$rad->getId();
+        $rad = $user;
+        $radiologistId = $rad->getId();
 
 
 
-       $droit= $repd->findOneBy(['image' => $id, 'radioloqist' => $rad]);
-       $droit=$droit->getRole();
+        $droit = $repd->findOneBy(['image' => $id, 'radioloqist' => $rad]);
+        $droit = $droit->getRole();
 
 
 
-        return $this->render('image/consult.html.twig',['id'=>$id,"droit"=>$droit]);
+        return $this->render('image/consult.html.twig', ['id' => $id, "droit" => $droit]);
     }
 
 
@@ -312,17 +308,10 @@ class ImageController extends AbstractController
 
     #[Route('/sample', name: 'sample')]
 
-    public   function sample( ): Response
+    public   function sample(): Response
     {
 
 
         return $this->render('image/sample.html');
     }
-
 }
-
-
-
-
-
-

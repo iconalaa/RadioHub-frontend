@@ -17,7 +17,7 @@ class Droit
     private ?string $role = null;
 
     #[ORM\ManyToOne(inversedBy: 'droits')]
-        private ?Radiologist $radioloqist = null;
+        private ?User $radioloqist = null;
 
     #[ORM\ManyToOne(inversedBy: 'droits')]
     private ?Image $image = null;
@@ -39,12 +39,12 @@ class Droit
         return $this;
     }
 
-    public function getRadioloqist(): ?Radiologist
+    public function getRadioloqist(): ?User
     {
         return $this->radioloqist;
     }
 
-    public function setRadioloqist(?Radiologist $radioloqist): static
+    public function setRadioloqist(?User $radioloqist): static
     {
         $this->radioloqist = $radioloqist;
 
