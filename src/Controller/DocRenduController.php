@@ -32,7 +32,7 @@ class DocRenduController extends AbstractController
         $doctor = $user;
 
         // Check if the user is a doctor
-       
+
 
         $form = $this->createForm(MedType::class, $Report);
         $form->handleRequest($request);
@@ -69,10 +69,10 @@ class DocRenduController extends AbstractController
         }
 
         // Retrieve the associated doctor entity using the DoctorRepository
-        $doctor =  $user ;
+        $doctor =  $user;
         $prescriptions = $prescription->findAll();
 
-       
+
 
         // Retrieve the ID of the associated doctor
         $doctorId = $doctor->getId();
@@ -141,6 +141,4 @@ class DocRenduController extends AbstractController
             'Content-Disposition' => 'inline; filename="' . $pdfFileName . '"',
         ]);
     }
-
-    
 }
