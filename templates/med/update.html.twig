@@ -1,63 +1,62 @@
-{% extends 'front.html.twig' %} {% block footer %} {% endblock%} {% block
-stylesheets %}
+{% extends 'front.html.twig' %} 
 
-{% endblock %} {% block body %}
+{% block footer %} 
+{% endblock %}
 
-<div class="container" style="justify-content: center; margin-top: 200px;">
-  <h2 class="text-center mt-0 mb-4">DOCTOR’S DECISION</h2>
+{% block stylesheets %}
+{% endblock %}
 
+{% block body %}
+
+<style>
+  body {
+    background-image: url('../image/background-image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  .container {
+    background: rgba(255, 255, 255, 0.8); 
+    padding: 20px;
+    border-radius: 15px;
+  }
+</style>
+<div class="container" style="margin-top: 200px;">
   <div class="row justify-content-center">
-    {# New container #}
-    <div class="col-md-8">
-      {# Adjust the width as needed #}
+    <div class="col-md-6">
       {{ form_start(form) }}
-      <div class="d-flex gap-3">
-        <div>
-          <img
-            src="{{ asset('uploads/images/' ~ idimage ~ '.png') }}"
-            id="dimage"
-            alt="Your Image"
-          />
+
+      <h2 class="mt-0 mb-4 text-center">DOCTOR’S DECISION</h2>
+
+      <div class="form-group{% if form.interpretationMed.vars.errors|length > 0 %} has-error{% endif %}">
+        {{ form_widget(form.interpretationMed, {'attr': {'class': 'form-control', 'placeholder': 'Interpretation'}}) }} 
+        {% if form_errors(form.interpretationMed) %}
+        <div class="text-danger">
+          {{ form_errors(form.interpretationMed) }}
         </div>
-        <div
-          class="w-100 form-group{% if form.interpretationMed.vars.errors|length > 0 %} has-error{% endif %}"
-        >
-          {{ form_widget(form.interpretationMed, {'attr': {'class': 'form-control h-100 w-100','placeholder':'Interpretation'
-
-
-
-
-
-
-
-
-
-
-
-          }}) }} {% if form_errors(form.interpretationMed) %}
-
-          <div class="text-danger">
-            {{ form_errors(form.interpretationMed) }}
-          </div>
-          {% endif %}
-        </div>
+        {% endif %}
       </div>
 
-      <div
-        class="mt-3 form-group{% if form.date.vars.errors|length > 0 %} has-error{% endif %}"
-      >
-        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }} {% if
-        form_errors(form.date) %}
+      <div class="form-group{% if form.date.vars.errors|length > 0 %} has-error{% endif %}">
+        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }} 
+        {% if form_errors(form.date) %}
         <div class="text-danger">
           {{ form_errors(form.date) }}
         </div>
         {% endif %}
-        <center>
-          <button type="submit" class="btn btn-primary mt-2 w-25">Save</button>
-        </center>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary mt-2">Save</button>
       </div>
 
       {{ form_end(form) }}
+    </div>
+
+    <div class="col-md-5">
+      <img src="{{ asset('uploads/images/' ~ idimage ~ '.png') }}" id="dimage" alt="Your Image" style="width: 500px; height: 400px; border-radius: 10px;"> 
     </div>
   </div>
 </div>

@@ -17,7 +17,7 @@ Radiohub | Doctor
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    font-family: 'Arial, sans-serif';
+   
     color: #333;
   }
 
@@ -27,7 +27,6 @@ Radiohub | Doctor
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 500px;
-	
   }
 
   h2 {
@@ -68,8 +67,9 @@ Radiohub | Doctor
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 20px;
-    margin-bottom: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: relative; /* Added to position the button absolutely */
+	
   }
 
   .item_title, .item_interpretation, .item_date {
@@ -81,18 +81,30 @@ Radiohub | Doctor
     margin: 5px 0;
   }
 
-  .button {
-    display: inline-block;
-    background-color: #0047AB;
+  .button:hover {
+    background-color: #003580;
+  }
+
+  .download-button,
+  .prescription-button {
+    background-color: #ff5c5c;
     color: white;
     padding: 10px 15px;
     border-radius: 5px;
     text-decoration: none;
     transition: background-color 0.3s;
+    margin-top: 10px;
+  }
+  .prescription-button {
+    background-color: #4CAF50;
   }
 
-  .button:hover {
-    background-color: #003580;
+  .download-button:hover {
+    background-color: #e54e4e;
+  }
+
+  .prescription-button:hover {
+    background-color: #45a049;
   }
 
   .page-container {
@@ -105,6 +117,14 @@ Radiohub | Doctor
   @media (max-width: 768px) {
     .content-wrapper {
       flex-direction: column;
+    }
+
+    .download-button,
+    .prescription-button {
+      position: static;
+      display: inline-block;
+      margin-top: 10px;
+
     }
   }
 </style>
@@ -136,7 +156,12 @@ Radiohub | Doctor
         {% if done|length > 0 %}
           {% for report in done %}
           <div class="item">
-            <button onclick="downloadPdf('{{ path('generate_pdf', {'id': report.id}) }}')">Download PDF</button>
+            <a  href="{{ path('generate_pdf', {'id': report.id}) }}" class="download-button">REPORT PDF</a>
+            {% for p in prep %}
+              {% if p.report.id == report.id %}
+                <a href="{{ path('generate_prescription', {'id': p.id}) }}" class="prescription-button">PRESCRIPTION PDF</a>
+              {% endif %}
+            {% endfor %}
             <p class="item_title">Patient: {{ report.image.patient.name }} {{ report.image.patient.lastname }}</p>
             <p>Radiologist: {{ report.image.radiologist.name }} {{ report.image.radiologist.lastname }}</p>
             <p class="item_interpretation">Radiologist's interpretation: {{ report.InterpretationRad }}</p>
@@ -146,9 +171,7 @@ Radiohub | Doctor
               <a href="{{ path('app_prescription_new', {'reportId': report.id}) }}" class="button">Create Prescription</a>
             {% endif %}
             {% for p in prep %}
-              {% if p.report.id == report.id %}
-                <a href="{{ path('generate_prescription', {'id': p.id}) }}" class="button">Prescription PDF</a>
-              {% else %}
+              {% if p.report.id != report.id %}
                 <a href="{{ path('app_prescription_new', {'reportId': report.id}) }}" class="button">Create Prescription</a>
               {% endif %}
             {% endfor %}

@@ -1,6 +1,6 @@
 <style>
     .form-container {
-        width: 50%;
+        width: 40%; /* Adjusted width */
         margin: 0 auto;
         padding: 20px;
         border: 1px solid #ccc;
@@ -34,48 +34,67 @@
     .has-error .text-danger {
         color: #a94442;
     }
+
+    /* Adjusted width for signature and date fields */
+    .form-group.signature,
+    .form-group.date {
+        width: 60%;
+        margin: 0 auto;
+    }
+
+    body {
+    background-image: url('../../image/background-image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    color: #333;
+  }
+  .form-container {
+    background: rgba(255, 255, 255, 0.8); /* White background with some transparency */
+    padding: 20px;
+    border-radius: 15px;
+  }
 </style>
 
-
-<div class="form-container">
-    <h2 class="form-title">Prescription form</h2>
+<div class="form-container" style="margin-top: 100px;">
+    <h2 class="form-title">Prescription Form</h2>
     {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'my-1'}}) }}
-    <div class="col-md-20"> {# Adjust the width as needed #}
-
-        <div class="form-group">
-            {{ form_label(form.contenu, 'prescription content:') }}
-            {{ form_widget(form.contenu, {'attr': {'class': 'form-control'}}) }}
-            {% if form_errors(form.contenu) %}
-            <div class="text-danger">
-                {{ form_errors(form.contenu) }}
-            </div>
-            {% endif %}
+    <div class="form-group">
+        {{ form_label(form.contenu, 'Prescription Content') }}
+        {{ form_widget(form.contenu, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.contenu) %}
+        <div class="text-danger">
+            {{ form_errors(form.contenu) }}
         </div>
-        <div class="form-group">
-            {{ form_label(form.date, 'Date :') }}
-            {{ form_widget(form.date, {'attr': {'class': 'form-control datepicker'}}) }}
-            {% if form_errors(form.date) %}
-            <div class="text-danger">
-                {{ form_errors(form.date) }}
-            </div>
-            {% endif %}
-
-            <div style="margin-top: 30px;" class="form-group">
-                {{ form_label(form.signatureFilename, 'Signature:') }}
-                {{ form_widget(form.signatureFilename, {'attr': {'class': 'form-control'}}) }}
-                {% if form_errors(form.signatureFilename) %}
-                <div class="text-danger">
-                    {{ form_errors(form.signatureFilename) }}
-                </div>
-                {% endif %}
-            </div>
-
-            <div style="text-align: center; margin-top: 10px;">
-                <button class="btn">{{ button_label|default('Save') }}</button>
-            </div>
-            {{ form_end(form) }}
+        {% endif %}
+    </div>
+    <div class="form-group date">
+        {{ form_label(form.date, 'Date') }}
+        {{ form_widget(form.date, {'attr': {'class': 'form-control datepicker'}}) }}
+        {% if form_errors(form.date) %}
+        <div class="text-danger">
+            {{ form_errors(form.date) }}
         </div>
-        {% block javascripts %}
+        {% endif %}
+    </div>
+    <div class="form-group signature" style="margin-top: 10px;">
+        {{ form_label(form.signatureFilename, 'Signature') }}
+        {{ form_widget(form.signatureFilename, {'attr': {'class': 'form-control'}}) }}
+        {% if form_errors(form.signatureFilename) %}
+        <div class="text-danger">
+            {{ form_errors(form.signatureFilename) }}
+        </div>
+        {% endif %}
+    </div>
+    <div class="text-center" style="margin-top: 30px;">
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    </div>
+    {{ form_end(form) }}
+</div>
+
+{% block javascripts %}
 {# Include jQuery and jQuery UI Datepicker JavaScript #}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -88,5 +107,3 @@
   });
 </script>
 {% endblock %}
-
-        
