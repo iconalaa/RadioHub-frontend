@@ -1,154 +1,219 @@
 {% extends 'front.html.twig' %}
 
 {% block title %}
-	Radiohub | Doctor
+Radiohub | Doctor
 {% endblock %}
-{%block footer%}{% endblock %}
+{% block footer %}{% endblock %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('../../../front/css/customdoctor.css') }}"/>
+<link rel="stylesheet" href="{{ asset('../../../front/css/customdoctor.css') }}" />
 {% endblock %}
 
-
-
 {% block body %}
+<style>
+  body {
+    background-image: url('../image/background-image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Arial, sans-serif';
+    color: #333;
+  }
 
+  .content-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 500px;
+	
+  }
 
-	<div class="page-container">
+  h2 {
+    color: #0047AB;
+    text-transform: uppercase;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    margin-bottom: 40px;
+  }
 
-		<div class="content-container">
-			<h2 style=" text-transform: uppercase; font-family: 'Courier New', monospace; color: #300c7c;">doctor
-				{{
-      app.user.lastname }}
-				{{ app.user.name }}'s space</h2>
-			<br></br>
-		<div class="search-container">
-			<input type="text" class="form-control py-2 px-3 w-75 mx-auto mb-5" id="searchInput" onkeyup="searchItems()" placeholder="Search for anything..">
-		</div>
+  .search-container input {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+  }
 
-		<div class="content-wrapper">
-			<div class="content-column">
-				<h3 style=" font-weight: bold; font-family: 'Courier New', monospace;">
-					Pending list
-				</h3>
-				<br></br>
-			{% if Reports|length > 0 %}
-				{% for report in Reports %}
-					<div class="item">
-						<p class="item_title">Patient:
-							{{ report.image.patient.name }}
-							{{
-            report.image.patient.lastname }}</p>
-						<p>Radiologist:
-							{{ report.image.radiologist.name }}
-							{{
-            report.image.radiologist.lastname }}</p>
-						<p class="item_interpretation">Radiologist's interpretation :
-							{{ report.InterpretationRad }}</p>
-						<a href="{{ path('add_decision', {'id': report.id}) }}" class="button">Add interpretation</a>
-					</div>
-				{% endfor %}
-			{% else %}
-				<p>No Report Pending.</p>
-			{% endif %}
-		</div>
-		<div class="content-column">
-			<h3 style=" font-weight: bold;font-family: 'Courier New', monospace;">History</h3>
-			<br></br>
-		{% if done|length > 0 %}
+  .content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
 
-			{% for report in done %}
+  .content-column {
+    flex: 1;
+  }
 
-				<div class="item">
-					<button onclick="downloadPdf('{{ path('generate_pdf', {'id': report.id}) }}')">Download PDF</button>
-					<p class="item_title">Patient:
-						{{ report.image.patient.name }}
-						{{
-            report.image.patient.lastname }}</p>
-					<p>Radiologist:
-						{{ report.image.radiologist.name }}
-						{{
-            report.image.radiologist.lastname }}</p>
-					<p class="item_interpretation">Radiologist's interpretation :
-						{{ report.InterpretationRad }}</p>
-					<p class="item_interpretation">Doctor’s interpretation:
-						{{ report.interpretationMed }}</p>
-					<p class="item_date">Date:
-						{{ report.date|date('Y-m-d') }}</p>
-					{% if prep == null %}
-						<a href="{{ path('app_prescription_new', {'reportId': report.id}) }}" class="button">Create
-																																																																																				            Prescription</a>
-						{% endif%}
-						{% for p in prep%}
-							{% if p.report.id == report.id %}
-								<a href="{{ path('generate_prescription', {'id': p.id}) }}" class="button">
-									Prescription PDF</a>
-							{% else %}
-								<a href="{{ path('app_prescription_new', {'reportId': report.id}) }}" class="button">Create
-																																																																																																												            Prescription</a>
-							{% endif %}
-						{% endfor %}
-					</div>
-				{% endfor %}
-				{{ knp_pagination_render(done) }}
-			{% else %}
-				<p>No History yet.</p>
-			{% endif %}
-		</div>
-	</div>
-</div></div>
+  h3 {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .item {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .item_title, .item_interpretation, .item_date {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .item p {
+    margin: 5px 0;
+  }
+
+  .button {
+    display: inline-block;
+    background-color: #0047AB;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+
+  .button:hover {
+    background-color: #003580;
+  }
+
+  .page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  @media (max-width: 768px) {
+    .content-wrapper {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="page-container">
+  <div class="content-container">
+    <h2>Doctor {{ app.user.lastname }} {{ app.user.name }}'s Space</h2>
+    <div class="search-container">
+      <input type="text" class="form-control py-2 px-3 w-75 mx-auto mb-5" id="searchInput" onkeyup="searchItems()" placeholder="Search for anything..">
+    </div>
+    <div class="content-wrapper">
+      <div class="content-column">
+        <h3>Pending list</h3>
+        {% if Reports|length > 0 %}
+          {% for report in Reports %}
+          <div class="item">
+            <p class="item_title">Patient: {{ report.image.patient.name }} {{ report.image.patient.lastname }}</p>
+            <p>Radiologist: {{ report.image.radiologist.name }} {{ report.image.radiologist.lastname }}</p>
+            <p class="item_interpretation">Radiologist's interpretation: {{ report.InterpretationRad }}</p>
+            <a href="{{ path('add_decision', {'id': report.id}) }}" class="button">Add interpretation</a>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p>No Report Pending.</p>
+        {% endif %}
+      </div>
+      <div class="content-column">
+        <h3>History</h3>
+        {% if done|length > 0 %}
+          {% for report in done %}
+          <div class="item">
+            <button onclick="downloadPdf('{{ path('generate_pdf', {'id': report.id}) }}')">Download PDF</button>
+            <p class="item_title">Patient: {{ report.image.patient.name }} {{ report.image.patient.lastname }}</p>
+            <p>Radiologist: {{ report.image.radiologist.name }} {{ report.image.radiologist.lastname }}</p>
+            <p class="item_interpretation">Radiologist's interpretation: {{ report.InterpretationRad }}</p>
+            <p class="item_interpretation">Doctor’s interpretation: {{ report.interpretationMed }}</p>
+            <p class="item_date">Date: {{ report.date|date('Y-m-d') }}</p>
+            {% if prep == null %}
+              <a href="{{ path('app_prescription_new', {'reportId': report.id}) }}" class="button">Create Prescription</a>
+            {% endif %}
+            {% for p in prep %}
+              {% if p.report.id == report.id %}
+                <a href="{{ path('generate_prescription', {'id': p.id}) }}" class="button">Prescription PDF</a>
+              {% else %}
+                <a href="{{ path('app_prescription_new', {'reportId': report.id}) }}" class="button">Create Prescription</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% endfor %}
+          {{ knp_pagination_render(done) }}
+        {% else %}
+          <p>No History yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
 <!-- JavaScript function to download the PDF -->
 <script>
-function downloadPdf(pdfUrl) { // Send an AJAX request to generate the PDF
-var xhr = new XMLHttpRequest();
-xhr.open('GET', pdfUrl, true);
-xhr.responseType = 'blob';
+	function downloadPdf(pdfUrl) { // Send an AJAX request to generate the PDF
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', pdfUrl, true);
+		xhr.responseType = 'blob';
 
-xhr.onload = function () {
-if (xhr.status === 200) { // Create a blob URL for the PDF
-var blobUrl = URL.createObjectURL(xhr.response);
+		xhr.onload = function () {
+			if (xhr.status === 200) { // Create a blob URL for the PDF
+				var blobUrl = URL.createObjectURL(xhr.response);
 
-// Create a link element and trigger the download
-var a = document.createElement('a');
-a.href = blobUrl;
-a.download = 'compte_rendu.pdf';
-document.body.appendChild(a);
-a.click();
+				// Create a link element and trigger the download
+				var a = document.createElement('a');
+				a.href = blobUrl;
+				a.download = 'compte_rendu.pdf';
+				document.body.appendChild(a);
+				a.click();
 
-// Clean up
-document.body.removeChild(a);
-URL.revokeObjectURL(blobUrl);
-}
-};
+				// Clean up
+				document.body.removeChild(a);
+				URL.revokeObjectURL(blobUrl);
+			}
+		};
 
-xhr.send();
-}
+		xhr.send();
+	}
 
-function searchItems() { // Declare variables
-var input,
-filter,
-items,
-i,
-itemTitle,
-itemInterpretation,
-itemDate;
-input = document.getElementById("searchInput");
-filter = input.value.toUpperCase();
-items = document.getElementsByClassName("item");
+	function searchItems() { // Declare variables
+		var input,
+			filter,
+			items,
+			i,
+			itemTitle,
+			itemInterpretation,
+			itemDate;
+		input = document.getElementById("searchInput");
+		filter = input.value.toUpperCase();
+		items = document.getElementsByClassName("item");
 
-// Loop through all items and hide those that don't match the search query
-for (i = 0; i < items.length; i++) {
-itemTitle = items[i].getElementsByClassName("item_title")[0];
-itemInterpretation = items[i].getElementsByClassName("item_interpretation")[0];
-itemDate = items[i].getElementsByClassName("item_date")[0];
-// Assuming you have a class "item_date" for date elements
+		// Loop through all items and hide those that don't match the search query
+		for (i = 0; i < items.length; i++) {
+			itemTitle = items[i].getElementsByClassName("item_title")[0];
+			itemInterpretation = items[i].getElementsByClassName("item_interpretation")[0];
+			itemDate = items[i].getElementsByClassName("item_date")[0];
+			// Assuming you have a class "item_date" for date elements
 
-// Check if any of the item content matches the search query
-if (itemTitle.innerText.toUpperCase().indexOf(filter) > -1 || itemInterpretation.innerText.toUpperCase().indexOf(filter) > -1 || (itemDate && itemDate.innerText.toUpperCase().indexOf(filter) > -1)) {
-items[i].style.display = "";
-} else {
-items[i].style.display = "none";
-}
-}
-}</script>
+			// Check if any of the item content matches the search query
+			if (itemTitle.innerText.toUpperCase().indexOf(filter) > -1 || itemInterpretation.innerText.toUpperCase().indexOf(filter) > -1 || (itemDate && itemDate.innerText.toUpperCase().indexOf(filter) > -1)) {
+				items[i].style.display = "";
+			} else {
+				items[i].style.display = "none";
+			}
+		}
+	}</script>
 {% endblock %}

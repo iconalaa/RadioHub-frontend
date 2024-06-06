@@ -1,110 +1,88 @@
 {% extends 'front.html.twig' %}
-{% block title %} RAD {% endblock %}
-{% block header %}{% endblock %}
-{% block footer %} {% endblock %}
-{% block links %}
-<link rel="stylesheet" href="{{ asset('../../../front/css/customradio.css') }}" />
-<li class="active">
-  <a href="{{ path('app_home') }}">Home</a>
-</li>
-<li><a href="#">Doctors </a></li>
-<li><a href="#">Reclamation </a></li>
-<li><a href="#">Blog </a></li>
-<li><a href="#">Contact Us</a></li>
+{% block footer %}{% endblock %}
+{% block title %}
+Radiohub | Doctor
 {% endblock %}
-
-{% block auth %}{% if app.user %}
-<div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-  <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-    <li class="nav-item dropdown">
-      <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-        aria-expanded="false">
-        <img src="contact.png" alt="" width="35" height="35" class="rounded-circle" />
-      </a>
-
-      <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-        <div class="message-body">
-          <a href="{{ path('app_profile') }}" class="d-flex align-items-center gap-2 dropdown-item">
-            <i style="
-                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-                  brightness(78%) contrast(81%);
-              " class="fa-solid fa-user"></i>
-            <p class="mb-0 fs-3">
-              <span style="text-transform: capitalize">{{ app.user.name }} Profile</span>
-            </p>
-          </a>
-          <a href="{{ path('app_settings',{'id':app.user.id}) }}" class="d-flex align-items-center gap-2 dropdown-item">
-            <i style="
-                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-                  brightness(78%) contrast(81%);
-              " class="fa-solid fa-gear"></i>
-            <p class="mb-0 fs-3">Settings</p>
-          </a>
-          {% if is_granted('ROLE_ADMIN') %}
-          <a href="{{ path('app_admin') }}" class="d-flex align-items-center gap-2 dropdown-item">
-            <i style="
-                filter: invert(67%) sepia(6%) saturate(8%) hue-rotate(329deg)
-                  brightness(78%) contrast(81%);
-              " class="fa-solid fa-lock"></i>
-            <p class="mb-0 fs-3">Dashboard</p>
-          </a>
-          {% endif %}
-
-          <a id="logout" href="{{ path('app_logout') }}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
-        </div>
-      </div>
-    </li>
-  </ul>
-</div>
-{% endif %} {% endblock %}
-
 {% block body %}
-<div class="container">
-  <br><br>
+
+<style>
+  body {
+    background-image: url('../image/background-image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  .form-container {
+    background: rgba(255, 255, 255, 0.8); /* White background with some transparency */
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  h2 {
+    color: #0047AB;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Georgia, serif', sans-serif;
+  }
+
+  img {
+    border-radius: 15px;
+  }
+</style>
+
+<div class="container" style="margin-top: 150px;">
   <div class="row justify-content-center mt-5">
-    <div class="col-lg-6 col-md-8 col-sm-10 form-container">
-      <h2 style="color: #0047AB;margin-bottom: 20px; text-align: center; font-family: 'Georgia, serif', sans-serif;">RADIOLOGIST FORM</h2>
+    <div class="col-lg-10 col-md-12 form-container">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>RADIOLOGIST FORM</h2>
 
-      {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+          {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-      <div class="d-flex flex-column">
-        <label class="inputs" for="{{ form.interpretation_rad.vars.id }}" class="">Final Interpretation:</label>
-        {{ form_widget(form.interpretation_rad, {'attr': {'class': 'form-control '}}) }}
+          <div class="d-flex flex-column mb-3">
+            <label class="inputs" for="{{ form.interpretation_rad.vars.id }}">Final Interpretation:</label>
+            {{ form_widget(form.interpretation_rad, {'attr': {'class': 'form-control'}}) }}
 
-        {% if form_errors(form.interpretation_rad) %}
+            {% if form_errors(form.interpretation_rad) %}
             <div class="text-danger">
-                {{ form_errors(form.interpretation_rad) }}
+              {{ form_errors(form.interpretation_rad) }}
             </div>
-        {% endif %}
-      </div>
-      <div class="d-flex justify-content-around">
+            {% endif %}
+          </div>
 
-        <div class="d-flex flex-column">
-          <label class="inputs" for="{{ form.doctor.vars.id }}" class="">Assign to Doctor:</label>
-          {{ form_widget(form.doctor, {'attr': {'class': 'form-control select2 w-100'}}) }}
-          {% if form_errors(form.doctor) %}
+          <div class="d-flex flex-column mb-3">
+            <label class="inputs" for="{{ form.doctor.vars.id }}">Assign to Doctor:</label>
+            {{ form_widget(form.doctor, {'attr': {'class': 'form-control select2'}}) }}
+
+            {% if form_errors(form.doctor) %}
             <div class="text-danger">
-                {{ form_errors(form.doctor) }}
+              {{ form_errors(form.doctor) }}
             </div>
-          {% endif %}
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-submit mt-3 w-100">Save</button>
+          </div>
+
+          {{ form_end(form) }}
         </div>
 
-    
-
-      <div class="form-group">
-      <br>
-        <button type="submit" class="btn btn-primary btn-submit mt-3 w-100">Save</button>
-        </br>
+        <div class="col-md-6 d-flex align-items-center" style="margin-top: 50px;">
+          <img src="../image/bg-doc-rad.jpg" alt="Radiology" class="img-fluid mx-auto">
+        </div>
       </div>
-
-      {{ form_end(form) }}
     </div>
   </div>
 </div>
+
 <script>
   // Activate select2 plugin for select inputs
   $(document).ready(function () {
     $('.select2').select2();
   });
 </script>
+
 {% endblock %}
