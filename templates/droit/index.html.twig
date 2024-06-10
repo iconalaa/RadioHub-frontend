@@ -1,13 +1,14 @@
 {# popup_template.html.twig #}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 /* CSS for the close icon */
     #close-icon {
         position: absolute;
-        top: 10px;
+        top: 1px;
         right: 10px;
         cursor: pointer;
         height:10px;
-            font-size: medium;
+            font-size: 30px;
     }
     /* CSS for the pop-up */
     #popup-content {
@@ -34,31 +35,75 @@
     #userList input[type="checkbox"] {
         margin-bottom: 10px;
     }
+   .delete-droit
+   {
+color :white
+
+   }
+   
+   .btn-danger1
+   {
+ background-color:blanchedalmond;
+    margin-left:10%;
+   }
+   .user-item
+   {
+    display: flex;
+    justify-content: space-around;
+   }
 </style>
 
 <div id="popup-content">
 <span id="close-icon">&times;</span> <!-- Close icon -->
-    <input type="text" id="searchInput" placeholder="Search...">
-    <button class="btn btn-primary" id="addButton">Add</button>
-    <div id="userList">
+<br>
+<div class="row">
+<div class="col-4"></div>
+    <div class="col-1">
+    <input type="text" id="searchInput" placeholder="Search..." hidden>
+    <button class="btn btn-primary" id="addButton">share</button>
+    </div>
+</div>
+<br><br>
+
   {%for user in rads %}
   {%if user ==owner%}
 
 {%else%}
-               <div class="user-item">
+    <div class="row">
+
+               <div class="col-6">
+
                    <input type="checkbox" id="user_{{ user.id }}" value="{{ user.id }}">
+
+                   </div>
+
+                   <div class="col-6">
                    <label for="user_{{ user.id }}">{{ user.name }}</label>
-               </div>
+                   </div>
+    </div>
                {%endif%}
                {%endfor%}
 
 
-  <div class="user-item">
+ 
       {% for i in droits %}
-          <label for="user_{{ i.id }}">{{ i.radioloqist }}</label>
-          <a href="#" class="delete-droit" data-droit-id="{{ i.id }}" data-image-id="{{ i.image.id }}">Delete</a>
+       <div class="row" style="margin-top:5px;">
+       <div class="col-6" >
+          <label for="user_{{ i.id }}">{{ i.radioloqist.name}}</label>
+                 </div >
+       <div class="col-6" >
+<a href="#" class="delete-droit" data-droit-id="{{ i.id }}" data-image-id="{{ i.image.id }}">
+          <button class="btn  btn-danger1 btn-danger">
+ 
+          <i class="fa fa-trash-o" style="font-size:17px;color:red"></i>
+        
+          </button>
+            </a>
+                 </div>
+
+           </div>
       {% endfor %}
-  </div>
+ 
 
 </div>
 

@@ -89,6 +89,13 @@
     .card-header {
         background-color: aliceblue
     }
+
+
+    .dropdown{
+display:flex;
+
+
+    }
 </style>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -182,12 +189,16 @@
 
                                     <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown button
+   <i class='fas fa-stream' style='font-size:20px'> Options
+</i>
   </button>
   <div class="dropdown-menu" aria-labelledby="advanced tools">
-    <a class="dropdown-item"  onclick="downloadpngimage()">Export</a>
-    <a class="dropdown-item"  onclick="brain()">IA</a>
-<a class="dropdown-item" href="{{ path('generate_pdfinter', { 'id': id }) }}">List Interpretation</a>
+    <a class="dropdown-item"  onclick="downloadpngimage()"><i class='fas fa-file-export' style='font-size:20px'>Export</i>
+</a>
+    <a class="dropdown-item"  onclick="brain()"><i class='fas fa-brain' style='font-size:20px;color:red'>IA</i>
+</a>
+<a class="dropdown-item" href="{{ path('generate_pdfinter', { 'id': id }) }}"><i class='far fa-file-pdf' style='font-size:px;color:red'>Interpretations</i>
+</a>
   </div>
 </div>
 
@@ -241,7 +252,8 @@
 
                              <center><a href="{{ path('app_radio', {'id': id}) }}">
 
-                                <button class="btn btn-primary" style="margin-right:5px"> Compte</button>
+                                <button class="btn btn-primary" style="margin-right:5px"><i class='far fa-sticky-note' style='font-size:15px'> Assign</i>
+</button>
             
             
                               </a>

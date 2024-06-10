@@ -43,7 +43,7 @@ class ImageController extends AbstractController
         );
 
         return $this->render('image/index.html.twig', [
-            'images' => $images,
+            'images' => $images,'currectuserid'=>$user->getId(),
         ]);
     }
 
