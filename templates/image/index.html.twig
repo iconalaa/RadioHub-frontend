@@ -21,10 +21,62 @@
     align-items: self-start;
     justify-content: end;
   }
+  #searchInput
+  {
+
+    border: aqua;
+    height: 40px;
+    width: 300px;
+    margin: auto;
+    padding: 5px;
+    margin :10px;
+    font-family:cursive;
+  }
+  .toast:not(.show) {
+
+    display:block;
+  }
+
+  #notiftoast
+  {
+
+    right: 50px;
+    bottom: -100px;
+    position: absolute;
+    display: block;
+  }
+  #toats-icon
+{
+background-color: #e65360;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    border-radius: 10px;
+
+
+}
 </style>
 <div id="show"></div>
 
 <main id="main" class="main">
+
+
+<!--alert toast-->
+<div class="toast" role="alert" id="notiftoast" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+      <div id="toats-icon"></div>
+    <strong class="me-auto"><a href ="/image/shared">waiting for your feeds</a></strong>
+    <small class="text-body-secondary">1 mins ago</small>
+    <button type="button" class="btn-close"  onclick="closeToast()"  data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">
+  someone share his image with You ! 
+  </div>
+</div>
+
+
+
+<!--end-->
 
   <div class="pagetitle">
     <h5>Image Table</h5>
@@ -42,7 +94,7 @@
     </div>
 
   </div><!-- End Page Title -->
-<input type="text" id="searchInput" placeholder="Search by body part, radiologist, or date">
+<center><input type="text" id="searchInput" placeholder="Search by body part, radiologist, or date"></center>
 
   <section class="section">
     <div class="row">
@@ -54,7 +106,7 @@
           <table id="dataTable" id="dataTable"  class="table">
             <thead>
               <tr>
-                <th scope="col">#</th>
+                <th scope="col" hidden>#</th>
                 <th scope="col">BodyPart</th>
                 <th scope="col">AquisationDate</th>
                 <th scope="col">Radiologist</th>
@@ -67,11 +119,11 @@
               {% for i in images %}
 
               <tr>
-                <th scope="row">{{i.id}}</th>
+                <th scope="row" hidden>{{i.id}}</th>
 
                 <td> {{i.bodypart }}</td>
                 <td>{{i.aquisationdate | date }}</td>
-                <td>{{i.radiologist}}</td>
+                <td>{{i.radiologist.name}}</td>
 
                 <td style="display: flex;justify-content: center;">
                   <a href="{{ path('edit_image', {'id': i.id}) }}">
@@ -206,15 +258,40 @@ $('#searchInput').on('input', function() {
 
 
 
+    document.getElementById("notiftoast").style.display="none ";
 
 
 
 
 
+function closeToast() {
+    console.log("Close button clicked");
+    // Add your logic to close the toast here
+    // For example, if you are using Bootstrap's toast, you might do:
+    var toastElement = document.querySelector('.toast'); // Adjust selector as needed
+    var toast = new bootstrap.Toast(toastElement);
+
+    document.getElementById("notiftoast").style.display="none ";
+
+    toast.hide();
+}
 
 
 
+ var currentUserID = "{{currectuserid | raw }}";
 
+   const eventSource = new EventSource("{{ mercure('/test')|escape('js') }}");
+        eventSource.onmessage = event => {
+            console.log(JSON.parse(event.data));
+            a=JSON.parse(event.data);
+            var users = a.users.map(Number); // Convert elements in a.users to numbers
+                
+            if (a.users.includes( currentUserID)) {
+            console.log('Current user is present in the array.');
+          document.getElementById("notiftoast").style.display="block ";
+
+        }
+        }
 
 </script>
 

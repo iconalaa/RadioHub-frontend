@@ -16,7 +16,48 @@
 {% block change4path%} {{path('image_upload')}} {%endblock%}
 
 {%block content%}
+<style>
+
+ #notiftoast
+  {
+
+    right: 50px;
+    bottom: -100px;
+    position: absolute;
+  }
+
+#toats-icon
+{
+background-color: #97bfe1;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    border-radius: 10px;
+
+
+}
+</style>
 <main id="main" class="main">
+
+
+
+<!--alert toast-->
+<div class="toast" role="alert" id="notiftoast" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+      <div id="toats-icon"></div>
+    <strong class="me-auto">Need help </strong>
+    <small class="text-body-secondary">1 mins ago</small>
+    <button type="button" class="btn-close"  onclick="closeToast()"  data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body" id="toast-body"> 
+    Hello, world! This is a toast message.
+  </div>
+</div>
+
+
+
+<!--end-->
+
 
   <div class="pagetitle">
     <h5>Image Shared</h5>
@@ -38,7 +79,7 @@
           <table class="table" id="dataTable">
             <thead>
               <tr>
-                <th scope="col">#</th>
+                <th scope="col" hidden>#</th>
                 <th scope="col">BodyPart</th>
                 <th scope="col">AquisationDate</th>
                 <th scope="col">Radiologist</th>
@@ -51,11 +92,11 @@
               {% for i in images %}
 
               <tr>
-                <th scope="row">{{i.id}}</th>
+                <th scope="row" hidden>{{i.id}}</th>
 
                 <td> {{i.bodypart }}</td>
                 <td>{{i.aquisationdate | date }}</td>
-                <td>{{i.radiologist}}</td>
+                <td>{{i.radiologist.name}}</td>
 
                 <td style="display: flex;justify-content: center;">
                   <a href="{{ path('consult', {'id': i.id}) }}">
@@ -92,6 +133,9 @@
 
 <!-- DataTables Initialization Script -->
 <script>
+    document.getElementById("notiftoast").style.display="none ";
+                    document.getElementById("notiftoast").style.display="none !important";
+
   $(document).ready(function () {
     $('#dataTable').DataTable({
       "initComplete": function (settings, json) {
@@ -127,19 +171,23 @@
             console.log(JSON.parse(event.data));
             a=JSON.parse(event.data);
             var users = a.users.map(Number); // Convert elements in a.users to numbers
+                document.getElementById("notiftoast").style.display="block ";
 
-            if (a.users.includes( currentUserID)) {
+
+            if (a.users.includes( currentUserID))
+             {
     console.log('Current user is present in the array.');
-
+           document.getElementById("toast-body").innerText=a.rad +" has shared new Images with you ";
             // Create a new table row element
             var newRow = document.createElement('tr');
             newRow.className = 'odd'; // Add the class 'odd' to the new row
 
             // Create a table header cell for the sorting
             var sortingCell = document.createElement('th');
-            sortingCell.setAttribute('scope', 'row');
+           sortingCell.setAttribute('scope', 'row');
             sortingCell.className = 'sorting_1';
             sortingCell.textContent = a.idimage; // You can adjust this value as needed
+            sortingCell.style.display="none";
             newRow.appendChild(sortingCell); // Append the sorting cell to the new row
 
             // Create the other <td> elements with the provided parameters
@@ -166,18 +214,24 @@
             var i=0;
             buttons.forEach(function(label) {
                 var button = document.createElement('button');
-                button.className = 'btn btn-' + (label === 'Share' ? 'info' : 'primary');
+                button.className = 'btn btn-' + (label == 'Consult ' ? 'info' : 'primary');
                 button.textContent = label;
                if (label === 'Consult') {
                        var consultLink = document.createElement('a');
                        consultLink.href = '/image/consult/'+a.idimage // Replace $id with the actual value
+                                              button.classList.add("btn-info"); // Add the class "btn-info" to the button
+                                              button.style.marginRight="5px";
+
                        consultLink.appendChild(button);
+
                        buttonTd.appendChild(consultLink);
+
                    } 
                    if (label === 'Interpret') {
                        var consultLink = document.createElement('a');
                        consultLink.href = '/interpretatin/'+a.idimage // Replace $id with the actual value
                        consultLink.appendChild(button);
+                       
                        buttonTd.appendChild(consultLink);
                    }
 
@@ -215,6 +269,8 @@
             console.log(JSON.parse(event.data));
             console.log(currentUserID);
             console.log(event.data.idrad)
+                document.getElementById("notiftoast").style.display="none ";
+
             if(JSON.parse(event.data).idrad==currentUserID)
 {
             deleteimage=JSON.parse(event.data).image;
@@ -243,6 +299,20 @@ thElements.forEach(function(thElement) {
         }
 
       }
+
+      
+function closeToast() {
+    console.log("Close button clicked");
+    // Add your logic to close the toast here
+    // For example, if you are using Bootstrap's toast, you might do:
+    var toastElement = document.querySelector('.toast'); // Adjust selector as needed
+    var toast = new bootstrap.Toast(toastElement);
+
+    document.getElementById("notiftoast").style.display="none ";
+
+    toast.hide();
+}
+
 
 
 </script>
