@@ -1,97 +1,111 @@
 {% extends 'back.html.twig' %}
 
 {% block title %}
-	RadioHub - Our Donations
+    RadioHub - Our Donations
 {% endblock %}
-
 
 {% block body %}
 
-	<h1>Gratification index
-	</h1>
-
-	<form id="searchForm" class="d-flex justify-content-between w-full mx-3 my-5">
-		<input type="text" class="form-control w-75" id="searchInput" name="query" placeholder="Search...">
-		<div class="d-flex gap-3">
-			<button type="submit" class="btn btn-primary">Search</button>
-			<a href="{{ path('app_gratification_new') }}" class="btn btn-primary">Create new</a>
-		</div>
-
-	</form>
-	<div id="searchResults"></div>
-
-	<table class="table" id="gratificationTable">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Date_grat</th>
-				<th>Titre_Grat</th>
-				<th>Desc_Grat</th>
-				<th>Type_Grat</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for gratification in gratifications %}
-				<tr>
-					<td>{{ gratification.id }}</td>
-					<td>{{ gratification.DateGrat ? gratification.DateGrat|date('Y-m-d') : '' }}</td>
-					<td>{{ gratification.TitreGrat }}</td>
-					<td>{{ gratification.DescGrat }}</td>
-					<td>{{ gratification.TypeGrat }}</td>
-					<td>
-						<a href="{{ path('app_gratification_show', {'id': gratification.id}) }}" class="btn btn-danger">Show</a>
-						<a href="{{ path('app_gratification_edit', {'id': gratification.id}) }}" class="btn btn-success">Edit</a>
-					</td>
-
-				</tr>
-
-			{% else %}
-				<tr>
-					<td colspan="6">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-
-	<div>{{ knp_pagination_render(gratifications, 'pagination.html.twig' )}}</div>
-	<br>
-	<br>
+<div style="display: flex; justify-content: center; padding: auto; padding-top: 150px">
+    <div class="col-lg-10 d-flex align-items-stretch">
+        <div class="card w-100">
+            <div class="card-body p-4">
+                <h5 style="color:blue;" class="card-title fw-semibold mb-4">
+                    Gratification List
+                </h5>
+                <form id="searchForm" class="mb-3 d-flex gap-3">
+                    <input type="text" class="form-control w-75" id="searchInput" name="query" placeholder="Search...">
+                    <div class="d-flex gap-3">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{{ path('app_gratification_new') }}" class="btn btn-primary">Create new</a>
+                    </div>
+                </form>
+                <div class="table-responsive" style="overflow-x: auto;">
+                    <table class="table text-nowrap mb-0 align-middle">
+                        <thead class="text-dark fs-4">
+                            <tr>
+                                <th class="border-bottom-0">
+                                    <h6 class="fw-semibold mb-0">Date</h6>
+                                </th>
+                                <th class="border-bottom-0">
+                                    <h6 class="fw-semibold mb-0">Title</h6>
+                                </th>
+                                <th class="border-bottom-0">
+                                    <h6 class="fw-semibold mb-0">Description</h6>
+                                </th>
+                                <th class="border-bottom-0">
+                                    <h6 class="fw-semibold mb-0">Type</h6>
+                                </th>
+                                <th class="border-bottom-0">
+                                    <h6 class="fw-semibold mb-0">Actions</h6>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for gratification in gratifications %}
+                            <tr>
+                                <td>{{ gratification.DateGrat ? gratification.DateGrat|date('Y-m-d') : '' }}</td>
+                                <td>{{ gratification.TitreGrat }}</td>
+                                <td>{{ gratification.DescGrat }}</td>
+                                <td>{{ gratification.TypeGrat }}</td>
+                                <td>
+                                    <a href="{{ path('app_gratification_show', {'id': gratification.id}) }}" class="btn btn-danger">Show</a>
+                                    <a href="{{ path('app_gratification_edit', {'id': gratification.id}) }}" class="btn btn-success">Edit</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6">No records found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
 <script>
-	$(document).ready(function () {
-$('#searchForm').submit(function (event) {
-event.preventDefault(); // Prevent form submission
+    $(document).ready(function () {
+        $('#searchForm').submit(function (event) {
+            event.preventDefault(); // Prevent form submission
 
-var searchTerm = $('#searchInput').val();
+            var searchTerm = $('#searchInput').val();
 
-$.ajax({
-url: "{{ path('search') }}",
-method: 'GET',
-data: {
-search: searchTerm
-},
-success: function (response) {
-$('#gratificationTable tbody').empty(); // Clear previous results
+            $.ajax({
+                url: "{{ path('search') }}",
+                method: 'GET',
+                data: {
+                    search: searchTerm
+                },
+                success: function (response) {
+                    $('#gratificationTable tbody').empty(); // Clear previous results
 
-response.gratifications.forEach(function (gratification) {
-var row = '<tr>' + '<td>' + gratification.id + '</td>' + '<td>' + gratification.date + '</td>' + '<td>' + gratification.title + '</td>' + '<td>' + gratification.Description + '</td>' + '<td>' + gratification.Type + '</td>' +
-// '<td>' + gratification.montant + '</td>' +
-// '<td>' + gratification.iddonateur + '</td>' +
-'<td>' + '<a href="/gratification/' + gratification.id + '" class="btn btn-primary">Show</a>' + '<a href="/gratification/' + gratification.id + '/edit" class="btn btn-secondary">Edit</a>' + '</td>' + '</tr>';
+                    response.gratifications.forEach(function (gratification) {
+                        var row = '<tr>' +
+                            '<td>' + gratification.id + '</td>' +
+                            '<td>' + gratification.date + '</td>' +
+                            '<td>' + gratification.title + '</td>' +
+                            '<td>' + gratification.Description + '</td>' +
+                            '<td>' + gratification.Type + '</td>' +
+                            '<td>' +
+                            '<a href="/gratification/' + gratification.id + '" class="btn btn-primary">Show</a>' +
+                            '<a href="/gratification/' + gratification.id + '/edit" class="btn btn-secondary">Edit</a>' +
+                            '</td>' +
+                            '</tr>';
 
-'</tr>';
-$('#gratificationTable tbody').append(row);
-});
-},
-error: function (xhr, status, error) {
-console.error(error); // Handle errors
-}
-});
-});
-});
-</script>{% endblock %}
+                        $('#gratificationTable tbody').append(row);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(error); // Handle errors
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

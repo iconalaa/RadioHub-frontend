@@ -37,27 +37,28 @@
 </head>
 <body>
 
-	<form method="POST" action="{{ path('app_donateur_edit', {'id': donateur.id}) }}" novalidate class="form-group">    {{ form_start(form) }}
+<form method="POST" action="{{ path('app_donateur_edit', {'id': donateur.id}) }}" novalidate class="form-group">
+    {{ form_start(form) }}
 
     <div class="form-group">
-        {{ form_widget(form.Prenom_Donateur, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.Prenom_Donateur) }}
+        {{ form_widget(form.First_Name_Donor, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.First_Name_Donor) }}
     </div>
     <div class="form-group">
-        {{ form_widget(form.Nom_Donateur, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.Nom_Donateur) }}
+        {{ form_widget(form.Last_Name_Donor, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.Last_Name_Donor) }}
     </div>
     <div class="form-group">
         {{ form_widget(form.Email, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(form.Email) }}
     </div>
     <div class="form-group">
-        {{ form_widget(form.Telephone, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.Telephone) }}
+        {{ form_widget(form.Phone_Number, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.Phone_Number) }}
     </div>
     <div class="form-group">
-        {{ form_widget(form.Type_Donateur, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.Type_Donateur) }}
+        {{ form_widget(form.Donor_Type, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.Donor_Type) }}
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 

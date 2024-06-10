@@ -1,73 +1,81 @@
-{% extends 'back.html.twig' %} {% block title %}RadioHub | Blog{% endblock %} {%
-block body %}
+{% extends 'back.html.twig' %}
+
+{% block title %}RadioHub | Blog{% endblock %}
+
+{% block body %}
 <style>
   #image {
     width: 100px !important;
     height: 100px !important;
     object-fit: cover;
   }
+  .truncate {
+    display: inline-block;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+  }
+  .show-more {
+    color: blue;
+    cursor: pointer;
+  }
+  .card {
+    max-width: 100%;
+  }
+  .table-responsive {
+    overflow-x: hidden;
+  }
 </style>
 
-<div class="container-fluid">
-  <div class="card">
-    <h1 class="text-center py-2">Show Articles</h1>
-    <div class="card-body">
-      <div class="album">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-          <table class="table">
-            <thead>
+<div style="display: flex; justify-content: center; padding: auto; padding-top: 150px">
+  <div class="col-lg-10 d-flex align-items-stretch">
+    <div class="card w-100">
+      <div class="card-body p-4">
+        <h5 style="color:blue;" class="card-title fw-semibold mb-4">Blog</h5>
+        <div class="table-responsive">
+          <table class="table text-nowrap mb-0 align-middle">
+            <thead class="text-dark fs-4">
               <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>CreatedAt</th>
-                <th>Image</th>
-                <th>Comment Count</th>
-                <!-- Nouvelle colonne pour le nombre de commentaires -->
-                <th colspan="2">Actions</th>
+                <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Title</h6></th>
+                <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Content</h6></th>
+                <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Date</h6></th>
+                <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Image</h6></th>
+                <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Comment Count</h6></th>
+                <th class="border-bottom-0" colspan="2"><h6 class="fw-semibold mb-0">Actions</h6></th>
               </tr>
             </thead>
             <tbody>
               {% for item in articlesWithCommentCount %}
               <tr>
-                <td>{{ item.article.id }}</td>
-                <td>{{ item.article.title }}</td>
-                <td>{{ item.article.content|striptags|slice(0,250) }}</td>
-                <td>
-                  {{ item.article.createdAt ? item.article.createdAt|date('Y-m-d H:i:s') : '' }}
+                <td class="border-bottom-0">
+                  <span class="truncate">{{ item.article.title }}</span>
+                  {% if item.article.title|length > 30 %}
+                  <span class="show-more" onclick="toggleText(this, '{{ item.article.title }}')">Show more</span>
+                  {% endif %}
                 </td>
-                <td>
-                  <img
-                    src="{{ asset('articles/' ~ item.article.image) }}"
-                    class="card-img-top"
-                    id="image"
-                    alt="..."
-                  />
+                <td class="border-bottom-0">
+                  <span class="truncate">{{ item.article.content|striptags|slice(0,250) }}</span>
+                  {% if item.article.content|striptags|length > 250 %}
+                  <span class="show-more" onclick="toggleText(this, '{{ item.article.content|striptags }}')">Show more</span>
+                  {% endif %}
                 </td>
-                <td>{{ item.commentCount }}</td>
-                <!-- Affichez le nombre de commentaires -->
-                <td>
+                <td class="border-bottom-0">{{ item.article.createdAt ? item.article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="border-bottom-0">
+                  <img src="{{ asset('articles/' ~ item.article.image) }}" class="card-img-top" id="image" alt="..." />
+                </td>
+                <td class="border-bottom-0">{{ item.commentCount }}</td>
+                <td class="border-bottom-0">
                   <div class="d-flex gap-2">
-                    <a
-                      class="btn btn-success"
-                      href="{{
-                        path('app_article_show', { id: item.article.id })
-                      }}"
-                      >show</a
-                    >
-                    <a
-                      class="btn btn-danger"
-                      href="{{
-                        path('app_article_edit', { id: item.article.id })
-                      }}"
-                      >edit</a
-                    >
+                    <a class="btn btn-success" href="{{ path('app_article_show', { id: item.article.id }) }}">Show</a>
+                    <a class="btn btn-primary" href="{{ path('app_article_edit', { id: item.article.id }) }}">Edit</a>
                   </div>
                 </td>
               </tr>
               {% else %}
               <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="7" class="text-center">No records found</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -75,12 +83,25 @@ block body %}
         </div>
       </div>
     </div>
-
-    <a
-      class="btn btn-primary w-25 mx-auto mb-5"
-      href="{{ path('app_article_new') }}"
-      >Create new</a
-    >
   </div>
 </div>
+
+<div style="display: flex; justify-content: center; padding-top: 20px;">
+  <a class="btn btn-primary w-25" href="{{ path('app_article_new') }}">Create new</a>
+</div>
+
+<script>
+  function toggleText(element, fullText) {
+    var truncate = element.previousElementSibling;
+    if (truncate.classList.contains('truncate')) {
+      truncate.textContent = fullText;
+      truncate.classList.remove('truncate');
+      element.textContent = 'Show less';
+    } else {
+      truncate.textContent = truncate.textContent.slice(0, 30) + '...';
+      truncate.classList.add('truncate');
+      element.textContent = 'Show more';
+    }
+  }
+</script>
 {% endblock %}

@@ -160,6 +160,7 @@ Radiohub | Doctor
             {% for p in prep %}
               {% if p.report.id == report.id %}
                 <a href="{{ path('generate_prescription', {'id': p.id}) }}" class="prescription-button">PRESCRIPTION PDF</a>
+                <br><br>
               {% endif %}
             {% endfor %}
             <p class="item_title">Patient: {{ report.image.patient.name }} {{ report.image.patient.lastname }}</p>

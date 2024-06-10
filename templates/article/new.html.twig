@@ -2,13 +2,8 @@
 <title>New Article</title>
 
 {% block body %}
-<div class="d-flex justify-content-center mt-3">
-
-    <h1>Create new Article</h1>
-</div>
  
     {{ include('article/_form.html.twig', {'button_label': 'save'}) }}
 
-    <a href="{{ path('app_article_index') }}">back to list</a>
    
 {% endblock %}

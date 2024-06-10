@@ -1,48 +1,84 @@
-
-
 {% extends 'back.html.twig' %}
 
 {% block title %}Create Article{% endblock %}
 
 {% block body %}
-     
-    
+<style>
+  .form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .form-container h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  .form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+  }
+  .btn-submit {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-submit:hover {
+    background-color: #0056b3;
+  }
+</style>
+<br>
+<div class="form-container" style="margin-top: 50px;">
+  <h1>Blog</h1>
 
-    <div class="d-flex justify-content-center mt-3">
+  {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'my-1'}}) }}
 
-    <h1>Create New Article</h1>
-    </div>
-          {{ form_start(form,{'attr':{'novalidate': 'novalidate','class':'my-1'}})}}
+  <div class="form-group">
+    {{ form_label(form.title) }}
+    {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Enter the title'}}) }}
+    {{ form_errors(form.title) }}
+  </div>
 
+  <div class="form-group">
+    {{ form_label(form.content) }}
+    {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder': 'Enter the content'}}) }}
+    {{ form_errors(form.content) }}
+  </div>
 
-    {{ form_row(form.title, {
-        'attr': {
-            'class': 'form-control',
-            'placeholder': 'Enter the title'
-        }
-    }) }}
+  <div class="form-group">
+    {{ form_label(form.image) }}
+    {{ form_widget(form.image, {'attr': {'class': 'form-control', 'placeholder': 'Enter the image URL'}}) }}
+    {{ form_errors(form.image) }}
+  </div>
 
-    {{ form_row(form.content, {
-        'attr': {
-            'class': 'form-control',
-            'placeholder': 'Enter the content'
-        }
-    }) }}
+  <div class="form-group">
+    {{ form_label(form.createdAt) }}
+    {{ form_widget(form.createdAt, {'attr': {'class': 'form-control', 'placeholder': 'Enter the date'}}) }}
+    {{ form_errors(form.createdAt) }}
+  </div>
 
-    {{ form_row(form.image, {
-        'attr': {
-            'class': 'form-control',
-            'placeholder': 'Enter the image URL'
-        }
-    }) }}
-    {{ form_row(form.createdAt, {
-        'attr': {
-            'class': 'form-control',
-            'placeholder': 'Enter the date'
-        }
-    }) }}
-    <button type="submit" class="btn btn-primary">{{ button_label }}</button>
+  <button type="submit" class="btn-submit">{{ button_label }}</button>
 
-    {{ form_end(form) }}
-    
+  {{ form_end(form) }}
+  
+</div>
 {% endblock %}

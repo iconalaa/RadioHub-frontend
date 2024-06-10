@@ -1,74 +1,47 @@
-{% extends 'back.html.twig' %} {% block title %}RendezVous{% endblock %} {%
-block body %}
+{% extends 'back.html.twig' %}
 
-<div class="container-fluid">
-  <div class="card">
-    <div class="card-body">
-      <h1>Appointments</h1>
+{% block title %}RendezVous{% endblock %}
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Id</th>
-           
-            <th>name</th>
-            <th>lastname</th>
-            <th>Room</th>
-            <th>DateRV</th>
-            <th>TypeExam</th>
-
-            <th colspan="2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for rendez_vou in rendez_vouses %}
-
-          <tr>
-
-            <td>{{ rendez_vou.id }}</td>
-        
-            <td>{{ rendez_vou.user.name }}</td>
-    
-     
-
-            <td>{{ rendez_vou.user.lastname }}</td>
-
-            <td>{{ rendez_vou.salle.numSalle }}</td>
-  
-     
-            <td>
-              {{ rendez_vou.dateRV ? rendez_vou.dateRV|date('Y-m-d') : '' }}
-            </td>
-     
-            <td>{{ rendez_vou.typeExam }}</td>
-            <td>
-              <a
-                class="btn btn-primary"
-                href="{{ path('app_rendez_vous_show', { id: rendez_vou.id }) }}"
-                >show</a
-              >
-            </td>
-        
-            
-          </tr>
-          {% else %}
-          <tr>
-            <td colspan="5">no records found</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-      <a class="btn btn-primary" href="{{ path('app_rendez_vous_new') }}"
-        >Create new</a
-      >
+{% block body %}
+<div style="display: flex; justify-content: center; padding: auto; padding-top: 150px">
+  <div class="col-lg-10 d-flex align-items-stretch">
+    <div class="card w-100">
+      <div class="card-body p-4">
+        <h1>Appointments</h1>
+        <table id="compteRenduTable" class="table text-nowrap mb-0 align-middle">
+          <thead class="text-dark fs-4">
+            <tr>
+              <th class="border-bottom-0">Name</th>
+              <th class="border-bottom-0">Lastname</th>
+              <th class="border-bottom-0">Room</th>
+              <th class="border-bottom-0">DateRV</th>
+              <th class="border-bottom-0">TypeExam</th>
+              <th class="border-bottom-0" colspan="2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for rendez_vou in rendez_vouses %}
+            <tr>
+              <td class="border-bottom-0">{{ rendez_vou.user.name }}</td>
+              <td class="border-bottom-0">{{ rendez_vou.user.lastname }}</td>
+              <td class="border-bottom-0">{{ rendez_vou.salle.numSalle }}</td>
+              <td class="border-bottom-0">{{ rendez_vou.dateRV ? rendez_vou.dateRV|date('Y-m-d') : '' }}</td>
+              <td class="border-bottom-0">{{ rendez_vou.typeExam }}</td>
+              <td class="border-bottom-0">
+                <a class="btn btn-primary" href="{{ path('app_rendez_vous_show', { id: rendez_vou.id }) }}">Show</a>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="5">No records found</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <a class="btn btn-primary" href="{{ path('app_rendez_vous_new') }}">Create New</a>
+      </div>
     </div>
   </div>
-</div>
-<div style="align-content: center;
-justify-content: center;">
-{{ knp_pagination_render(rendez_vouses) }}  
-
 </div>
 
 

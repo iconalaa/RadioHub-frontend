@@ -47,7 +47,6 @@ class Gratification1Type extends AbstractType
             ])
 
             ->add('Montant') 
-            ->add('Type_Machine')
             ->add('ID_Donateur');
     }
 

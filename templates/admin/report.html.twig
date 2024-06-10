@@ -17,9 +17,6 @@
             <thead class="text-dark fs-4">
               <tr>
                 <th class="border-bottom-0">
-                  <h6 class="fw-semibold mb-0">Id</h6>
-                </th>
-                <th class="border-bottom-0">
                   <h6 class="fw-semibold mb-0">Assigned By</h6>
                 </th>
                 <th class="border-bottom-0">
@@ -39,9 +36,7 @@
             <tbody>
               {% for Report in Reports %}
               <tr>
-                <td class="border-bottom-0">
-                  <h6 class="fw-semibold mb-0">{{ Report.id }}</h6>
-                </td>
+               
                 <td class="border-bottom-0">
                   <h6 class="fw-semibold mb-1">{{ Report.image.radiologist.name }} {{
                     Report.image.radiologist.lastname }}</h6>

@@ -1,87 +1,100 @@
 {% extends 'back.html.twig' %}
 
 {% block title %}
-	RadioHub - Our Donors
+    RadioHub - Our Donors
 {% endblock %}
 
 {% block body %}
-	<h1>Donateur index</h1>
+<div style="display: flex; justify-content: center; padding: auto; padding-top: 150px">
+  <div class="col-lg-10 d-flex align-items-stretch">
+    <div class="card w-100">
+      <div class="card-body p-4">
+        <h5 style="color:blue;" class="card-title fw-semibold mb-4">
+          Donors List
+        </h5>
+        <form id="searchForm" class=" d-flex gap-3">
+          <input class="form-control" type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search...">
+          <button type="submit" class="btn btn-primary">Search</button>
+          <a href="{{ path('app_donateur_new') }}" class="btn btn-primary">Create new</a>
+        </form>
+        <div class="table-responsive" style="overflow-x: auto;">
+          <table id="donateurTable" class="table text-nowrap mb-0 align-middle">
+            <thead class="text-dark fs-4">
+              <tr>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Donor Name</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Donor Surname</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Donor Type</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Email</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Telephone</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Actions</h6>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for donateur in donateurs %}
+              <tr>
+                <td class="border-bottom-0">{{ donateur.NomDonateur }}</td>
+                <td class="border-bottom-0">{{ donateur.PrenomDonateur }}</td>
+                <td class="border-bottom-0">{{ donateur.TypeDonateur }}</td>
+                <td class="border-bottom-0">{{ donateur.Email }}</td>
+                <td class="border-bottom-0">{{ donateur.Telephone }}</td>
+                <td class="border-bottom-0">
+                  <a href="{{ path('app_donateur_show', {'id': donateur.id}) }}" class="btn btn-danger">Show</a>
+                  <a href="{{ path('app_donateur_edit', {'id': donateur.id}) }}" class="btn btn-success">Edit</a>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="7">No records found</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-	<form id="searchForm" class="d-flex justify-content-between w-full mx-3 my-5">
-		<input type="text" class="form-control w-75" id="searchInput" name="query" placeholder="Search...">
-		<div class="d-flex gap-3">
-		<button type="submit" class="btn btn-primary">Search</button>
-		<a href="{{ path('app_donateur_new') }}" class="btn btn-primary">Create new</a>
-		</div>
-	</form>
-	<table class="table" id="donateurTable">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Nom_Donateur</th>
-				<th>Prenom_Donateur</th>
-				<th>Type_Donateur</th>
-				<th>Email</th>
-				<th>Telephone</th>
-				<th>actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for donateur in donateurs %}
-				<tr>
-					<td>{{ donateur.id }}</td>
-					<td>{{ donateur.NomDonateur }}</td>
-					<td>{{ donateur.PrenomDonateur }}</td>
-					<td>{{ donateur.TypeDonateur }}</td>
-					<td>{{ donateur.Email }}</td>
-					<td>{{ donateur.Telephone }}</td>
-					<td>
-						<a href="{{ path('app_donateur_show', {'id': donateur.id}) }}" class="btn btn-danger">Show</a>
-						<a href="{{ path('app_donateur_edit', {'id': donateur.id}) }}" class="btn btn-success">Edit</a>
-					</td>
+<script>
+  function searchTable() {
+    // Declare variables
+    var input, filter, table, tr, td, i, j, txtValue;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("donateurTable");
+    tr = table.getElementsByTagName("tr");
 
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="7">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	<div>{{ knp_pagination_render(donateurs, 'pagination.html.twig' )}}</div>
-	<br>
-	<br>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    // Loop through all table rows
+    for (i = 0; i < tr.length; i++) {
+      // Hide the row by default
+      tr[i].style.display = "none";
 
-
-	<script>
-		$(document).ready(function () {
-$('#searchForm').on('input',function (event) {
-event.preventDefault(); // Prevent form submission
-
-var searchTerm = $('#searchInput').val();
-
-$.ajax({
-url: "{{ path('app_donateur_search') }}",
-method: 'GET',
-data: {
-search: searchTerm
-},
-success: function (response) {
-$('#donateurTable tbody').empty(); // Clear previous results
-
-response.donateurs.forEach(function (donateur) {
-var row = '<tr>' + '<td>' + donateur.id + '</td>' + '<td>' + donateur.nom + '</td>' + '<td>' + donateur.prenom + '</td>' + '<td>' + donateur.type + '</td>' + '<td>' + donateur.email + '</td>' + '<td>' + donateur.telephone + '</td>' + '<td>' + '<a href="/gratification/' + donateur.id + '" class="btn btn-primary">Show</a>' + '<a href="/gratification/' + donateur.id + '/edit" class="btn btn-secondary">Edit</a>' + '</td>' + '</tr>';
-
-'</tr>';
-$('#donateurTable tbody').append(row);
-});
-},
-error: function (xhr, status, error) {
-console.error(error); // Handle errors
-}
-});
-});
-});
-	</script>
+      // Loop through all table columns
+      td = tr[i].getElementsByTagName("td");
+      for (j = 0; j < td.length; j++) {
+        // Check if the current cell contains the search query
+        if (td[j]) {
+          txtValue = td[j].textContent || td[j].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            // If found, display the row and exit the inner loop
+            tr[i].style.display = "";
+            break;
+          }
+        }
+      }
+    }
+  }
+</script>
 {% endblock %}
